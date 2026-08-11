@@ -58,6 +58,11 @@ if ($token) {
   background: linear-gradient(135deg,#10B981,#059669); display: flex; align-items: center; justify-content: center;
   box-shadow: 0 10px 26px -6px rgba(16,185,129,0.6); }
 .ok-check svg { width: 27px; height: 27px; }
+.ok-milo { width: 100px; height: 100px; border-radius: 50%; margin: 0 auto 20px; overflow: hidden; position: relative;
+  border: 3px solid #10B981; background: #052E16; box-shadow: 0 0 0 6px rgba(16,185,129,.12), 0 16px 36px -10px rgba(16,185,129,.55); }
+.ok-milo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ok-milo .tag { position: absolute; bottom: -1px; left: 50%; transform: translateX(-50%); background: #0A1F1A; color: #6EE7B7;
+  font-size: 9px; font-weight: 700; letter-spacing: .08em; padding: 2px 9px; border-radius: 20px; border: 1px solid rgba(52,211,153,.4); }
 .ok-card h1 { font-size: 31px; font-weight: 300; letter-spacing: -0.04em; line-height: 1.18; margin: 0 0 12px; color: #0A1F1A; }
 .ok-card h1 strong { font-weight: 700; }
 .ok-card p.sub { color: #4B5563; font-size: 15.5px; line-height: 1.6; margin: 0 auto 26px; max-width: 460px; }
@@ -101,9 +106,14 @@ if ($token) {
       <span class="name"><strong>ABYS</strong><em> AI</em></span>
     </div>
 
+    <?php $milo_moment = in_array($plan, ['mission','lancement','assistant','seo'], true); ?>
+    <?php if ($milo_moment): ?>
+    <div class="ok-milo"><img src="/assets/img/milo-avatar.jpg" alt="Milo, votre copilote IA"><span class="tag">MILO · IA</span></div>
+    <?php else: ?>
     <div class="ok-check">
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </div>
+    <?php endif; ?>
 
   <?php if ($report): ?>
     <h1>Votre rapport IA se <strong>prépare</strong></h1>

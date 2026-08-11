@@ -74,6 +74,7 @@ if ($event->type === 'checkout.session.completed') {
         ");
         if ($customer_email) {
             send_email($customer_email, 'Votre mission de lancement ABYS est activée', "
+                <div style='text-align:center;margin:0 0 16px'><img src='https://abys.ai/assets/img/milo-avatar.jpg' alt='Milo' width='76' height='76' style='width:76px;height:76px;border-radius:50%;border:2px solid #10B981;object-fit:cover'></div>
                 <h2>Votre mission est activée</h2>
                 <p>Merci pour votre confiance. Milo, votre copilote IA, vous attend dans votre espace pour démarrer la mise en action" . ($tool ? " de <strong>" . htmlspecialchars($tool) . "</strong>" : " de vos outils") . ".</p>
                 <a class='btn' href='https://abys.ai/compte/'>Démarrer avec Milo</a>

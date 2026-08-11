@@ -245,6 +245,7 @@ function email_subscription_welcome(string $to, string $plan = 'assistant'): voi
     $plan_label = $plan === 'seo' ? 'SEO & Visibilité IA' : 'Assistant IA';
     $price      = $plan === 'seo' ? '49€' : '29€';
     $body = <<<HTML
+<div style="text-align:center;margin:0 0 16px"><img src="https://abys.ai/assets/img/milo-avatar.jpg" alt="Milo" width="76" height="76" style="width:76px;height:76px;border-radius:50%;border:2px solid #10B981;object-fit:cover"></div>
 <h2>Bienvenue dans votre abonnement {$plan_label}</h2>
 <p>Votre abonnement <strong>{$plan_label} · {$price}/mois</strong> est actif. Votre espace personnel est prêt.</p>
 <div class="info-box">
@@ -265,6 +266,7 @@ HTML;
 function email_pack_confirm(string $to, string $name = ''): void {
     $greeting = $name ? "Bonjour {$name}," : "Bonjour,";
     $body = <<<HTML
+<div style="text-align:center;margin:0 0 16px"><img src="https://abys.ai/assets/img/milo-avatar.jpg" alt="Milo" width="76" height="76" style="width:76px;height:76px;border-radius:50%;border:2px solid #10B981;object-fit:cover"></div>
 <h2>{$greeting}</h2>
 <h2>Votre Forfait Intégral est activé</h2>
 <p>Merci pour votre confiance. <strong>Milo, votre copilote IA</strong>, vous attend dès maintenant dans votre espace pour démarrer le déploiement de vos outils, un par un.</p>
