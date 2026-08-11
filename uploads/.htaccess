@@ -1,0 +1,10 @@
+# Fichier: abys-ai/uploads/.htaccess
+
+# Bloquer l'exécution de PHP dans ce répertoire
+<FilesMatch "\.(php|php3|php4|php5|phtml|pl|py|cgi|sh)$">
+    Require all denied
+</FilesMatch>
+
+# Désactiver les CGI
+Options -ExecCGI
+AddHandler cgi-script .php .pl .py .cgi .sh

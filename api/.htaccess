@@ -1,0 +1,6 @@
+# Fichier: abys-ai/api/.htaccess
+
+# Empêcher l'accès direct aux fichiers sensibles
+<FilesMatch "^(config|db)\.php$">
+    Require all denied
+</FilesMatch>
