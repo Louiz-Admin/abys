@@ -36,31 +36,34 @@ $secteur = $report['secteur'] ?? '';
 
 // Totaux + max pour les barres
 $tot_h = 0; $tot_eur = 0; $tot_roi = (int)($content['total_roi_12m'] ?? 0);
-$max_h = 0.001; $comp_sum = 0; $comp_n = 0;
+$max_h = 0.001;
 foreach ($opps as $o) {
     $tot_h   += (float)($o['time_saved_h_week'] ?? 0);
     $tot_eur += (float)($o['money_saved_eur_month'] ?? 0);
     $max_h    = max($max_h, (float)($o['time_saved_h_week'] ?? 0));
-    if (isset($o['competitors_using_pct'])) { $comp_sum += (float)$o['competitors_using_pct']; $comp_n++; }
 }
 if (!$tot_roi) $tot_roi = (int)round($tot_eur * 12);
-$comp_avg = $comp_n ? (int)round($comp_sum / $comp_n) : 46;
 $fmt = fn($n) => number_format((float)$n, 0, ',', ' ');
 
 // Opportunités triées par heures (pour l'infographie de répartition)
 $opps_sorted = $opps;
 usort($opps_sorted, fn($a,$b) => ((float)($b['time_saved_h_week']??0)) <=> ((float)($a['time_saved_h_week']??0)));
 
-// Logo officiel via unavatar (agrège Clearbit + favicons), secours favicon puis initiale
+// Logo officiel servi depuis notre domaine (proxy + cache serveur : toujours une image)
 $logo_of = function(array $o): array {
     $url  = $o['tool_url'] ?? '';
     $host = $url ? parse_url($url, PHP_URL_HOST) : '';
     $host = $host ? preg_replace('/^www\./', '', $host) : '';
-    $src  = $host ? 'https://unavatar.io/' . rawurlencode($host) . '?fallback=false' : '';
-    $fav  = $host ? 'https://www.google.com/s2/favicons?domain=' . $host . '&sz=128' : '';
+    $src  = $host ? '/api/logo.php?d=' . rawurlencode($host) : '';
     $init = mb_strtoupper(mb_substr(trim($o['tool'] ?? '?'), 0, 1));
-    return ['src' => $src, 'fav' => $fav, 'init' => $init];
+    return ['src' => $src, 'init' => $init];
 };
+
+// Données concurrents (robustes) : moyenne des valeurs non nulles
+$comp_vals = [];
+foreach ($opps as $o) { $cp = (int)($o['competitors_using_pct'] ?? 0); if ($cp > 0) $comp_vals[] = $cp; }
+$has_comp = count($comp_vals) > 0;
+$comp_avg = $has_comp ? (int)round(array_sum($comp_vals) / count($comp_vals)) : 0;
 
 // Courbe ROI cumulée sur 12 mois
 $roi_pts = [];
@@ -307,7 +310,7 @@ for ($m = 0; $m <= 12; $m++) {
         $lg = $logo_of($o); $pct = (int)round(($h / $max_h) * 100); ?>
     <div class="row">
       <div class="lg">
-        <?php if ($lg['src']): ?><img src="<?= htmlspecialchars($lg['src']) ?>" alt="" loading="lazy" data-fav="<?= htmlspecialchars($lg['fav']) ?>" onerror="if(this.dataset.fav){this.src=this.dataset.fav;this.removeAttribute('data-fav');}else{this.style.display='none';this.nextElementSibling.style.display='flex';}"><?php endif; ?>
+        <?php if ($lg['src']): ?><img src="<?= htmlspecialchars($lg['src']) ?>" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><?php endif; ?>
         <div class="fb" style="<?= $lg['src'] ? '' : 'display:flex' ?>"><?= htmlspecialchars($lg['init']) ?></div>
       </div>
       <div class="nm"><?= htmlspecialchars($o['tool'] ?? 'Outil') ?></div>
@@ -364,7 +367,7 @@ for ($m = 0; $m <= 12; $m++) {
   <div class="rp-opp" data-reveal style="transition-delay:<?= min($i*60,240) ?>ms">
     <div class="rp-opp-head">
       <div class="rp-logo">
-        <?php if ($lg['src']): ?><img src="<?= htmlspecialchars($lg['src']) ?>" alt="<?= htmlspecialchars($tool) ?>" loading="lazy" data-fav="<?= htmlspecialchars($lg['fav']) ?>" onerror="if(this.dataset.fav){this.src=this.dataset.fav;this.removeAttribute('data-fav');}else{this.style.display='none';this.nextElementSibling.style.display='flex';}"><?php endif; ?>
+        <?php if ($lg['src']): ?><img src="<?= htmlspecialchars($lg['src']) ?>" alt="<?= htmlspecialchars($tool) ?>" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><?php endif; ?>
         <div class="fb" style="<?= $lg['src'] ? '' : 'display:flex' ?>"><?= htmlspecialchars($lg['init']) ?></div>
       </div>
       <div class="rp-opp-title">
@@ -413,11 +416,13 @@ for ($m = 0; $m <= 12; $m++) {
   <?php endif; ?>
 
   <!-- Concurrents en graphique -->
+  <?php if ($has_comp || $compet): ?>
   <h2 class="rp-h2">Où en sont vos <strong>concurrents</strong></h2>
+  <?php if ($has_comp): ?>
   <div class="rp-card rp-comp" data-reveal>
     <div class="rp-gauge" id="rp-gauge" data-pct="<?= $comp_avg ?>">
       <svg viewBox="0 0 200 200"><circle class="tk" cx="100" cy="100" r="85"/><circle class="pg" cx="100" cy="100" r="85"/></svg>
-      <div class="lbl"><b id="rp-gnum">0%</b><span>de vos concurrents ont déjà adopté au moins un de ces outils</span></div>
+      <div class="lbl"><b id="rp-gnum">0%</b><span>de vos concurrents utilisent déjà ce type d'outil, en moyenne</span></div>
     </div>
     <div>
       <?php foreach ($opps_sorted as $o):
@@ -427,6 +432,15 @@ for ($m = 0; $m <= 12; $m++) {
       <?php if ($compet): ?><p class="rp-comp-note"><?= nl2br(htmlspecialchars($compet)) ?></p><?php endif; ?>
     </div>
   </div>
+  <?php else: ?>
+  <div class="rp-card" data-reveal style="display:flex;gap:18px;align-items:flex-start">
+    <div style="width:46px;height:46px;border-radius:12px;flex-shrink:0;background:rgba(14,165,233,.1);display:flex;align-items:center;justify-content:center">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0EA5E9" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    </div>
+    <p style="font-size:15px;line-height:1.75;color:var(--ink-2,#1F2937);margin:0"><?= nl2br(htmlspecialchars($compet)) ?></p>
+  </div>
+  <?php endif; ?>
+  <?php endif; ?>
 
   <!-- Forfait Lancement -->
   <div class="rp-pack rp-noprint">

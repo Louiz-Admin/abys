@@ -108,7 +108,7 @@ Retourne UNIQUEMENT ce JSON (pas de markdown, pas de texte autour) :
       "money_saved_eur_month": <reprends la valeur de l'audit>,
       "roi_12m_eur": <reprends la valeur de l'audit>,
       "difficulty": "Facile|Moyen|Avancé",
-      "competitors_using_pct": 0
+      "competitors_using_pct": <entier réaliste entre 15 et 70, JAMAIS 0 : part estimée des concurrents du secteur utilisant déjà ce type d'outil>
     }
   ],
   "action_plan": {
@@ -122,6 +122,7 @@ Retourne UNIQUEMENT ce JSON (pas de markdown, pas de texte autour) :
 }
 
 Génère des tutoriels VRAIMENT personnalisés pour ce secteur. Sois concret et actionnable. Garde les tutoriels concis (5 étapes courtes max).
+IMPORTANT : chaque competitors_using_pct doit être un pourcentage réaliste entre 15 et 70 (jamais 0), cohérent avec l'adoption réelle de ce type d'outil dans ce secteur.
 PROMPT;
 
     $content = call_ai($provider, $prompt, $settings);
