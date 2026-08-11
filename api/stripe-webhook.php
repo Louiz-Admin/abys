@@ -56,6 +56,30 @@ if ($event->type === 'checkout.session.completed') {
         ");
     }
 
+    // Missions de lancement (79€ / 199€) — accompagnement Milo
+    if ($mode === 'payment' && isset($meta->plan) && in_array($meta->plan, ['mission', 'lancement'], true)) {
+        $customer_email = $session->customer_details->email ?? ($session->customer_email ?? '');
+        $tool = $meta->mission_tool ?? '';
+        $db->prepare("INSERT INTO payments (lead_id, stripe_payment_intent, amount, type, status) VALUES (?,?,?,?,'succeeded')")
+           ->execute([intval($meta->lead_id ?? 0), $session->payment_intent, $session->amount_total / 100, 'mission']);
+        notify_admin("Nouvelle mission " . ($session->amount_total / 100) . "€ — {$customer_email}", "
+            <p>Nouvelle mission de lancement payée.</p>
+            <div class='info-box'>
+              Email : <strong>{$customer_email}</strong><br>
+              Formule : {$meta->plan}" . ($tool ? "<br>Outil : {$tool}" : "") . "<br>
+              Montant : " . ($session->amount_total / 100) . "€
+            </div>
+        ");
+        if ($customer_email) {
+            send_email($customer_email, 'Votre mission de lancement ABYS est activée', "
+                <h2>Votre mission est activée ✅</h2>
+                <p>Merci pour votre confiance. Milo, votre copilote IA, vous attend dans votre espace pour démarrer la mise en action" . ($tool ? " de <strong>" . htmlspecialchars($tool) . "</strong>" : " de vos outils") . ".</p>
+                <a class='btn' href='https://abys.ai/compte/'>Démarrer avec Milo →</a>
+                <p style='font-size:13px;color:#6B7280'>Objectif : outil installé, paramétré, premier résultat. Satisfait ou remboursé.</p>
+            ");
+        }
+    }
+
     if ($mode === 'subscription' && isset($meta->lead_id)) {
         $plan = $meta->plan ?? 'assistant';
         $db->prepare("

@@ -1,19 +1,24 @@
 <?php
-$plan = $_GET['plan'] ?? 'report'; // report | assistant | seo | pack
-$valid_plans = ['report', 'assistant', 'seo', 'pack'];
+$plan = $_GET['plan'] ?? 'report'; // report | assistant | seo | pack | mission | lancement
+$valid_plans = ['report', 'assistant', 'seo', 'pack', 'mission', 'lancement'];
 if (!in_array($plan, $valid_plans)) $plan = 'report';
+$tool = trim(substr($_GET['tool'] ?? '', 0, 80));
 
 $plan_labels = [
     'report'    => 'Rapport Premium',
     'assistant' => 'Assistant IA',
     'seo'       => 'SEO & Visibilité IA',
-    'pack'      => 'Pack IA Accompagné',
+    'pack'      => 'Forfait Intégral',
+    'mission'   => 'Mission lancement' . ($tool ? ' — ' . $tool : ''),
+    'lancement' => 'Forfait Lancement',
 ];
 $plan_prices = [
     'report'    => '99€',
     'assistant' => '29€/mois',
     'seo'       => '49€/mois',
     'pack'      => '499€',
+    'mission'   => '79€',
+    'lancement' => '199€',
 ];
 $plan_label = $plan_labels[$plan];
 $plan_price = $plan_prices[$plan];
@@ -167,10 +172,12 @@ include __DIR__ . '/includes/nav.php';
       <div class="order-includes">
         <?php
         $features = [
-            'report'    => ['7+ opportunités IA', 'Tutoriels personnalisés', 'Plan 12 mois', 'Accès à vie'],
-            'assistant' => ['Questions illimitées', 'Assistant IA 24h/24', 'Contexte de votre audit', 'Résiliable à tout moment'],
+            'report'    => ['7+ opportunités IA', 'Tutoriels personnalisés', 'Plan 12 mois', 'Milo (assistant IA) inclus 30 jours', 'Accès à vie'],
+            'assistant' => ['Questions illimitées', 'Milo, votre copilote IA 24h/24', 'Contexte de votre audit', 'Résiliable à tout moment'],
             'seo'       => ['Audit présence IA', 'Optimisation citations', 'Rapport mensuel', 'Sans engagement'],
-            'pack'      => ['Rapport premium inclus', '3 sessions de mise en place', 'Outils configurés', '30j suivi', 'Dossier OPCO préparé'],
+            'pack'      => ['Rapport premium inclus', 'Toutes vos missions de lancement', 'Chaque outil installé et actif', 'Milo (IA) pendant 6 mois', 'Suivi mensuel automatique'],
+            'mission'   => ['Un outil installé et paramétré', 'Guidage pas à pas par Milo (IA)', 'Jusqu\'au premier résultat concret', 'Satisfait ou remboursé'],
+            'lancement' => ['3 outils de votre choix mis en action', 'Guidage pas à pas par Milo (IA)', '90 jours d\'assistance incluse', 'Satisfait ou remboursé'],
         ];
         foreach($features[$plan] as $f): ?>
         <div class="order-line">
@@ -195,6 +202,7 @@ include __DIR__ . '/includes/nav.php';
 <?php include __DIR__ . '/includes/footer.php'; ?>
 <script>
 const plan = '<?= htmlspecialchars($plan, ENT_QUOTES) ?>';
+const missionTool = '<?= htmlspecialchars($tool, ENT_QUOTES) ?>';
 
 // Pré-remplir email depuis sessionStorage si disponible
 window.addEventListener('DOMContentLoaded', () => {
@@ -270,6 +278,15 @@ async function submitFacturation() {
         action:   'create_checkout_report',
         lead_id:  billing.lead_id,
         audit_id: parseInt(ABYS.get('audit_id') || 0),
+        email,
+        billing,
+      });
+    } else if (plan === 'mission' || plan === 'lancement') {
+      stripeRes = await ABYS.api('stripe.php', {
+        action:  'create_checkout_mission',
+        plan,
+        tool:    missionTool,
+        lead_id: billing.lead_id,
         email,
         billing,
       });

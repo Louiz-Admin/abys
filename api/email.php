@@ -266,16 +266,16 @@ function email_pack_confirm(string $to, string $name = ''): void {
     $greeting = $name ? "Bonjour {$name}," : "Bonjour,";
     $body = <<<HTML
 <h2>{$greeting}</h2>
-<h2>Votre demande d'accompagnement est bien reçue ✅</h2>
-<p>Merci pour votre intérêt pour le <strong>Pack IA Accompagné</strong>. Un expert ABYS vous contactera dans les <strong>24 heures ouvrées</strong> pour planifier votre première session.</p>
+<h2>Votre Forfait Intégral est activé ✅</h2>
+<p>Merci pour votre confiance. <strong>Milo, votre copilote IA</strong>, vous attend dès maintenant dans votre espace pour démarrer le déploiement de vos outils, un par un.</p>
 <div class="info-box">
   <strong>Ce qui vous attend :</strong><br>
   • Rapport Premium complet (7+ opportunités)<br>
-  • 3 sessions de mise en place de 2h chacune<br>
-  • Vos outils IA configurés et opérationnels<br>
-  • Identification de vos aides éligibles (OPCO, BPI…)<br>
-  • 30 jours de suivi par notre assistant IA
+  • Toutes vos missions de lancement — chaque outil installé et actif<br>
+  • Guidage pas à pas par Milo, jusqu'au premier résultat<br>
+  • 6 mois d'assistance complète, 24h/24
 </div>
+<a class="btn" href="https://abys.ai/compte/">Démarrer avec Milo →</a>
 <p style="font-size:13px;color:#6B7280">Questions : <a href="mailto:contact@abys.ai">contact@abys.ai</a></p>
 HTML;
     send_email($to, 'Votre Pack IA Accompagné ABYS — Confirmation', $body);

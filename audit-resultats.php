@@ -896,7 +896,7 @@ include __DIR__ . '/includes/nav.php';
           <div class="offer-price">499€</div>
           <div class="offer-price-suffix">paiement unique</div>
         </div>
-        <p class="offer-tagline">Rapport + accompagnement humain pour déployer l'IA dans votre entreprise.</p>
+        <p class="offer-tagline">Rapport + déploiement complet de vos outils, piloté par Milo, notre copilote IA.</p>
         <div class="offer-divider"></div>
         <div class="offer-features">
           <div class="offer-feature">
@@ -905,11 +905,11 @@ include __DIR__ . '/includes/nav.php';
           </div>
           <div class="offer-feature">
             <div class="offer-feature-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-            <span><strong>Tutoriels vidéo pas-à-pas</strong> pour installer et configurer chaque outil identifié</span>
+            <span><strong>Toutes vos missions de lancement</strong> — chaque outil installé, paramétré et actif</span>
           </div>
           <div class="offer-feature">
             <div class="offer-feature-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-            <span><strong>Accompagnement déploiement</strong> — un expert ABYS vous guide de A à Z</span>
+            <span><strong>Guidage pas à pas par Milo (IA)</strong> — de la création du compte au premier résultat</span>
           </div>
           <div class="offer-feature">
             <div class="offer-feature-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
@@ -917,11 +917,11 @@ include __DIR__ . '/includes/nav.php';
           </div>
           <div class="offer-feature">
             <div class="offer-feature-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-            <span><strong>Chat direct avec un expert</strong> — posez toutes vos questions, réponse en moins de 4h</span>
+            <span><strong>Milo disponible 24h/24 pendant 6 mois</strong> — réponses immédiates, contexte de votre audit</span>
           </div>
           <div class="offer-feature">
             <div class="offer-feature-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-            <span>Suivi de mise en place <strong>sur 30 jours</strong> — on s'assure que tout fonctionne</span>
+            <span>Suivi automatique <strong>pendant 6 mois</strong> — on s'assure que tout tourne</span>
           </div>
         </div>
         <a href="/audit-qualification.php?plan=premium" class="offer-cta offer-cta-premium">

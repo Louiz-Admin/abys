@@ -8,6 +8,8 @@ $_amount = match($_plan) {
     'assistant' => 29,
     'seo'       => 49,
     'pack'      => 499,
+    'mission'   => 79,
+    'lancement' => 199,
     default     => 0,
 };
 if ($_plan === 'report') {
@@ -54,6 +56,30 @@ if ($token) {
     <div id="report-ready" style="display:none">
       <a href="/rapport.php?token=<?= htmlspecialchars($token) ?>" class="btn btn-primary btn-lg">Accéder à mon rapport →</a>
     </div>
+
+  <?php elseif ($plan === 'mission' || $plan === 'lancement'): ?>
+    <h1 style="font-size:36px;font-weight:300;letter-spacing:-0.04em;margin-bottom:12px">
+      Votre mission est <strong style="font-weight:700">activée !</strong>
+    </h1>
+    <p style="color:var(--ink-3);font-size:16px;margin-bottom:24px;max-width:520px">
+      <strong>Milo</strong>, votre copilote IA, vous attend dans votre espace pour démarrer la mise en action
+      <?= $plan === 'lancement' ? 'de vos 3 outils, un par un,' : 'de votre outil' ?> jusqu'au premier résultat concret.
+      Vous recevez aussi un email avec votre accès.
+    </p>
+    <div style="max-width:440px;margin:0 auto 16px;background:linear-gradient(135deg,#0A1F1A,#064E3B);border-radius:var(--r-xl);padding:28px;text-align:left;box-shadow:var(--shadow-lg)">
+      <div style="font-size:14px;font-weight:700;color:#6EE7B7;margin-bottom:6px">Créez votre espace pour parler à Milo →</div>
+      <p style="font-size:13px;color:rgba(255,255,255,.65);margin-bottom:16px;line-height:1.5">Un mot de passe, et la mission démarre immédiatement.</p>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <input type="password" id="account-pass" placeholder="Choisissez un mot de passe (8 car. min)"
+          style="padding:11px 14px;border-radius:var(--r-md);border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:#fff;font-size:14px;font-family:inherit;width:100%;box-sizing:border-box">
+        <button id="btn-create-account" onclick="createAccount()"
+          style="padding:12px;background:#10B981;color:#fff;border:none;border-radius:var(--r-md);font-size:15px;font-weight:600;cursor:pointer;font-family:inherit">
+          Démarrer ma mission →
+        </button>
+      </div>
+      <div id="account-error" style="color:#FCA5A5;font-size:12px;margin-top:8px;display:none"></div>
+    </div>
+    <a href="/" class="btn btn-secondary">Retour à l'accueil</a>
 
   <?php elseif ($plan): ?>
     <?php

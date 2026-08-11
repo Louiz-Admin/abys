@@ -134,7 +134,47 @@ if ($action === 'create_checkout_report') {
     $session = \Stripe\Checkout\Session::create($session_params);
     echo json_encode(['url' => $session->url]);
 
-// ── PACK IA ACCOMPAGNÉ 499€ ─────────────────────────────────────────────────
+// ── MISSION LANCEMENT 79€ / FORFAIT LANCEMENT 199€ ──────────────────────────
+} elseif ($action === 'create_checkout_mission') {
+    $lead_id = intval($input['lead_id'] ?? 0);
+    $mplan   = ($input['plan'] ?? 'mission') === 'lancement' ? 'lancement' : 'mission';
+    $tool    = substr(trim($input['tool'] ?? ''), 0, 80);
+    $email   = filter_var($input['email'] ?? '', FILTER_SANITIZE_EMAIL);
+    $billing = $input['billing'] ?? [];
+
+    $amount = $mplan === 'lancement' ? 19900 : 7900;
+    $name   = $mplan === 'lancement'
+        ? 'Forfait Lancement ABYS — 3 outils mis en action'
+        : 'Mission lancement ABYS' . ($tool ? ' — ' . $tool : '');
+    $desc   = $mplan === 'lancement'
+        ? '3 outils installés et actifs avec Milo (IA) · 90 jours d\'assistance incluse'
+        : 'Outil installé, paramétré et actif, guidé par Milo (IA) · Satisfait ou remboursé';
+
+    $session_params = [
+        'payment_method_types' => ['card'],
+        'line_items' => [[
+            'price_data' => [
+                'currency'     => 'eur',
+                'product_data' => ['name' => $name, 'description' => $desc],
+                'unit_amount'  => $amount,
+            ],
+            'quantity' => 1,
+        ]],
+        'mode'        => 'payment',
+        'billing_address_collection' => 'required',
+        'success_url' => SITE_URL . '/paiement-succes.php?plan=' . $mplan . '&session_id={CHECKOUT_SESSION_ID}',
+        'cancel_url'  => SITE_URL . '/facturation.php?plan=' . $mplan . '&cancelled=1',
+        'metadata'    => array_merge(
+            ['lead_id' => $lead_id, 'plan' => $mplan, 'mission_tool' => $tool],
+            billing_meta($billing)
+        ),
+    ];
+    if ($email) $session_params['customer_email'] = $email;
+
+    $session = \Stripe\Checkout\Session::create($session_params);
+    echo json_encode(['url' => $session->url]);
+
+// ── FORFAIT INTÉGRAL 499€ (100% IA, 6 mois) ─────────────────────────────────
 } elseif ($action === 'create_checkout_pack') {
     $lead_id = intval($input['lead_id'] ?? 0);
     $email   = filter_var($input['email'] ?? '', FILTER_SANITIZE_EMAIL);
@@ -151,8 +191,8 @@ if ($action === 'create_checkout_report') {
             'price_data' => [
                 'currency'     => 'eur',
                 'product_data' => [
-                    'name'        => 'Pack IA Accompagné ABYS',
-                    'description' => 'Rapport premium · 3 sessions mise en place · 30j suivi · Dossier OPCO',
+                    'name'        => 'Forfait Intégral ABYS',
+                    'description' => 'Rapport premium · Toutes vos missions de lancement · Milo (IA) pendant 6 mois',
                 ],
                 'unit_amount' => 49900,
             ],
