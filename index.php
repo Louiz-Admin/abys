@@ -622,7 +622,7 @@ h1.hero-title strong {
   justify-content:center;
   padding:60px 24px 74px !important;
 }
-.hero-v2::before{ /* faisceaux (mêmes que page paiement / audit) */
+.hero-v2::before{ /* faisceaux animés : balayage latéral irrégulier (pseudo-aléatoire) */
   content:''; position:absolute; inset:0; z-index:0; pointer-events:none;
   background:repeating-conic-gradient(from 200deg at 62% -8%,
     transparent 0deg, transparent 6deg,
@@ -630,6 +630,23 @@ h1.hero-title strong {
     transparent 16deg, transparent 24deg);
   -webkit-mask-image:radial-gradient(120% 90% at 62% -8%, #000 20%, transparent 72%);
           mask-image:radial-gradient(120% 90% at 62% -8%, #000 20%, transparent 72%);
+  transform-origin:62% -8%;      /* pivot = point d'émanation des rayons */
+  will-change:transform;
+  backface-visibility:hidden;
+  animation:beam-drift 26s ease-in-out infinite;
+}
+/* Balayage gauche-droite volontairement irrégulier pour un effet aléatoire */
+@keyframes beam-drift{
+  0%   { transform:rotate(-5deg)  translateX(-1.4%); }
+  18%  { transform:rotate(3.2deg) translateX(1.6%); }
+  35%  { transform:rotate(-1.5deg) translateX(-0.4%); }
+  52%  { transform:rotate(5.6deg) translateX(2.2%); }
+  67%  { transform:rotate(-3.4deg) translateX(-1.8%); }
+  83%  { transform:rotate(1.8deg) translateX(0.8%); }
+  100% { transform:rotate(-5deg)  translateX(-1.4%); }
+}
+@media (prefers-reduced-motion: reduce){
+  .hero-v2::before{ animation:none; transform:rotate(-1deg); }
 }
 .hero-v2::after{
   content:''; position:absolute; inset:0; z-index:0; pointer-events:none;
