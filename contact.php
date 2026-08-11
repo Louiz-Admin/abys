@@ -1,6 +1,6 @@
 <?php
-$page_title = 'Contact — ABYS AI';
-$page_description = 'Contactez l\'équipe ABYS AI — Thomas et son équipe vous répondent personnellement sous 24h.';
+$page_title = 'Contact · ABYS AI';
+$page_description = 'Contactez l\'équipe ABYS AI · Thomas et son équipe vous répondent personnellement sous 24h.';
 include __DIR__ . '/includes/head.php';
 include __DIR__ . '/includes/nav.php';
 ?>
@@ -240,7 +240,7 @@ textarea { resize: vertical; min-height: 120px; }
       Contact
     </div>
     <h1>On est là,<br><strong>vraiment.</strong></h1>
-    <p class="contact-header-sub">Une question, un doute, une critique — on lit tout et on répond à tout personnellement. Pas de bot, pas de template automatique.</p>
+    <p class="contact-header-sub">Une question, un doute, une critique · on lit tout et on répond à tout personnellement. Pas de bot, pas de template automatique.</p>
   </div>
 
   <div class="contact-grid">
@@ -254,7 +254,7 @@ textarea { resize: vertical; min-height: 120px; }
         <div>
           <div class="contact-thomas-name">Thomas Capiten</div>
           <div class="contact-thomas-role">Fondateur, ABYS AI</div>
-          <div class="contact-thomas-msg">J'ai conçu ABYS AI pour que vous puissiez poser vos vraies questions. Mon équipe et moi lisons chaque message. Si vous avez un doute, une question, une critique — écrivez-nous. C'est comme ça qu'on s'améliore.</div>
+          <div class="contact-thomas-msg">J'ai conçu ABYS AI pour que vous puissiez poser vos vraies questions. Mon équipe et moi lisons chaque message. Si vous avez un doute, une question, une critique · écrivez-nous. C'est comme ça qu'on s'améliore.</div>
         </div>
       </div>
 
@@ -292,7 +292,7 @@ textarea { resize: vertical; min-height: 120px; }
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 1-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           </div>
           <div class="contact-channel-info">
-            <div class="contact-channel-title">Chat expert — ABYS Premium</div>
+            <div class="contact-channel-title">Chat expert · ABYS Premium</div>
             <div class="contact-channel-desc">Accès direct à notre équipe, réponse sous 4h</div>
           </div>
           <div class="contact-channel-arrow">
@@ -307,7 +307,7 @@ textarea { resize: vertical; min-height: 120px; }
       <div class="contact-steps">
         <div class="contact-step">
           <div class="contact-step-num">1</div>
-          <div class="contact-step-text">On reçoit votre message et on le lit — toujours par une vraie personne.</div>
+          <div class="contact-step-text">On reçoit votre message et on le lit · toujours par une vraie personne.</div>
         </div>
         <div class="contact-step">
           <div class="contact-step-num">2</div>
@@ -321,7 +321,7 @@ textarea { resize: vertical; min-height: 120px; }
 
     </div>
 
-    <!-- Colonne droite — formulaire sticky -->
+    <!-- Colonne droite · formulaire sticky -->
     <div class="contact-form-card">
       <h2>Envoyer un message</h2>
       <p class="contact-form-sub">On lit tout, on répond à tout. Vraiment.</p>
@@ -386,7 +386,7 @@ function submitContact(e) {
   const form = e.target;
   const data = Object.fromEntries(new FormData(form));
   const name = [data.firstname, data.lastname].filter(Boolean).join(' ');
-  const subject = '[ABYS] ' + data.subject + (data.company ? ' — ' + data.company : '');
+  const subject = '[ABYS] ' + data.subject + (data.company ? ' · ' + data.company : '');
   const body = `Nom: ${name}\nEntreprise: ${data.company || 'non renseignée'}\nSujet: ${data.subject}\n\n${data.message}`;
   window.location.href = `mailto:contact@abys.ai?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   form.style.display = 'none';

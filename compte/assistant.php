@@ -32,7 +32,7 @@ $history = $db->prepare("SELECT role, content, created_at FROM chat_messages WHE
 $history->execute([$client_id]);
 $history = $history->fetchAll();
 
-$page_title = 'Assistant IA — ABYS AI';
+$page_title = 'Assistant IA · ABYS AI';
 include __DIR__ . '/../includes/head.php';
 ?>
 <style>
@@ -195,7 +195,7 @@ body{margin:0;height:100vh;display:flex;flex-direction:column;overflow:hidden}
           <div class="msg-bubble">
             <p>Bonjour <?= htmlspecialchars($client['name'] ? explode(' ', $client['name'])[0] : '') ?> 👋</p>
             <p>Je suis votre assistant IA personnel. Je connais votre activité <?php if($audit_url): ?>(<strong><?= htmlspecialchars($audit_url) ?></strong>)<?php endif; ?> et les outils les plus adaptés à votre secteur.</p>
-            <p>Posez-moi n'importe quelle question sur le déploiement de l'IA dans votre entreprise — je vous guide étape par étape.</p>
+            <p>Posez-moi n'importe quelle question sur le déploiement de l'IA dans votre entreprise · je vous guide étape par étape.</p>
           </div>
         </div>
       </div>

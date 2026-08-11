@@ -6,7 +6,7 @@ if (!empty($_SESSION['client_id'])) {
 }
 
 $reset_token = $_GET['reset'] ?? '';
-$page_title  = 'Mon espace — ABYS AI';
+$page_title  = 'Mon espace · ABYS AI';
 include __DIR__ . '/../includes/head.php';
 include __DIR__ . '/../includes/nav.php';
 ?>

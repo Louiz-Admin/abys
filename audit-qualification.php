@@ -4,7 +4,7 @@ $plan = isset($_GET['plan']) && $_GET['plan'] === 'premium' ? 'premium' : 'essen
 $plan_label = $plan === 'premium' ? 'Premium' : 'Essentiel';
 $plan_price = $plan === 'premium' ? 499 : 249;
 
-$page_title       = 'Qualification — Audit IA ' . $plan_label . ' · ABYS AI';
+$page_title       = 'Qualification · Audit IA ' . $plan_label . ' · ABYS AI';
 $page_description = 'Complétez votre profil pour accéder à votre audit IA ' . $plan_label . ' et découvrez les aides financement disponibles pour votre entreprise.';
 include __DIR__ . '/includes/head.php';
 ?>
@@ -766,11 +766,11 @@ include __DIR__ . '/includes/head.php';
         <div class="aid-result-bar">
           <div class="aid-result-label">
             <strong>Économies potentielles totales</strong>
-            <span id="aidTotalSavings">—</span>
+            <span id="aidTotalSavings">-</span>
           </div>
           <div class="aid-net-price">
             <div class="aid-net-label">Votre reste à charge estimé</div>
-            <div class="aid-net-amount" id="aidNetAmount">—</div>
+            <div class="aid-net-amount" id="aidNetAmount">-</div>
             <div class="aid-net-note" id="aidNetNote">Renseignez votre profil pour calculer</div>
           </div>
         </div>
@@ -915,7 +915,7 @@ include __DIR__ . '/includes/head.php';
     // 4. BPI France IA Booster (France 2030, CA > 500K€)
     if (ca >= 500) {
       aides.push({
-        name:       'BPI France — Programme IA Booster',
+        name:       'BPI France · Programme IA Booster',
         montant:    Math.round(price * 0.5),
         desc:       "Subvention France 2030 pour les projets d'IA en entreprise",
         conditions: 'CA > 500 K€ · dossier BPI accompagné par ABYS',
@@ -975,8 +975,8 @@ include __DIR__ . '/includes/head.php';
       listEl.innerHTML = '';
       listEl.appendChild(emptyEl);
       emptyEl.style.display = '';
-      totalEl.textContent  = '—';
-      netAmtEl.textContent = '—';
+      totalEl.textContent  = '-';
+      netAmtEl.textContent = '-';
       netNoteEl.textContent = 'Renseignez votre profil pour calculer';
       return;
     }

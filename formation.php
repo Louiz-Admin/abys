@@ -1,5 +1,5 @@
 <?php
-$page_title = 'Formations IA pour PME — ABYS AI';
+$page_title = 'Formations IA pour PME · ABYS AI';
 $page_description = 'Formations pratiques pour apprendre à utiliser les outils IA dans votre entreprise. Débutant à avancé.';
 include __DIR__ . '/includes/head.php';
 include __DIR__ . '/includes/nav.php';
@@ -31,7 +31,7 @@ include __DIR__ . '/includes/nav.php';
   <div class="container">
     <div class="badge" style="margin:0 auto 20px">Formations</div>
     <h1>Maîtrisez <strong>l'IA</strong><br>à votre rythme</h1>
-    <p>Des formations pratiques, concrètes, adaptées aux PME et TPE — sans jargon technique.</p>
+    <p>Des formations pratiques, concrètes, adaptées aux PME et TPE · sans jargon technique.</p>
     <div style="display:inline-flex;align-items:center;gap:10px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:40px;padding:10px 20px;margin-top:8px">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
       <span style="font-size:14px;font-weight:600;color:var(--green-deep)">30 minutes par semaine = une expertise en 6 mois</span>
@@ -56,7 +56,7 @@ include __DIR__ . '/includes/nav.php';
     <div class="formation-card reveal">
       <div class="formation-header">
         <div class="formation-badge badge-debutant">Débutant</div>
-        <div class="formation-title">Automatiser avec Zapier — Zéro code</div>
+        <div class="formation-title">Automatiser avec Zapier · Zéro code</div>
         <p class="formation-desc">Connectez vos applications et automatisez les tâches répétitives : emails, facturation, CRM. Gagnez 5h par semaine.</p>
       </div>
       <div class="formation-footer">
@@ -68,7 +68,7 @@ include __DIR__ . '/includes/nav.php';
     <div class="formation-card reveal">
       <div class="formation-header">
         <div class="formation-badge badge-intermediaire">Intermédiaire</div>
-        <div class="formation-title">Notion AI — Votre base de connaissances IA</div>
+        <div class="formation-title">Notion AI · Votre base de connaissances IA</div>
         <p class="formation-desc">Organisez votre entreprise avec Notion AI : processus, documents, FAQ interne. Votre équipe trouve l'info en 3 secondes.</p>
       </div>
       <div class="formation-footer">

@@ -1,5 +1,5 @@
 <?php
-$page_title = 'Votre rapport ABYS — Plan d\'action IA';
+$page_title = 'Votre rapport ABYS · Plan d\'action IA';
 include __DIR__ . '/includes/head.php';
 include __DIR__ . '/includes/nav.php';
 require_once __DIR__ . '/api/db.php';
@@ -133,7 +133,7 @@ $fmt = fn($n) => number_format((float)$n, 0, ',', ' ');
   <!-- En-tête -->
   <div class="rp-hero">
     <div>
-      <div class="badge">Rapport Premium — Accès à vie</div>
+      <div class="badge">Rapport Premium · Accès à vie</div>
       <h1>Plan d'action IA pour <strong><?= htmlspecialchars($domain) ?></strong></h1>
       <div class="rp-meta">
         Généré le <?= date('d/m/Y', strtotime($report['paid_at'])) ?>
@@ -216,7 +216,7 @@ $fmt = fn($n) => number_format((float)$n, 0, ',', ' ');
       </div>
       <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
         <?php if ($turl): ?><a class="rp-btn ghost" href="<?= htmlspecialchars($turl) ?>" target="_blank" rel="noopener">Voir l'outil</a><?php endif; ?>
-        <a class="rp-btn" href="/facturation.php?plan=mission&tool=<?= urlencode($tool) ?>">Lancer la mission — 79€ →</a>
+        <a class="rp-btn" href="/facturation.php?plan=mission&tool=<?= urlencode($tool) ?>">Lancer la mission · 79€ →</a>
       </div>
     </div>
   </div>
@@ -244,7 +244,7 @@ $fmt = fn($n) => number_format((float)$n, 0, ',', ' ');
   <!-- Forfait Lancement -->
   <div class="rp-pack rp-noprint">
     <div>
-      <h3>Forfait Lancement — 3 outils mis en action</h3>
+      <h3>Forfait Lancement · 3 outils mis en action</h3>
       <p>Choisissez vos 3 outils prioritaires : Milo les met en place avec vous, un par un, jusqu'au premier résultat.
       Inclut 90 jours d'assistance complète. L'option la plus choisie pour passer du rapport aux résultats.</p>
     </div>

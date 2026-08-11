@@ -1,5 +1,5 @@
 <?php
-$page_title = 'Tarifs — ABYS AI';
+$page_title = 'Tarifs · ABYS AI';
 include __DIR__ . '/includes/head.php';
 include __DIR__ . '/includes/nav.php';
 ?>
@@ -230,7 +230,7 @@ include __DIR__ . '/includes/nav.php';
         <div class="tarif-feature"><svg class="tarif-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Dossier OPCO / BPI préparé</div>
         <div class="tarif-feature"><svg class="tarif-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> 30 jours de suivi par notre assistant IA</div>
       </div>
-      <div class="tarif-net">Avec OPCO : peut être financé à 100% — coût net potentiellement 0€</div>
+      <div class="tarif-net">Avec OPCO : peut être financé à 100% · coût net potentiellement 0€</div>
       <a href="/contact.php?sujet=pack-ia" class="btn" style="display:flex;justify-content:center;background:#7C3AED;color:#fff;border-color:#7C3AED">Réserver mon accompagnement →</a>
     </div>
 
@@ -255,7 +255,7 @@ include __DIR__ . '/includes/nav.php';
 
   </div>
 
-  <!-- Aides de l'État — bande synthétique -->
+  <!-- Aides de l'État · bande synthétique -->
   <div style="background:rgba(16,185,129,0.05);border:1px solid rgba(16,185,129,0.15);border-radius:var(--r-xl);padding:32px 40px;max-width:960px;margin:0 auto 56px">
     <div style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--green-deep);margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:8px">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -278,13 +278,13 @@ include __DIR__ . '/includes/nav.php';
         <div style="font-size:12px;color:var(--ink-4)">Sur vos dépenses IA, via votre déclaration fiscale</div>
       </div>
       <div>
-        <div style="font-size:13px;font-weight:700;color:var(--ink-2);margin-bottom:4px">IA Booster — BPI France</div>
+        <div style="font-size:13px;font-weight:700;color:var(--ink-2);margin-bottom:4px">IA Booster · BPI France</div>
         <div style="font-size:20px;font-weight:800;color:var(--green);letter-spacing:-0.04em;margin-bottom:4px">50 à 80%</div>
         <div style="font-size:12px;color:var(--ink-4)">Accompagnement IA subventionné, programme France 2030</div>
       </div>
     </div>
     <div style="border-top:1px solid rgba(16,185,129,0.15);margin-top:20px;padding-top:16px;font-size:13px;color:var(--ink-3);text-align:center">
-      Notre <strong>Pack IA Accompagné (499€)</strong> inclut l'identification et la préparation de vos dossiers d'aides — le rendant souvent <strong>finançable à 100%</strong>.
+      Notre <strong>Pack IA Accompagné (499€)</strong> inclut l'identification et la préparation de vos dossiers d'aides · le rendant souvent <strong>finançable à 100%</strong>.
       <a href="/contact.php?sujet=aides" style="color:var(--green);font-weight:600;margin-left:8px">Me faire accompagner →</a>
     </div>
   </div>

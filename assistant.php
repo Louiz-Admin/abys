@@ -1,5 +1,5 @@
 <?php
-$page_title = 'Assistant IA — ABYS AI';
+$page_title = 'Assistant IA · ABYS AI';
 $plan = $_GET['plan'] ?? 'assistant';
 include __DIR__ . '/includes/head.php';
 include __DIR__ . '/includes/nav.php';
@@ -13,7 +13,7 @@ include __DIR__ . '/includes/nav.php';
   </h1>
   <p style="font-size:17px;color:var(--ink-3);margin-bottom:48px;line-height:1.65">
     Posez toutes vos questions sur les outils IA, la mise en place, votre secteur.<br>
-    Votre assistant répond dans votre espace personnel — clairement, sans jargon.
+    Votre assistant répond dans votre espace personnel · clairement, sans jargon.
   </p>
 
   <!-- Exemples de questions -->

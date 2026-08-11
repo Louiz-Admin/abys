@@ -1,5 +1,5 @@
 <?php
-$page_title = 'Politique de Confidentialité — ABYS AI';
+$page_title = 'Politique de Confidentialité · ABYS AI';
 $page_description = 'Comment ABYS AI collecte, utilise et protège vos données personnelles. RGPD.';
 include __DIR__ . '/includes/head.php';
 include __DIR__ . '/includes/nav.php';
@@ -17,17 +17,17 @@ include __DIR__ . '/includes/nav.php';
 
 <div class="legal-wrap">
   <h1>Politique de<br><strong>Confidentialité</strong></h1>
-  <p class="legal-date">Dernière mise à jour : avril 2026 — Conforme RGPD</p>
+  <p class="legal-date">Dernière mise à jour : avril 2026 · Conforme RGPD</p>
 
   <h2>1. Responsable du traitement</h2>
-  <p>ABYS AI — <a href="mailto:contact@abys.ai">contact@abys.ai</a></p>
+  <p>ABYS AI · <a href="mailto:contact@abys.ai">contact@abys.ai</a></p>
 
   <h2>2. Données collectées</h2>
   <ul>
-    <li><strong>URL de votre site web</strong> — pour réaliser l'audit IA</li>
-    <li><strong>Adresse email</strong> — pour vous envoyer votre rapport et les communications liées à votre compte</li>
-    <li><strong>Données de paiement</strong> — traitées exclusivement par Stripe, jamais stockées sur nos serveurs</li>
-    <li><strong>Données techniques</strong> — adresse IP (anonymisée), type de navigateur, pages visitées (analytics anonymes)</li>
+    <li><strong>URL de votre site web</strong> · pour réaliser l'audit IA</li>
+    <li><strong>Adresse email</strong> · pour vous envoyer votre rapport et les communications liées à votre compte</li>
+    <li><strong>Données de paiement</strong> · traitées exclusivement par Stripe, jamais stockées sur nos serveurs</li>
+    <li><strong>Données techniques</strong> · adresse IP (anonymisée), type de navigateur, pages visitées (analytics anonymes)</li>
   </ul>
 
   <h2>3. Finalités du traitement</h2>
@@ -51,9 +51,9 @@ include __DIR__ . '/includes/nav.php';
   <h2>6. Partage des données</h2>
   <p>Vos données ne sont jamais vendues. Elles sont partagées uniquement avec :</p>
   <ul>
-    <li><strong>Anthropic</strong> (Claude AI) — pour l'analyse de votre site, sans données personnelles identifiantes</li>
-    <li><strong>Stripe</strong> — pour le traitement sécurisé des paiements</li>
-    <li><strong>IONOS</strong> — hébergement des données en Europe</li>
+    <li><strong>Anthropic</strong> (Claude AI) · pour l'analyse de votre site, sans données personnelles identifiantes</li>
+    <li><strong>Stripe</strong> · pour le traitement sécurisé des paiements</li>
+    <li><strong>IONOS</strong> · hébergement des données en Europe</li>
   </ul>
 
   <h2>7. Vos droits (RGPD)</h2>

@@ -1,5 +1,5 @@
 <?php
-$page_title = 'ABYS Premium — Accompagnement IA — ABYS AI';
+$page_title = 'ABYS Premium · Accompagnement IA · ABYS AI';
 include __DIR__ . '/includes/head.php';
 include __DIR__ . '/includes/nav.php';
 ?>
@@ -205,7 +205,7 @@ body { background: #060D14; }
 <!-- Annulation notice -->
 <?php if (isset($_GET['cancelled'])): ?>
 <div class="prem-cancelled" style="margin-top:32px;text-align:center">
-  Paiement annulé. Votre audit est toujours disponible — reprenez quand vous voulez.
+  Paiement annulé. Votre audit est toujours disponible · reprenez quand vous voulez.
 </div>
 <?php endif; ?>
 
@@ -240,7 +240,7 @@ body { background: #060D14; }
       <div class="prem-feat-icon">🚀</div>
       <div>
         <div class="prem-feat-title">Accompagnement au déploiement</div>
-        <div class="prem-feat-desc">On vous guide de l'installation à la première automatisation opérationnelle — sans laisser de côté.</div>
+        <div class="prem-feat-desc">On vous guide de l'installation à la première automatisation opérationnelle · sans laisser de côté.</div>
       </div>
     </div>
 
@@ -293,7 +293,7 @@ body { background: #060D14; }
       <input type="email" id="prem-email" class="prem-email-input" placeholder="vous@votreentreprise.fr" />
 
       <button id="prem-btn" class="prem-btn">
-        Démarrer avec ABYS Premium — 499€ →
+        Démarrer avec ABYS Premium · 499€ →
       </button>
 
       <p class="prem-trust">
@@ -341,7 +341,7 @@ document.getElementById('prem-btn').addEventListener('click', async function() {
       throw new Error(res.error || 'Réponse invalide');
     }
   } catch (e) {
-    btn.textContent = 'Démarrer avec ABYS Premium — 499€ →';
+    btn.textContent = 'Démarrer avec ABYS Premium · 499€ →';
     btn.disabled    = false;
     ABYS.toast('Erreur de paiement, réessayez', 'error');
   }

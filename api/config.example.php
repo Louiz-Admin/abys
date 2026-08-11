@@ -1,6 +1,6 @@
 <?php
 // Fichier: abys-ai/api/config.php
-// NE PAS committer avec de vraies valeurs — utiliser des variables d'environnement en prod
+// NE PAS committer avec de vraies valeurs · utiliser des variables d'environnement en prod
 
 define('DB_HOST', 'localhost');         // IONOS : souvent 'db5xxxxx.hosting-data.io'
 define('DB_NAME', 'abysai_db');

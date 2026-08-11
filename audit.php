@@ -1,5 +1,5 @@
 <?php
-$page_title = 'Analyse en cours — ABYS AI';
+$page_title = 'Analyse en cours · ABYS AI';
 $extra_js   = ['/assets/js/audit.js'];
 include __DIR__ . '/includes/head.php';
 include __DIR__ . '/includes/nav.php';

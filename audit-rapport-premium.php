@@ -1,5 +1,5 @@
 <?php
-$page_title = 'Rapport Premium — ABYS AI';
+$page_title = 'Rapport Premium · ABYS AI';
 include __DIR__ . '/includes/head.php';
 include __DIR__ . '/includes/nav.php';
 ?>
@@ -43,14 +43,14 @@ include __DIR__ . '/includes/nav.php';
 
   <div style="background:linear-gradient(135deg,var(--ink-2),#064E3B);border-radius:var(--r-xl);padding:48px">
     <div style="font-size:48px;font-weight:700;color:#fff;margin-bottom:4px"><span style="font-size:26px;opacity:.45;text-decoration:line-through;font-weight:500;margin-right:10px">249€</span>99€</div>
-    <div style="color:rgba(255,255,255,0.6);font-size:15px;margin-bottom:24px">Paiement unique — accès à vie · Offre de lancement</div>
+    <div style="color:rgba(255,255,255,0.6);font-size:15px;margin-bottom:24px">Paiement unique · accès à vie · Offre de lancement</div>
     <div>
       <label style="color:rgba(255,255,255,0.8);font-size:14px;display:block;margin-bottom:8px">Votre email pour recevoir le rapport</label>
       <input type="email" id="email-input" placeholder="vous@votreentreprise.fr"
         style="padding:12px 16px;border-radius:var(--r-md);border:none;font-size:15px;width:100%;max-width:360px;margin-bottom:16px;font-family:inherit"/>
     </div>
     <a href="/facturation.php?plan=report" class="btn btn-primary btn-lg" style="font-size:16px;display:inline-block">
-      Obtenir mon rapport — 99€ →
+      Obtenir mon rapport · 99€ →
     </a>
     <p style="color:rgba(255,255,255,0.4);font-size:12px;margin-top:12px">🔒 Paiement sécurisé Stripe · Accès immédiat après paiement · <a href="/cgv.php" style="color:rgba(255,255,255,0.5)">CGV</a></p>
   </div>
@@ -73,7 +73,7 @@ document.getElementById('btn-pay').addEventListener('click', async () => {
     });
     if (res.url) window.location.href = res.url;
   } catch (e) {
-    btn.textContent = 'Obtenir mon rapport — 99€ →';
+    btn.textContent = 'Obtenir mon rapport · 99€ →';
     btn.disabled = false;
     ABYS.toast('Erreur de paiement, réessayez', 'error');
   }

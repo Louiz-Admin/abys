@@ -1,5 +1,5 @@
 <?php
-$page_title = '200+ outils IA pour PME — Annuaire complet ABYS AI';
+$page_title = '200+ outils IA pour PME · Annuaire complet ABYS AI';
 $page_description = 'L\'annuaire de référence des outils IA pour les PME et TPE françaises. Plus de 200 solutions classées par catégorie.';
 include __DIR__ . '/includes/head.php';
 include __DIR__ . '/includes/nav.php';

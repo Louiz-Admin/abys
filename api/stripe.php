@@ -26,7 +26,7 @@ $settings = $db->query("SELECT `key`, value FROM settings WHERE `key` IN ('strip
 // Interrupteur global des paiements (bascule de compte Stripe en cours)
 if (($settings['payments_enabled'] ?? '1') !== '1') {
     http_response_code(503);
-    die(json_encode(['error' => 'Paiement momentanément indisponible — réessayez dans quelques heures.']));
+    die(json_encode(['error' => 'Paiement momentanément indisponible · réessayez dans quelques heures.']));
 }
 $sk = decrypt_value($settings['stripe_sk'] ?? '');
 if (!$sk) { http_response_code(500); die(json_encode(['error' => 'Stripe non configuré'])); }
@@ -77,7 +77,7 @@ if ($action === 'create_checkout_report') {
             'price_data' => [
                 'currency'     => 'eur',
                 'product_data' => [
-                    'name'        => 'Rapport ABYS Premium — Audit IA complet',
+                    'name'        => 'Rapport ABYS Premium · Audit IA complet',
                     'description' => '7+ opportunités IA · Tutoriels personnalisés · Plan 12 mois · Accès à vie',
                 ],
                 'unit_amount'  => $price,
@@ -144,8 +144,8 @@ if ($action === 'create_checkout_report') {
 
     $amount = $mplan === 'lancement' ? 19900 : 7900;
     $name   = $mplan === 'lancement'
-        ? 'Forfait Lancement ABYS — 3 outils mis en action'
-        : 'Mission lancement ABYS' . ($tool ? ' — ' . $tool : '');
+        ? 'Forfait Lancement ABYS · 3 outils mis en action'
+        : 'Mission lancement ABYS' . ($tool ? ' · ' . $tool : '');
     $desc   = $mplan === 'lancement'
         ? '3 outils installés et actifs avec Milo (IA) · 90 jours d\'assistance incluse'
         : 'Outil installé, paramétré et actif, guidé par Milo (IA) · Satisfait ou remboursé';

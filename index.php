@@ -1,5 +1,5 @@
 <?php
-$page_title = 'ABYS AI — Audit IA gratuit pour PME et TPE françaises';
+$page_title = 'ABYS AI · Audit IA gratuit pour PME et TPE françaises';
 $page_desc  = 'Entrez votre URL. En 2 minutes, découvrez exactement quels outils IA peuvent vous faire gagner du temps et de l\'argent.';
 $extra_js   = ['/assets/js/sphere.js'];
 include __DIR__ . '/includes/head.php';
@@ -8,7 +8,7 @@ include __DIR__ . '/includes/nav.php';
 
 <style>
 /* ══════════════════════════════════════════════════════════
-   HERO — centré, typographie large, sphere en dessous
+   HERO · centré, typographie large, sphere en dessous
    ══════════════════════════════════════════════════════════ */
 .hero-v2 {
   position: relative;
@@ -360,7 +360,7 @@ h1.hero-title strong {
 @media (max-width:960px) { .tarifs-grid-home { grid-template-columns:repeat(2,1fr); } .aide-strip-grid { grid-template-columns:repeat(2,1fr); } }
 @media (max-width:540px) { .tarifs-grid-home { grid-template-columns:1fr; } .aide-strip-grid { grid-template-columns:1fr 1fr; } }
 
-/* ── Sector carousel — infinite CSS marquee ── */
+/* ── Sector carousel · infinite CSS marquee ── */
 .sector-carousel-wrap {
   position: relative; overflow: hidden; width: 100%;
   mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
@@ -660,13 +660,13 @@ h1.hero-title strong {
 
   </div><!-- /hero-content -->
 
-  <!-- Sphère neurale — 150px sous le bloc URL -->
+  <!-- Sphère neurale · 150px sous le bloc URL -->
   <div class="hero-sphere-wrap">
     <canvas id="sphere" width="520" height="520"></canvas>
     <div id="kw-layer"></div>
   </div>
 
-  <!-- Stats premium — après la sphère -->
+  <!-- Stats premium · après la sphère -->
   <div class="premium-stats">
     <div class="pstat-card">
       <div class="pstat-value" data-count="3247">0</div>
@@ -692,7 +692,7 @@ h1.hero-title strong {
   <div class="container text-center">
     <div class="testi-label">Témoignages clients</div>
     <h2 class="section-title reveal">Ce qu'ils réalisent<br><strong>vraiment.</strong></h2>
-    <p class="section-sub reveal">Des artisans, commerçants et professionnels qui ont franchi le pas — leurs mots, pas les nôtres.</p>
+    <p class="section-sub reveal">Des artisans, commerçants et professionnels qui ont franchi le pas · leurs mots, pas les nôtres.</p>
 
     <div class="testi-outer">
       <!-- Carousel viewport -->
@@ -714,7 +714,7 @@ h1.hero-title strong {
             <div class="testi-body-col">
               <div>
                 <div class="testi-stars">★★★★★</div>
-                <blockquote class="testi-quote">En 3 semaines, j'ai récupéré 3 heures par jour sur la gestion des commandes. C'est comme avoir un employé de plus — sans les charges.</blockquote>
+                <blockquote class="testi-quote">En 3 semaines, j'ai récupéré 3 heures par jour sur la gestion des commandes. C'est comme avoir un employé de plus · sans les charges.</blockquote>
               </div>
               <div class="testi-gain-pill">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
@@ -742,7 +742,7 @@ h1.hero-title strong {
               </div>
               <div class="testi-gain-pill">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-                Devis en 2 min — avant 45 min
+                Devis en 2 min · avant 45 min
               </div>
             </div>
           </div>
@@ -858,7 +858,7 @@ h1.hero-title strong {
             <div class="testi-body-col">
               <div>
                 <div class="testi-stars">★★★★★</div>
-                <blockquote class="testi-quote">Les menus de la semaine, les réponses aux avis Google, les posts réseaux sociaux — tout ça c'est l'IA maintenant. Je passe mes soirées avec ma famille au lieu d'être derrière un écran.</blockquote>
+                <blockquote class="testi-quote">Les menus de la semaine, les réponses aux avis Google, les posts réseaux sociaux · tout ça c'est l'IA maintenant. Je passe mes soirées avec ma famille au lieu d'être derrière un écran.</blockquote>
               </div>
               <div class="testi-gain-pill">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
@@ -930,7 +930,7 @@ h1.hero-title strong {
             <div class="testi-body-col">
               <div>
                 <div class="testi-stars">★★★★★</div>
-                <blockquote class="testi-quote">La retouche basique des photos, les contrats clients, les relances de paiement — tout automatisé. Je me concentre uniquement sur les shoots. Mon chiffre d'affaires a augmenté de 35% en 6 mois.</blockquote>
+                <blockquote class="testi-quote">La retouche basique des photos, les contrats clients, les relances de paiement · tout automatisé. Je me concentre uniquement sur les shoots. Mon chiffre d'affaires a augmenté de 35% en 6 mois.</blockquote>
               </div>
               <div class="testi-gain-pill">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
@@ -978,7 +978,7 @@ h1.hero-title strong {
             <div class="testi-body-col">
               <div>
                 <div class="testi-stars">★★★★★</div>
-                <blockquote class="testi-quote">Les ordonnances, les rappels de vaccination, les fiches de soins post-opératoires — l'IA les génère en quelques secondes. Mes assistantes passent leur temps avec les animaux, pas derrière un écran.</blockquote>
+                <blockquote class="testi-quote">Les ordonnances, les rappels de vaccination, les fiches de soins post-opératoires · l'IA les génère en quelques secondes. Mes assistantes passent leur temps avec les animaux, pas derrière un écran.</blockquote>
               </div>
               <div class="testi-gain-pill">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
@@ -999,7 +999,7 @@ h1.hero-title strong {
   <div class="container text-center">
     <div class="badge" style="margin:0 auto 16px">Comment ça marche</div>
     <h2 class="section-title reveal">3 étapes pour transformer<br><strong>votre façon de travailler</strong></h2>
-    <p class="section-sub reveal">De l'audit gratuit au plan d'action concret — tout en 2 minutes.</p>
+    <p class="section-sub reveal">De l'audit gratuit au plan d'action concret · tout en 2 minutes.</p>
     <div class="steps-grid">
       <div class="step-card reveal">
         <div class="step-num">1</div>
@@ -1010,7 +1010,7 @@ h1.hero-title strong {
       <div class="step-card reveal">
         <div class="step-num">2</div>
         <div class="step-title">Vos gains calculés</div>
-        <p class="step-desc">Vous voyez exactement combien d'heures et d'euros vous pouvez économiser avec chaque outil recommandé — chiffres réels, pas d'approximation.</p>
+        <p class="step-desc">Vous voyez exactement combien d'heures et d'euros vous pouvez économiser avec chaque outil recommandé · chiffres réels, pas d'approximation.</p>
         <div class="step-arrow">&rarr;</div>
       </div>
       <div class="step-card reveal">
@@ -1041,7 +1041,7 @@ h1.hero-title strong {
           ['Agriculture',        'https://images.pexels.com/photos/974314/pexels-photo-974314.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&dpr=1'],
           ['Sport & Loisirs',    'https://images.pexels.com/photos/863988/pexels-photo-863988.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&dpr=1'],
         ];
-        // Double the cards — CSS animation moves -50% for seamless infinite loop
+        // Double the cards · CSS animation moves -50% for seamless infinite loop
         $doubled = array_merge($sectors, $sectors);
         foreach($doubled as $s): ?>
         <div class="sector-card">
@@ -1170,7 +1170,7 @@ h1.hero-title strong {
           <div style="font-size:11px;color:var(--ink-4)">Sur vos dépenses IA, via votre déclaration</div>
         </div>
         <div style="text-align:left">
-          <div style="font-size:12px;font-weight:700;color:var(--ink-2);margin-bottom:3px">IA Booster — BPI France</div>
+          <div style="font-size:12px;font-weight:700;color:var(--ink-2);margin-bottom:3px">IA Booster · BPI France</div>
           <div style="font-size:20px;font-weight:800;color:var(--green);letter-spacing:-0.04em;margin-bottom:3px">50 à 80%</div>
           <div style="font-size:11px;color:var(--ink-4)">Programme France 2030 subventionné</div>
         </div>

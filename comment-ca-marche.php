@@ -1,5 +1,5 @@
 <?php
-$page_title = 'Comment ça marche — ABYS AI';
+$page_title = 'Comment ça marche · ABYS AI';
 $page_desc  = 'Découvrez comment ABYS analyse votre entreprise, calcule vos gains IA et vous accompagne pas à pas dans la mise en place des outils.';
 include __DIR__ . '/includes/head.php';
 include __DIR__ . '/includes/nav.php';
@@ -79,7 +79,7 @@ include __DIR__ . '/includes/nav.php';
       Comment <strong style="font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">fonctionne ABYS</strong> ?
     </h1>
     <p style="font-size:17px;color:var(--ink-3);max-width:540px;margin:0 auto;line-height:1.65">
-      De l'entrée de votre URL à la mise en place de vos premiers outils IA — voici exactement ce qui se passe.
+      De l'entrée de votre URL à la mise en place de vos premiers outils IA · voici exactement ce qui se passe.
     </p>
   </div>
 
@@ -140,7 +140,7 @@ include __DIR__ . '/includes/nav.php';
     </div>
     <div>
       <div class="ccm-title">Vous recevez vos résultats</div>
-      <p class="ccm-desc">Score global, top 3 des opportunités, simulation de gains — 100% gratuit, immédiatement. Pour aller plus loin, le rapport premium à 249€ détaille chaque opportunité avec l'outil recommandé, un tutoriel personnalisé et le plan d'action complet.</p>
+      <p class="ccm-desc">Score global, top 3 des opportunités, simulation de gains · 100% gratuit, immédiatement. Pour aller plus loin, le rapport premium à 249€ détaille chaque opportunité avec l'outil recommandé, un tutoriel personnalisé et le plan d'action complet.</p>
       <p class="ccm-detail">Le rapport est généré spécifiquement pour votre entreprise, pas un rapport générique.</p>
     </div>
   </div>

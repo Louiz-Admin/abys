@@ -1,6 +1,6 @@
 <?php
 // Fichier: abys-ai/api/email-inbound.php
-// Webhook Brevo Inbound — reçoit les emails envoyés à contact@abys.ai,
+// Webhook Brevo Inbound · reçoit les emails envoyés à contact@abys.ai,
 // génère une réponse par IA (Claude Haiku) et renvoie par mail().
 //
 // SETUP (une seule fois) :
@@ -79,7 +79,7 @@ $body_excerpt = mb_substr($body_text, 0, 1500);
 $system_prompt = <<<PROMPT
 Tu es l'assistant email d'ABYS AI (abys.ai), une entreprise française qui aide les PME et artisans à adopter les outils IA.
 
-Ta mission : répondre à l'email reçu de manière chaleureuse, professionnelle et utile — en français.
+Ta mission : répondre à l'email reçu de manière chaleureuse, professionnelle et utile · en français.
 
 RÈGLES ABSOLUES :
 - Réponse courte (3-5 paragraphes maximum)
@@ -150,7 +150,7 @@ $admin_html = '<h2>Email entrant auto-répondu</h2>'
     . '</div>'
     . '<h3>Message original</h3><p>' . nl2br(htmlspecialchars(mb_substr($body_text, 0, 800))) . '</p>'
     . '<h3>Réponse envoyée</h3><p>' . nl2br(htmlspecialchars($response_text)) . '</p>';
-notify_admin('Email auto-répondu — ' . $subject, $admin_html);
+notify_admin('Email auto-répondu · ' . $subject, $admin_html);
 
 // ── 6. Logger en base ─────────────────────────────────────────────────────────
 try {

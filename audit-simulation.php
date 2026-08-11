@@ -1,5 +1,5 @@
 <?php
-$page_title = 'Simulez vos gains IA — ABYS AI';
+$page_title = 'Simulez vos gains IA · ABYS AI';
 $page_description = 'Calculez en temps réel le temps libéré, les économies et le ROI que l\'IA peut générer pour votre entreprise.';
 include __DIR__ . '/includes/head.php';
 include __DIR__ . '/includes/nav.php';
@@ -511,7 +511,7 @@ include __DIR__ . '/includes/nav.php';
         <span class="ico ico-sm"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
       </div>
       <div class="sim-result-label">Heures libérées / semaine</div>
-      <div class="sim-result-value" id="valHeures">—</div>
+      <div class="sim-result-value" id="valHeures">-</div>
       <div class="sim-result-sub" id="subHeures">Complétez les questions</div>
     </div>
     <div class="sim-result-card blue">
@@ -519,7 +519,7 @@ include __DIR__ . '/includes/nav.php';
         <span class="ico ico-sm"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
       </div>
       <div class="sim-result-label">Économies / mois</div>
-      <div class="sim-result-value" id="valEconomies">—</div>
+      <div class="sim-result-value" id="valEconomies">-</div>
       <div class="sim-result-sub" id="subEconomies">Complétez les questions</div>
     </div>
     <div class="sim-result-card deep">
@@ -527,7 +527,7 @@ include __DIR__ . '/includes/nav.php';
         <span class="ico ico-sm"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></span>
       </div>
       <div class="sim-result-label">ROI sur 12 mois</div>
-      <div class="sim-result-value" id="valROI">—</div>
+      <div class="sim-result-value" id="valROI">-</div>
       <div class="sim-result-sub" id="subROI">Basé sur votre budget mensuel</div>
     </div>
   </div>
@@ -657,11 +657,11 @@ include __DIR__ . '/includes/nav.php';
 
     if (!result) {
       // État vide
-      document.getElementById('valHeures').textContent   = '—';
+      document.getElementById('valHeures').textContent   = '-';
       document.getElementById('subHeures').textContent   = 'Répondez aux questions';
-      document.getElementById('valEconomies').textContent = '—';
+      document.getElementById('valEconomies').textContent = '-';
       document.getElementById('subEconomies').textContent = 'Répondez aux questions';
-      document.getElementById('valROI').textContent      = '—';
+      document.getElementById('valROI').textContent      = '-';
       document.getElementById('subROI').textContent      = 'Indiquez votre budget';
       return;
     }
@@ -682,7 +682,7 @@ include __DIR__ . '/includes/nav.php';
         ? 'retour sur investissement'
         : 'coût net (ajustez le budget)';
     } else {
-      document.getElementById('valROI').textContent = '—';
+      document.getElementById('valROI').textContent = '-';
       document.getElementById('subROI').textContent = 'Indiquez votre budget mensuel';
     }
 
@@ -792,7 +792,7 @@ include __DIR__ . '/includes/nav.php';
   function extractCompanyNameSim(title, h1, domain) {
     var candidates = [];
     if (title) {
-      var parts = title.split(/\s*[-|–—·•\/]\s*/);
+      var parts = title.split(/\s*[-|–-·•\/]\s*/);
       var stop  = /^(accueil|home|bienvenue|contact|actualit[eé]s?|news|blog|[àa] propos|about|site officiel|page d'accueil)$/i;
       parts.forEach(function (p) { p = p.trim(); if (p && !stop.test(p) && p.length > 1 && p.length < 60) candidates.push(p); });
     }

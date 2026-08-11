@@ -1,5 +1,5 @@
 <?php
-$page_title       = 'Vos résultats — ABYS AI';
+$page_title       = 'Vos résultats · ABYS AI';
 $page_description = 'Découvrez votre score IA et vos opportunités d\'automatisation personnalisées.';
 $extra_js         = ['/assets/js/audit.js'];
 include __DIR__ . '/includes/head.php';
@@ -416,7 +416,7 @@ include __DIR__ . '/includes/nav.php';
 .btn-simulate:hover svg { transform: translateX(3px); }
 .btn-simulate svg { transition: transform 200ms var(--ease); }
 
-/* ── Offres premium — section double ───────────────────── */
+/* ── Offres premium · section double ───────────────────── */
 .offers-section {
   position: relative;
   background: linear-gradient(160deg, #060F12 0%, #071A14 40%, #091C2B 100%);
@@ -506,7 +506,7 @@ include __DIR__ . '/includes/nav.php';
   box-shadow: 0 20px 60px rgba(0,0,0,0.4);
 }
 
-/* Carte Premium (499€) — mise en avant */
+/* Carte Premium (499€) · mise en avant */
 .offer-premium {
   background: linear-gradient(145deg, rgba(16,185,129,0.12) 0%, rgba(14,165,233,0.08) 100%);
   border: 1.5px solid rgba(16,185,129,0.45);
@@ -761,15 +761,15 @@ include __DIR__ . '/includes/nav.php';
 
       <div class="results-stats">
         <div class="result-stat">
-          <div class="result-stat-value" id="stat-time">—</div>
+          <div class="result-stat-value" id="stat-time">-</div>
           <div class="result-stat-label">heures récupérées / sem.</div>
         </div>
         <div class="result-stat">
-          <div class="result-stat-value" id="stat-money">—</div>
+          <div class="result-stat-value" id="stat-money">-</div>
           <div class="result-stat-label">euros économisés / mois</div>
         </div>
         <div class="result-stat">
-          <div class="result-stat-value" id="stat-tools">—</div>
+          <div class="result-stat-value" id="stat-tools">-</div>
           <div class="result-stat-label">outils identifiés pour vous</div>
         </div>
       </div>
@@ -799,7 +799,7 @@ include __DIR__ . '/includes/nav.php';
     <div id="opps-summary-card" style="display:none;margin-top:20px;border-radius:20px;background:linear-gradient(135deg,#064E3B 0%,#065F46 50%,#0A2315 100%);border:1px solid rgba(16,185,129,0.35);padding:22px 28px;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between"></div>
   </section>
 
-  <!-- ── Capture email — recevoir les résultats ─────────── -->
+  <!-- ── Capture email · recevoir les résultats ─────────── -->
   <div class="email-capture-card reveal" id="email-capture">
     <div class="ec-left">
       <div class="ec-icon">
@@ -854,7 +854,7 @@ include __DIR__ . '/includes/nav.php';
         <div class="offer-features">
           <div class="offer-feature">
             <div class="offer-feature-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-            <span>Rapport PDF complet — <strong>tous vos outils IA identifiés</strong>, outil par outil</span>
+            <span>Rapport PDF complet · <strong>tous vos outils IA identifiés</strong>, outil par outil</span>
           </div>
           <div class="offer-feature">
             <div class="offer-feature-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
@@ -866,22 +866,22 @@ include __DIR__ . '/includes/nav.php';
           </div>
           <div class="offer-feature">
             <div class="offer-feature-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-            <span>Simulation ROI sur 12 mois — <strong>temps et argent économisés</strong></span>
+            <span>Simulation ROI sur 12 mois · <strong>temps et argent économisés</strong></span>
           </div>
           <div class="offer-feature">
             <div class="offer-feature-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-            <span>Support par email — réponse sous 48h</span>
+            <span>Support par email · réponse sous 48h</span>
           </div>
         </div>
         <a href="/facturation.php?plan=report" class="offer-cta offer-cta-essential">
-          Obtenir le rapport — 99€
+          Obtenir le rapport · 99€
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </a>
         <p class="offer-reassurance">Paiement sécurisé · Satisfait ou remboursé 14 jours</p>
         <!-- Aides financement -->
         <div style="margin-top:16px;padding:12px 14px;background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.18);border-radius:10px">
           <div style="font-size:12px;font-weight:700;color:#065F46;margin-bottom:6px">💡 Financement possible</div>
-          <div style="font-size:12px;color:var(--ink-3);line-height:1.6">Ce rapport peut être <strong>pris en charge partiellement</strong> par votre OPCO ou via <strong>France Num</strong> (aide transition numérique). Mentionnez-le à la commande — notre équipe vous guide.</div>
+          <div style="font-size:12px;color:var(--ink-3);line-height:1.6">Ce rapport peut être <strong>pris en charge partiellement</strong> par votre OPCO ou via <strong>France Num</strong> (aide transition numérique). Mentionnez-le à la commande · notre équipe vous guide.</div>
         </div>
       </div>
 
@@ -901,27 +901,27 @@ include __DIR__ . '/includes/nav.php';
         <div class="offer-features">
           <div class="offer-feature">
             <div class="offer-feature-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-            <span><strong>Tout le Rapport Essentiel</strong> — rapport PDF, explications, comparatif, ROI</span>
+            <span><strong>Tout le Rapport Essentiel</strong> · rapport PDF, explications, comparatif, ROI</span>
           </div>
           <div class="offer-feature">
             <div class="offer-feature-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-            <span><strong>Toutes vos missions de lancement</strong> — chaque outil installé, paramétré et actif</span>
+            <span><strong>Toutes vos missions de lancement</strong> · chaque outil installé, paramétré et actif</span>
           </div>
           <div class="offer-feature">
             <div class="offer-feature-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-            <span><strong>Guidage pas à pas par Milo (IA)</strong> — de la création du compte au premier résultat</span>
+            <span><strong>Guidage pas à pas par Milo (IA)</strong> · de la création du compte au premier résultat</span>
           </div>
           <div class="offer-feature">
             <div class="offer-feature-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-            <span>Accès à l'<strong>espace client ABYS</strong> — suivi de vos automatisations en temps réel</span>
+            <span>Accès à l'<strong>espace client ABYS</strong> · suivi de vos automatisations en temps réel</span>
           </div>
           <div class="offer-feature">
             <div class="offer-feature-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-            <span><strong>Milo disponible 24h/24 pendant 6 mois</strong> — réponses immédiates, contexte de votre audit</span>
+            <span><strong>Milo disponible 24h/24 pendant 6 mois</strong> · réponses immédiates, contexte de votre audit</span>
           </div>
           <div class="offer-feature">
             <div class="offer-feature-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-            <span>Suivi automatique <strong>pendant 6 mois</strong> — on s'assure que tout tourne</span>
+            <span>Suivi automatique <strong>pendant 6 mois</strong> · on s'assure que tout tourne</span>
           </div>
         </div>
         <a href="/audit-qualification.php?plan=premium" class="offer-cta offer-cta-premium">
@@ -1013,7 +1013,7 @@ include __DIR__ . '/includes/nav.php';
   function extractCompanyName(title, h1, domain) {
     var candidates = [];
     if (title) {
-      var parts = title.split(/\s*[-|–—·•\/]\s*/);
+      var parts = title.split(/\s*[-|–-·•\/]\s*/);
       var stop = /^(accueil|home|bienvenue|welcome|contact|actualité|actualités|news|blog|à propos|about|page d'accueil|site officiel)$/i;
       parts.forEach(function(p) { p = p.trim(); if (p && !stop.test(p) && p.length > 1) candidates.push(p); });
     }
@@ -1084,7 +1084,7 @@ include __DIR__ . '/includes/nav.php';
     if (!isNaN(timeNum)) animateStat(statTime, timeNum, 'h', 400);
     else statTime.textContent = timeRaw;
   } else {
-    statTime.textContent = '—';
+    statTime.textContent = '-';
   }
 
   /* ── Stat euros ───────────────────────────────────────── */
@@ -1096,14 +1096,14 @@ include __DIR__ . '/includes/nav.php';
     if (!isNaN(moneyNum)) animateStat(statMoney, moneyNum, '€', 500);
     else statMoney.textContent = moneyRaw;
   } else {
-    statMoney.textContent = '—';
+    statMoney.textContent = '-';
   }
 
   /* ── Stat outils ──────────────────────────────────────── */
   var statTools  = document.getElementById('stat-tools');
   var opps       = Array.isArray(result.opportunities) ? result.opportunities : [];
 
-  /* Construire top3 — toujours exactement 3 si possible */
+  /* Construire top3 · toujours exactement 3 si possible */
   var top3 = [];
   var top3Source = Array.isArray(result.top3_free) ? result.top3_free : null;
   if (top3Source) {
@@ -1147,9 +1147,9 @@ include __DIR__ . '/includes/nav.php';
     var moneyStr = introMoney > 0 ? '<strong>' + introMoney.toLocaleString('fr-FR') + ' € / mois</strong>' : null;
 
     var sentences = [];
-    sentences.push('En examinant votre activité, nous avons repéré plusieurs tâches où l’IA peut vous soulager concrètement — des choses que vous faites probablement chaque jour sans y penser, mais qui vous coûtent un temps précieux.');
+    sentences.push('En examinant votre activité, nous avons repéré plusieurs tâches où l’IA peut vous soulager concrètement · des choses que vous faites probablement chaque jour sans y penser, mais qui vous coûtent un temps précieux.');
     if (timeStr && moneyStr) {
-      sentences.push('Mis bout à bout, ces automatisations pourraient vous faire gagner ' + timeStr + ', soit jusqu’à ' + moneyStr + ' de valeur retrouvée — l’équivalent d’un collaborateur à temps partiel, sans l’embauche.');
+      sentences.push('Mis bout à bout, ces automatisations pourraient vous faire gagner ' + timeStr + ', soit jusqu’à ' + moneyStr + ' de valeur retrouvée · l’équivalent d’un collaborateur à temps partiel, sans l’embauche.');
     } else if (timeStr) {
       sentences.push('Mis bout à bout, ces automatisations pourraient vous faire gagner ' + timeStr + ' sur les tâches répétitives qui freinent votre quotidien.');
     } else {

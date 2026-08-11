@@ -1,5 +1,5 @@
 <?php
-$page_title = 'Paiement confirmé — ABYS AI';
+$page_title = 'Paiement confirmé · ABYS AI';
 require_once __DIR__ . '/api/db.php';
 
 // ── Récupérer plan + montant pour le tracking ─────────────────────────────
@@ -90,7 +90,7 @@ if ($token) {
       Abonnement <strong style="font-weight:700">activé !</strong>
     </h1>
     <p style="color:var(--ink-3);font-size:16px;margin-bottom:24px">
-      Votre abonnement <strong><?= htmlspecialchars($plan_label) ?> — <?= $price ?>/mois</strong> est actif.<br>
+      Votre abonnement <strong><?= htmlspecialchars($plan_label) ?> · <?= $price ?>/mois</strong> est actif.<br>
       Vous allez recevoir un email de confirmation d'ici quelques minutes.
     </p>
     <div style="max-width:440px;margin:0 auto 32px;background:var(--white);border:1px solid var(--border);border-radius:var(--r-xl);padding:28px;text-align:left;box-shadow:var(--shadow-sm)">
@@ -98,7 +98,7 @@ if ($token) {
       <div style="display:flex;flex-direction:column;gap:12px">
         <div style="display:flex;gap:12px;align-items:flex-start">
           <div style="width:28px;height:28px;border-radius:50%;background:var(--gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">1</div>
-          <div style="font-size:14px;color:var(--ink-3);line-height:1.5">Vérifiez votre email — confirmation + instructions dans les prochaines minutes</div>
+          <div style="font-size:14px;color:var(--ink-3);line-height:1.5">Vérifiez votre email · confirmation + instructions dans les prochaines minutes</div>
         </div>
         <div style="display:flex;gap:12px;align-items:flex-start">
           <div style="width:28px;height:28px;border-radius:50%;background:var(--gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">2</div>
@@ -106,14 +106,14 @@ if ($token) {
         </div>
         <div style="display:flex;gap:12px;align-items:flex-start">
           <div style="width:28px;height:28px;border-radius:50%;background:var(--gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">3</div>
-          <div style="font-size:14px;color:var(--ink-3);line-height:1.5">Posez toutes vos questions IA — réponses personnalisées selon votre secteur</div>
+          <div style="font-size:14px;color:var(--ink-3);line-height:1.5">Posez toutes vos questions IA · réponses personnalisées selon votre secteur</div>
         </div>
       </div>
     </div>
     <!-- Création de compte -->
     <div style="max-width:440px;margin:0 auto 16px;background:linear-gradient(135deg,#0A1F1A,#064E3B);border-radius:var(--r-xl);padding:28px;text-align:left;box-shadow:var(--shadow-lg)">
       <div style="font-size:14px;font-weight:700;color:#6EE7B7;margin-bottom:6px">Accédez à votre assistant IA →</div>
-      <p style="font-size:13px;color:rgba(255,255,255,.65);margin-bottom:16px;line-height:1.5">Créez votre espace pour accéder à votre assistant IA personnel — disponible 24h/24.</p>
+      <p style="font-size:13px;color:rgba(255,255,255,.65);margin-bottom:16px;line-height:1.5">Créez votre espace pour accéder à votre assistant IA personnel · disponible 24h/24.</p>
       <div style="display:flex;flex-direction:column;gap:10px">
         <input type="password" id="account-pass" placeholder="Choisissez un mot de passe (8 car. min)"
           style="padding:11px 14px;border-radius:var(--r-md);border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:#fff;font-size:14px;font-family:inherit;width:100%;box-sizing:border-box"
@@ -185,7 +185,7 @@ if ($token) {
     }
   } catch (e) {
     const el = document.querySelector('#loading-report p');
-    if (el) el.textContent = 'Erreur de génération — contactez support@abys.ai';
+    if (el) el.textContent = 'Erreur de génération · contactez support@abys.ai';
   }
 })();
 

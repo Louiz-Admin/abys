@@ -1,5 +1,5 @@
 <?php
-$page_title = 'Visibilité IA — Apparaissez dans ChatGPT & Google AI — ABYS AI';
+$page_title = 'Visibilité IA · Apparaissez dans ChatGPT & Google AI · ABYS AI';
 $page_description = 'Optimisez votre présence sur les moteurs de recherche IA : ChatGPT, Perplexity, Google AI Overviews. SEO nouvelle génération pour PME.';
 include __DIR__ . '/includes/head.php';
 include __DIR__ . '/includes/nav.php';
@@ -98,7 +98,7 @@ include __DIR__ . '/includes/nav.php';
     <div class="why-card reveal">
       <div class="why-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
       <div class="why-title">Le SEO traditionnel ne suffit plus</div>
-      <p class="why-desc">40% des recherches Google se terminent sans clic depuis les AI Overviews. Votre position Google ne garantit plus le trafic. Les IA citent directement leurs sources — il faut en faire partie.</p>
+      <p class="why-desc">40% des recherches Google se terminent sans clic depuis les AI Overviews. Votre position Google ne garantit plus le trafic. Les IA citent directement leurs sources · il faut en faire partie.</p>
     </div>
     <div class="why-card reveal">
       <div class="why-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>

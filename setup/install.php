@@ -204,10 +204,10 @@ foreach ($defaults as $key => $val) {
 }
 echo "✅ Paramètres par défaut insérés.<br>";
 
-// Créer l'admin par défaut (mot de passe : abys2026 — à changer immédiatement)
+// Créer l'admin par défaut (mot de passe : abys2026 · à changer immédiatement)
 $hash = password_hash('abys2026', PASSWORD_BCRYPT, ['cost' => 12]);
 $stmt = $db->prepare("INSERT IGNORE INTO admin_users (username, password_hash) VALUES (?, ?)");
 $stmt->execute(['admin', $hash]);
-echo "✅ Compte admin créé (user: admin / pass: abys2026 — <strong>changer immédiatement !</strong>)<br>";
+echo "✅ Compte admin créé (user: admin / pass: abys2026 · <strong>changer immédiatement !</strong>)<br>";
 
 echo "<br><strong>⚠️ Supprimer ce fichier setup/install.php maintenant !</strong>";

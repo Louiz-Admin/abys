@@ -3,11 +3,11 @@
 if (!defined('SITE_URL')) {
     require_once __DIR__ . '/../api/config.php';
 }
-// get_db() is defined in db.php — load it if not already available
+// get_db() is defined in db.php · load it if not already available
 if (!function_exists('get_db')) {
     require_once __DIR__ . '/../api/db.php';
 }
-$page_title = $page_title ?? 'ABYS AI — Découvrez l\'IA pour votre entreprise';
+$page_title = $page_title ?? 'ABYS AI · Découvrez l\'IA pour votre entreprise';
 $page_description = $page_description ?? 'Audit IA gratuit pour PME/TPE. Découvrez comment l\'intelligence artificielle peut vous faire gagner du temps et de l\'argent.';
 $page_canonical = $page_canonical ?? (SITE_URL . $_SERVER['REQUEST_URI']);
 ?>
@@ -20,7 +20,7 @@ $page_canonical = $page_canonical ?? (SITE_URL . $_SERVER['REQUEST_URI']);
   <meta property="og:type" content="website">
   <meta name="robots" content="index, follow">
   <title><?= htmlspecialchars($page_title) ?></title>
-  <!-- Favicon SVG — logomark ABYS -->
+  <!-- Favicon SVG · logomark ABYS -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23052E16'/%3E%3Cpath d='M16 7L24.5 24' stroke='%2310B981' stroke-width='2.4' stroke-linecap='round'/%3E%3Cpath d='M16 7L7.5 24' stroke='%2310B981' stroke-width='2.4' stroke-linecap='round'/%3E%3Cline x1='10.5' y1='19' x2='21.5' y2='19' stroke='%2310B981' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='16' cy='7' r='2' fill='%2334D399'/%3E%3C/svg%3E">
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%23052E16'/%3E%3Cpath d='M90 38L136 142' stroke='%2310B981' stroke-width='14' stroke-linecap='round'/%3E%3Cpath d='M90 38L44 142' stroke='%2310B981' stroke-width='14' stroke-linecap='round'/%3E%3Cline x1='59' y1='112' x2='121' y2='112' stroke='%2310B981' stroke-width='12' stroke-linecap='round'/%3E%3Ccircle cx='90' cy='38' r='11' fill='%2334D399'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">

@@ -1,6 +1,6 @@
 <?php
 // Fichier: abys-ai/api/ai-helpers.php
-// Fonctions IA partagées — ne pas inclure directement, toujours via analyze.php ou generate-report.php
+// Fonctions IA partagées · ne pas inclure directement, toujours via analyze.php ou generate-report.php
 
 function get_settings(PDO $db): array {
     $rows = $db->query("SELECT `key`, value FROM settings")->fetchAll();
@@ -169,7 +169,7 @@ Expert IA PME françaises. JSON uniquement, pas de markdown.
 
 {$context}
 
-CATALOGUE D'OUTILS IA — 300+ solutions (pioche selon le secteur) :
+CATALOGUE D'OUTILS IA · 300+ solutions (pioche selon le secteur) :
 
 Communication/Rédaction: ChatGPT(chatgpt.com), Claude(claude.ai), Gemini(gemini.google.com), Mistral(mistral.ai), Perplexity(perplexity.ai), Jasper(jasper.ai), Copy.ai(copy.ai), Writesonic(writesonic.com), Rytr(rytr.me), Hypotenuse AI(hypotenuse.ai), Wordtune(wordtune.com), Anyword(anyword.com), Peppertype(peppertype.ai), Scalenut(scalenut.com), Texta.ai(texta.ai), Narrato(narrato.io), Lex(lex.page), Sudowrite(sudowrite.com), NovelAI(novelai.net), Cowriter(cowriter.ai)
 
@@ -227,9 +227,9 @@ Finance/Investissement: Agicap(agicap.com), Qonto(qonto.com), Stripe(stripe.com)
 
 RÈGLES :
 - Choisis les outils les PLUS ADAPTÉS au secteur détecté, pioche dans plusieurs catégories
-- PRIORITÉ ABSOLUE aux outils SPÉCIALISÉS par secteur et par usage : évite ChatGPT/Gemini/Notion comme première suggestion — préfère Pennylane (compta), Axonaut (devis+facturation PME), Gorgias (SAV e-commerce), Manatal (recrutement), Brevo (email marketing français), Factorial (RH), Gamma (présentations), Fiskl (finance PME), Lemlist (prospection B2B), Buffer (social media)
+- PRIORITÉ ABSOLUE aux outils SPÉCIALISÉS par secteur et par usage : évite ChatGPT/Gemini/Notion comme première suggestion · préfère Pennylane (compta), Axonaut (devis+facturation PME), Gorgias (SAV e-commerce), Manatal (recrutement), Brevo (email marketing français), Factorial (RH), Gamma (présentations), Fiskl (finance PME), Lemlist (prospection B2B), Buffer (social media)
 - Les descriptions DOIVENT être ULTRA-CONCRÈTES et spécifiques au secteur : mentionne des tâches réelles (ex: "relance automatiquement vos impayés à J+7, J+14, J+30", "génère vos devis personnalisés en 30 secondes depuis votre catalogue", "répond à vos clients WhatsApp et email 24h/24 sans intervention humaine", "synchronise votre banque et catégorise toutes vos dépenses automatiquement"). PAS de descriptions vagues.
-- VOCABULAIRE INTERDIT dans toutes les descriptions et le résumé — ces mots font peur aux non-initiés : "workflow", "B2B", "CRM", "pipeline", "prospects", "leads", "outreach", "automation", "process", "intégration", "scalable", "onboarding", "KPI", "funnel", "SaaS". À la place, utilise : "nouveaux clients" (leads/prospects), "carnet de clients" (CRM), "tâches répétitives" (workflow/automation), "suivi des ventes" (pipeline/CRM), "mise en place" (onboarding/intégration), "outils en ligne" (SaaS).
+- VOCABULAIRE INTERDIT dans toutes les descriptions et le résumé · ces mots font peur aux non-initiés : "workflow", "B2B", "CRM", "pipeline", "prospects", "leads", "outreach", "automation", "process", "intégration", "scalable", "onboarding", "KPI", "funnel", "SaaS". À la place, utilise : "nouveaux clients" (leads/prospects), "carnet de clients" (CRM), "tâches répétitives" (workflow/automation), "suivi des ventes" (pipeline/CRM), "mise en place" (onboarding/intégration), "outils en ligne" (SaaS).
 - Priorise les outils accessibles aux PME françaises (prix raisonnables, interface en français si possible)
 - Chaque opportunité doit avoir un emoji représentant sa catégorie (ex: 📧 email, 📊 reporting, 🤖 automatisation, 🎨 design, 📹 vidéo, 💬 communication, 📅 planning, 💰 finance, 👥 RH, 🛒 e-commerce, 🔍 SEO, 🏗️ BTP, 🌾 agriculture, 🏥 santé, 🚚 logistique, ⚖️ juridique, 💻 code, 🎯 marketing, 🤝 service client, 📝 rédaction, 🔄 traduction, 🎤 réunions, 🏠 immobilier, 🍽️ restauration)
 - Le champ sector_emoji doit représenter le secteur de l'entreprise

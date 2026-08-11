@@ -1,5 +1,5 @@
 <?php
-$page_title = 'Questionnaire — ABYS AI';
+$page_title = 'Questionnaire · ABYS AI';
 $extra_js   = ['/assets/js/audit.js'];
 include __DIR__ . '/includes/head.php';
 include __DIR__ . '/includes/nav.php';
@@ -151,7 +151,7 @@ include __DIR__ . '/includes/nav.php';
   <div id="questionnaire">
 
     <!-- ════════════════════════════════════════
-         SECTION 1 — L'ENTREPRISE
+         SECTION 1 · L'ENTREPRISE
          ════════════════════════════════════════ -->
     <div class="q-section-title">🏢 Votre entreprise</div>
 
@@ -247,7 +247,7 @@ include __DIR__ . '/includes/nav.php';
     <!-- Q4 : CA / budget -->
     <div class="q-block" data-q="4">
       <h3><span class="q-num">4</span> Quel est l'ordre de grandeur de votre chiffre d'affaires annuel ?</h3>
-      <p class="q-hint" style="margin-bottom:16px">Cette information nous aide à calibrer le ROI de vos automatisations — elle reste confidentielle.</p>
+      <p class="q-hint" style="margin-bottom:16px">Cette information nous aide à calibrer le ROI de vos automatisations · elle reste confidentielle.</p>
       <div class="opt-grid col2">
         <div class="opt-box compact" data-group="revenue" data-value="Moins de 50 000€">Moins de 50 000€</div>
         <div class="opt-box compact" data-group="revenue" data-value="50 000 à 150 000€">50 000 à 150 000€</div>
@@ -257,7 +257,7 @@ include __DIR__ . '/includes/nav.php';
     </div>
 
     <!-- ════════════════════════════════════════
-         SECTION 2 — LE DIRIGEANT
+         SECTION 2 · LE DIRIGEANT
          ════════════════════════════════════════ -->
     <div class="q-section-title">👤 Vous, le dirigeant</div>
 
@@ -362,7 +362,7 @@ include __DIR__ . '/includes/nav.php';
     </div>
 
     <!-- ════════════════════════════════════════
-         SECTION 3 — L'ÉQUIPE & LES TÂCHES
+         SECTION 3 · L'ÉQUIPE & LES TÂCHES
          ════════════════════════════════════════ -->
     <div class="q-section-title">👥 Votre équipe &amp; vos tâches</div>
 
@@ -415,12 +415,12 @@ include __DIR__ . '/includes/nav.php';
 
     <!-- Q10 : Résistance de l'équipe -->
     <div class="q-block" data-q="10">
-      <h3><span class="q-num">10</span> Si vous avez des collaborateurs — comment perçoivent-ils les nouveaux outils numériques ?</h3>
+      <h3><span class="q-num">10</span> Si vous avez des collaborateurs · comment perçoivent-ils les nouveaux outils numériques ?</h3>
       <div class="opt-grid col2">
-        <div class="opt-box compact" data-group="team_adoption" data-value="Très réticents — ils préfèrent les habitudes actuelles">😬 Très réticents</div>
-        <div class="opt-box compact" data-group="team_adoption" data-value="Prudents — à convaincre avec des preuves concrètes">🤔 Prudents à convaincre</div>
-        <div class="opt-box compact" data-group="team_adoption" data-value="Ouverts — prêts à essayer si c'est simple">🙂 Ouverts si c'est simple</div>
-        <div class="opt-box compact" data-group="team_adoption" data-value="Enthousiastes — demandeurs de nouveautés">🚀 Enthousiastes</div>
+        <div class="opt-box compact" data-group="team_adoption" data-value="Très réticents · ils préfèrent les habitudes actuelles">😬 Très réticents</div>
+        <div class="opt-box compact" data-group="team_adoption" data-value="Prudents · à convaincre avec des preuves concrètes">🤔 Prudents à convaincre</div>
+        <div class="opt-box compact" data-group="team_adoption" data-value="Ouverts · prêts à essayer si c'est simple">🙂 Ouverts si c'est simple</div>
+        <div class="opt-box compact" data-group="team_adoption" data-value="Enthousiastes · demandeurs de nouveautés">🚀 Enthousiastes</div>
         <div class="opt-box compact" data-group="team_adoption" data-value="Je suis seul(e)">👤 Je suis seul(e)</div>
       </div>
     </div>

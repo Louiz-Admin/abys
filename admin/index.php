@@ -146,8 +146,8 @@ tr:hover td{background:#F9FAFB}
       <?php foreach($payments as $p): ?>
       <tr>
         <td><?= date('d/m/Y H:i', strtotime($p['created_at'])) ?></td>
-        <td><?= htmlspecialchars($p['url'] ?? '—') ?></td>
-        <td><?= htmlspecialchars($p['email'] ?? '—') ?></td>
+        <td><?= htmlspecialchars($p['url'] ?? '-') ?></td>
+        <td><?= htmlspecialchars($p['email'] ?? '-') ?></td>
         <td>
           <?php if($p['type']==='report'): ?>
             <span class="badge blue">Rapport 249€</span>
@@ -183,34 +183,34 @@ tr:hover td{background:#F9FAFB}
       ?>
       <tr>
         <td><?= date('d/m', strtotime($l['created_at'])) ?></td>
-        <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"><?= htmlspecialchars($l['url'] ?? '—') ?></td>
-        <td><?= htmlspecialchars($l['email'] ?? '—') ?></td>
-        <td><?= htmlspecialchars($l['secteur'] ?? '—') ?></td>
+        <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"><?= htmlspecialchars($l['url'] ?? '-') ?></td>
+        <td><?= htmlspecialchars($l['email'] ?? '-') ?></td>
+        <td><?= htmlspecialchars($l['secteur'] ?? '-') ?></td>
         <td>
           <?php if($score): ?>
             <span class="score <?= $scoreClass ?>"><?= $score ?>/100</span>
-          <?php else: ?> — <?php endif; ?>
+          <?php else: ?> · <?php endif; ?>
         </td>
         <td>
           <?php if($l['report_paid']): ?>
             <span class="badge green">Payé</span>
-          <?php else: ?> — <?php endif; ?>
+          <?php else: ?> · <?php endif; ?>
         </td>
         <td>
           <?php if($l['sub_status'] === 'active'): ?>
             <span class="badge blue"><?= htmlspecialchars($l['plan'] ?? '') ?></span>
-          <?php else: ?> — <?php endif; ?>
+          <?php else: ?> · <?php endif; ?>
         </td>
         <td>
           <?php if($l['account_email']): ?>
             <span class="badge green">✓</span>
-          <?php else: ?> — <?php endif; ?>
+          <?php else: ?> · <?php endif; ?>
         </td>
       </tr>
       <?php endforeach; ?>
     </table>
     <?php else: ?>
-      <div class="empty">Aucun lead encore — partagez le site !</div>
+      <div class="empty">Aucun lead encore · partagez le site !</div>
     <?php endif; ?>
   </div>
 

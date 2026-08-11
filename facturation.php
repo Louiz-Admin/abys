@@ -9,7 +9,7 @@ $plan_labels = [
     'assistant' => 'Assistant IA',
     'seo'       => 'SEO & Visibilité IA',
     'pack'      => 'Forfait Intégral',
-    'mission'   => 'Mission lancement' . ($tool ? ' — ' . $tool : ''),
+    'mission'   => 'Mission lancement' . ($tool ? ' · ' . $tool : ''),
     'lancement' => 'Forfait Lancement',
 ];
 $plan_prices = [
@@ -23,7 +23,7 @@ $plan_prices = [
 $plan_label = $plan_labels[$plan];
 $plan_price = $plan_prices[$plan];
 
-$page_title = "Facturation — {$plan_label} — ABYS AI";
+$page_title = "Facturation · {$plan_label} · ABYS AI";
 include __DIR__ . '/includes/head.php';
 include __DIR__ . '/includes/nav.php';
 ?>
@@ -125,7 +125,7 @@ include __DIR__ . '/includes/nav.php';
       </div>
       <div class="fact-row full">
         <div class="fact-field">
-          <label>Adresse <span class="opt">(optionnel — demandée au paiement)</span></label>
+          <label>Adresse <span class="opt">(optionnel · demandée au paiement)</span></label>
           <input type="text" id="f_address" placeholder="12 rue de la Paix" autocomplete="street-address">
         </div>
       </div>
@@ -188,7 +188,7 @@ include __DIR__ . '/includes/nav.php';
       </div>
       <?php if ($plan === 'report' || $plan === 'pack'): ?>
       <div style="background: rgba(16,185,129,.06); border: 1px solid rgba(16,185,129,.15); border-radius: var(--r-md); padding: 12px; margin-bottom: 16px; font-size: 12px; color: var(--green-deep); line-height: 1.5">
-        <?= $plan === 'report' ? '✅ Garantie satisfait ou remboursé 14 jours — sans justification' : '💡 Éligible aux aides à la transition numérique (OPCO, France Num) — on vous guide' ?>
+        <?= $plan === 'report' ? '✅ Garantie satisfait ou remboursé 14 jours · sans justification' : '💡 Éligible aux aides à la transition numérique (OPCO, France Num) · on vous guide' ?>
       </div>
       <?php endif; ?>
       <div class="order-secure">

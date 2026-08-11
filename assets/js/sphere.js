@@ -1,5 +1,5 @@
 // Fichier: abys-ai/assets/js/sphere.js
-// Sphère neuronale 3D — canvas 2D, Fibonacci, nœuds + étiquettes métier
+// Sphère neuronale 3D · canvas 2D, Fibonacci, nœuds + étiquettes métier
 
 class NeuralSphere {
   constructor(canvasId, kwLayerId, options = {}) {

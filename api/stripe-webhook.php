@@ -37,7 +37,7 @@ if ($event->type === 'checkout.session.completed') {
         $db->prepare("INSERT INTO payments (lead_id, stripe_payment_intent, amount, type, reference_id, status) VALUES (?,?,?,?,?,'succeeded')")
            ->execute([$meta->lead_id, $session->payment_intent, $session->amount_total / 100, 'report', $meta->report_id]);
 
-        // Email client — confirmation + lien rapport
+        // Email client · confirmation + lien rapport
         $customer_email = $session->customer_details->email ?? $session->customer_email ?? '';
         $report_row = $db->prepare("SELECT r.token, l.url FROM reports r JOIN leads l ON r.lead_id=l.id WHERE r.id=?");
         $report_row->execute([$meta->report_id]);
@@ -46,7 +46,7 @@ if ($event->type === 'checkout.session.completed') {
             email_report_paid($customer_email, $rdata['url'], $rdata['token']);
         }
         // Notif admin
-        notify_admin("Nouveau paiement rapport " . ($session->amount_total / 100) . "€ — {$customer_email}", "
+        notify_admin("Nouveau paiement rapport " . ($session->amount_total / 100) . "€ · {$customer_email}", "
             <p>Nouveau paiement rapport premium reçu.</p>
             <div class='info-box'>
               Email : <strong>{$customer_email}</strong><br>
@@ -56,13 +56,13 @@ if ($event->type === 'checkout.session.completed') {
         ");
     }
 
-    // Missions de lancement (79€ / 199€) — accompagnement Milo
+    // Missions de lancement (79€ / 199€) · accompagnement Milo
     if ($mode === 'payment' && isset($meta->plan) && in_array($meta->plan, ['mission', 'lancement'], true)) {
         $customer_email = $session->customer_details->email ?? ($session->customer_email ?? '');
         $tool = $meta->mission_tool ?? '';
         $db->prepare("INSERT INTO payments (lead_id, stripe_payment_intent, amount, type, status) VALUES (?,?,?,?,'succeeded')")
            ->execute([intval($meta->lead_id ?? 0), $session->payment_intent, $session->amount_total / 100, 'mission']);
-        notify_admin("Nouvelle mission " . ($session->amount_total / 100) . "€ — {$customer_email}", "
+        notify_admin("Nouvelle mission " . ($session->amount_total / 100) . "€ · {$customer_email}", "
             <p>Nouvelle mission de lancement payée.</p>
             <div class='info-box'>
               Email : <strong>{$customer_email}</strong><br>
@@ -91,14 +91,14 @@ if ($event->type === 'checkout.session.completed') {
         $db->prepare("INSERT INTO payments (lead_id, amount, type, status) VALUES (?,?,'subscription','succeeded')")
            ->execute([$meta->lead_id, $session->amount_total / 100]);
 
-        // Email client — bienvenue abonnement
+        // Email client · bienvenue abonnement
         $customer_email = $session->customer_details->email ?? $session->customer_email ?? '';
         if ($customer_email) {
             email_subscription_welcome($customer_email, $plan);
         }
         // Notif admin
         $plan_label = $plan === 'seo' ? 'SEO 49€/mois' : 'Assistant 29€/mois';
-        notify_admin("Nouvel abonnement {$plan_label} — {$customer_email}", "
+        notify_admin("Nouvel abonnement {$plan_label} · {$customer_email}", "
             <p>Nouvel abonnement activé.</p>
             <div class='info-box'>
               Email : <strong>{$customer_email}</strong><br>

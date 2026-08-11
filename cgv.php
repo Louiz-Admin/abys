@@ -1,5 +1,5 @@
 <?php
-$page_title = 'Conditions Générales de Vente — ABYS AI';
+$page_title = 'Conditions Générales de Vente · ABYS AI';
 $page_description = 'Conditions générales de vente de ABYS AI. Rapport premium, abonnements assistant IA et SEO.';
 include __DIR__ . '/includes/head.php';
 include __DIR__ . '/includes/nav.php';
@@ -24,9 +24,9 @@ include __DIR__ . '/includes/nav.php';
 
   <h2>2. Produits et services vendus</h2>
   <ul>
-    <li><strong>Rapport Premium (249 € TTC, paiement unique)</strong> — Audit IA complet avec tutoriels personnalisés, plan d'action 12 mois et liens affiliés vers les meilleurs outils pour votre secteur.</li>
-    <li><strong>Assistant IA (29 € TTC/mois)</strong> — Abonnement mensuel donnant accès à un assistant IA personnel par email pour répondre à toutes vos questions sur les outils IA dans votre métier.</li>
-    <li><strong>SEO & Visibilité IA (49 € TTC/mois)</strong> — Abonnement mensuel pour améliorer votre présence sur les moteurs de recherche IA (ChatGPT, Perplexity, Google AI) et le SEO traditionnel.</li>
+    <li><strong>Rapport Premium (249 € TTC, paiement unique)</strong> · Audit IA complet avec tutoriels personnalisés, plan d'action 12 mois et liens affiliés vers les meilleurs outils pour votre secteur.</li>
+    <li><strong>Assistant IA (29 € TTC/mois)</strong> · Abonnement mensuel donnant accès à un assistant IA personnel par email pour répondre à toutes vos questions sur les outils IA dans votre métier.</li>
+    <li><strong>SEO & Visibilité IA (49 € TTC/mois)</strong> · Abonnement mensuel pour améliorer votre présence sur les moteurs de recherche IA (ChatGPT, Perplexity, Google AI) et le SEO traditionnel.</li>
   </ul>
 
   <h2>3. Commande et paiement</h2>

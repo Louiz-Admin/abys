@@ -1,5 +1,5 @@
 <?php
-$page_title = 'Mentions Légales — ABYS AI';
+$page_title = 'Mentions Légales · ABYS AI';
 $page_description = 'Mentions légales de ABYS AI, service d\'audit IA pour PME et TPE françaises.';
 include __DIR__ . '/includes/head.php';
 include __DIR__ . '/includes/nav.php';
@@ -91,7 +91,7 @@ include __DIR__ . '/includes/nav.php';
       Éditeur du site
     </h2>
     <p>
-      <strong>ABYS AI</strong> — Entreprise individuelle, France<br>
+      <strong>ABYS AI</strong> · Entreprise individuelle, France<br>
       Responsable : <strong>Thomas Capiten</strong>, fondateur et dirigeant<br>
       Email : <a href="mailto:contact@abys.ai">contact@abys.ai</a><br>
       Site : <a href="https://abys.ai">https://abys.ai</a>
@@ -104,7 +104,7 @@ include __DIR__ . '/includes/nav.php';
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       Directeur de publication
     </h2>
-    <p><strong>Thomas Capiten</strong> — fondateur d'ABYS AI, responsable éditorial du site.</p>
+    <p><strong>Thomas Capiten</strong> · fondateur d'ABYS AI, responsable éditorial du site.</p>
   </div>
 
   <!-- Équipe -->

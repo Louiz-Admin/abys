@@ -246,12 +246,12 @@ function email_subscription_welcome(string $to, string $plan = 'assistant'): voi
     $price      = $plan === 'seo' ? '49€' : '29€';
     $body = <<<HTML
 <h2>Bienvenue dans votre abonnement {$plan_label} 🎉</h2>
-<p>Votre abonnement <strong>{$plan_label} — {$price}/mois</strong> est actif. Votre espace personnel est prêt.</p>
+<p>Votre abonnement <strong>{$plan_label} · {$price}/mois</strong> est actif. Votre espace personnel est prêt.</p>
 <div class="info-box">
   <strong>Prochaines étapes :</strong><br>
   • Connectez-vous à votre espace : <a href="https://abys.ai/compte/">abys.ai/compte</a><br>
   • Posez votre première question à votre assistant IA<br>
-  • Résiliable à tout moment — sans condition
+  • Résiliable à tout moment · sans condition
 </div>
 <a class="btn" href="https://abys.ai/compte/">Accéder à mon espace →</a>
 <p style="font-size:13px;color:#6B7280">Questions immédiates : <a href="mailto:contact@abys.ai">contact@abys.ai</a></p>
@@ -271,12 +271,12 @@ function email_pack_confirm(string $to, string $name = ''): void {
 <div class="info-box">
   <strong>Ce qui vous attend :</strong><br>
   • Rapport Premium complet (7+ opportunités)<br>
-  • Toutes vos missions de lancement — chaque outil installé et actif<br>
+  • Toutes vos missions de lancement · chaque outil installé et actif<br>
   • Guidage pas à pas par Milo, jusqu'au premier résultat<br>
   • 6 mois d'assistance complète, 24h/24
 </div>
 <a class="btn" href="https://abys.ai/compte/">Démarrer avec Milo →</a>
 <p style="font-size:13px;color:#6B7280">Questions : <a href="mailto:contact@abys.ai">contact@abys.ai</a></p>
 HTML;
-    send_email($to, 'Votre Pack IA Accompagné ABYS — Confirmation', $body);
+    send_email($to, 'Votre Pack IA Accompagné ABYS · Confirmation', $body);
 }

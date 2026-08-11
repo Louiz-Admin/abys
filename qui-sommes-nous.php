@@ -1,6 +1,6 @@
 <?php
-$page_title = 'Qui sommes-nous — ABYS AI';
-$page_description = 'L\'équipe ABYS AI — Thomas Capiten et une équipe passionnée qui aide les PME et TPE françaises à adopter l\'IA concrètement.';
+$page_title = 'Qui sommes-nous · ABYS AI';
+$page_description = 'L\'équipe ABYS AI · Thomas Capiten et une équipe passionnée qui aide les PME et TPE françaises à adopter l\'IA concrètement.';
 include __DIR__ . '/includes/head.php';
 include __DIR__ . '/includes/nav.php';
 ?>
@@ -309,7 +309,7 @@ include __DIR__ . '/includes/nav.php';
         Notre équipe
       </div>
       <h1>Derrière ABYS AI,<br><strong>des humains</strong><br>passionnés</h1>
-      <p>Pas un grand cabinet, pas une usine à gaz. Une équipe de quatre personnes convaincues que l'IA peut transformer le quotidien des entrepreneurs — sans être réservée aux grands groupes.</p>
+      <p>Pas un grand cabinet, pas une usine à gaz. Une équipe de quatre personnes convaincues que l'IA peut transformer le quotidien des entrepreneurs · sans être réservée aux grands groupes.</p>
       <a href="/contact.php" class="btn btn-primary">Nous contacter</a>
     </div>
     <div class="about-hero-right">
@@ -341,7 +341,7 @@ include __DIR__ . '/includes/nav.php';
   <div class="about-story">
 
     <div class="story-quote">
-      <p>"J'ai créé ABYS AI après avoir vu des dizaines de PME passer à côté de l'IA — non par manque d'intérêt, mais par manque d'accompagnement concret. Les grandes agences coûtent une fortune, les formations prennent des mois. Il fallait quelque chose de simple, d'honnête, d'efficace."</p>
+      <p>"J'ai créé ABYS AI après avoir vu des dizaines de PME passer à côté de l'IA · non par manque d'intérêt, mais par manque d'accompagnement concret. Les grandes agences coûtent une fortune, les formations prennent des mois. Il fallait quelque chose de simple, d'honnête, d'efficace."</p>
       <div class="story-quote-author">
         <img src="/assets/img/thomas.jpg" alt="Thomas Capiten" class="story-quote-photo">
         <div>
@@ -353,9 +353,9 @@ include __DIR__ . '/includes/nav.php';
 
     <div class="story-body">
       <p class="story-lead">On a commencé avec 47 entreprises volontaires pendant 3 mois.</p>
-      <p>Artisans, commerçants, consultants, agences — ils nous ont dit ce qui marchait, ce qui ne marchait pas, ce qui était trop compliqué. Ce produit, c'est autant le leur que le nôtre.</p>
+      <p>Artisans, commerçants, consultants, agences · ils nous ont dit ce qui marchait, ce qui ne marchait pas, ce qui était trop compliqué. Ce produit, c'est autant le leur que le nôtre.</p>
       <p>Notre conviction : l'IA ne remplace pas tout le monde, mais elle peut libérer 5h à 10h par semaine sur des tâches répétitives. Ces heures retrouvées, c'est du temps pour faire ce que vous aimez vraiment dans votre métier.</p>
-      <p>Aujourd'hui ABYS AI analyse des centaines de sites et accompagne des dirigeants dans toute la France. On reste une équipe à taille humaine — et on compte le rester.</p>
+      <p>Aujourd'hui ABYS AI analyse des centaines de sites et accompagne des dirigeants dans toute la France. On reste une équipe à taille humaine · et on compte le rester.</p>
     </div>
 
   </div>
@@ -451,7 +451,7 @@ include __DIR__ . '/includes/nav.php';
         </div>
         <div>
           <div class="value-title">Le ROI d'abord</div>
-          <div class="value-desc">Chaque outil qu'on recommande doit vous rapporter plus qu'il ne coûte — en temps, en argent ou en stress évité. On ne fait pas dans la gadgeterie.</div>
+          <div class="value-desc">Chaque outil qu'on recommande doit vous rapporter plus qu'il ne coûte · en temps, en argent ou en stress évité. On ne fait pas dans la gadgeterie.</div>
         </div>
       </div>
 

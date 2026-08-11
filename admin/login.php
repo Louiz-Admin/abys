@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>ABYS Admin — Connexion</title>
+  <title>ABYS Admin · Connexion</title>
   <link rel="stylesheet" href="/abys-ai/assets/css/style.css"/>
   <style>
     body { display:flex; align-items:center; justify-content:center; min-height:100vh; background:var(--bg); }

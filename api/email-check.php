@@ -36,7 +36,7 @@ if (!$imap_pass || !$api_key) {
 $log = ['queued' => 0, 'sent' => 0, 'skipped' => 0, 'errors' => 0];
 
 // ════════════════════════════════════════════════════════════════════
-// PHASE 2 — Envoyer les réponses dont le délai est écoulé
+// PHASE 2 · Envoyer les réponses dont le délai est écoulé
 // (fait en premier pour ne pas bloquer sur la connexion IMAP si inutile)
 // ════════════════════════════════════════════════════════════════════
 $pending = $db->query(
@@ -62,7 +62,7 @@ foreach ($pending as $row) {
             . '<strong>Statut envoi :</strong> ' . ($sent ? '✅ OK' : '❌ Échec') . '</div>'
             . '<h3>Message reçu</h3><p>' . nl2br(htmlspecialchars($row['body_excerpt'])) . '</p>'
             . '<h3>Réponse envoyée</h3><p>' . nl2br(htmlspecialchars($row['ai_reply'])) . '</p>';
-        notify_admin("Email auto-répondu — {$row['subject']}", $admin_html);
+        notify_admin("Email auto-répondu · {$row['subject']}", $admin_html);
 
         $log['sent']++;
     } catch (Exception $e) {
@@ -72,7 +72,7 @@ foreach ($pending as $row) {
 }
 
 // ════════════════════════════════════════════════════════════════════
-// PHASE 1 — Lire les nouveaux emails IMAP et les mettre en file
+// PHASE 1 · Lire les nouveaux emails IMAP et les mettre en file
 // ════════════════════════════════════════════════════════════════════
 $mailbox = "{{$imap_host}:{$imap_port}/imap/ssl/novalidate-cert}INBOX";
 $imap = @imap_open($mailbox, $imap_user, $imap_pass, 0, 1, ['DISABLE_AUTHENTICATOR' => 'GSSAPI']);
@@ -178,7 +178,7 @@ PROMPT;
         // Marquer comme lu dans IMAP (ne sera pas re-traité)
         imap_setflag_full($imap, (string)$uid, '\\Seen');
 
-        error_log("[ABYS email-check] Queued reply to {$from_email} — réponse dans {$delay_minutes} min");
+        error_log("[ABYS email-check] Queued reply to {$from_email} · réponse dans {$delay_minutes} min");
         $log['queued']++;
 
     } catch (Exception $e) {

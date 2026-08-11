@@ -156,7 +156,7 @@ $body = "
 ";
 
 /* ── Envoi ─────────────────────────────────────────────── */
-$subject = "Votre analyse IA — " . ($url ? preg_replace('#^https?://(www\.)?#i', '', $url) : 'ABYS AI');
+$subject = "Votre analyse IA · " . ($url ? preg_replace('#^https?://(www\.)?#i', '', $url) : 'ABYS AI');
 $sent    = send_email($email, $subject, $body);
 
 if ($sent) {
