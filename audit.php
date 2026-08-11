@@ -8,8 +8,9 @@ include __DIR__ . '/includes/nav.php';
 <!-- Canvas animation de fond -->
 <canvas id="bg-canvas" style="position:fixed;inset:0;width:100%;height:100%;z-index:-1;display:block"></canvas>
 
-<!-- Faisceaux infinis balayant tout l'écran -->
+<!-- Faisceaux infinis : halo de rayons qui tournent et sortent de tous les bords -->
 <div class="beam-cosmos"></div>
+<div class="beam-cosmos2"></div>
 
 <style>
 /* ── Rotating emerald/turquoise beam around loading box ── */
@@ -86,50 +87,52 @@ include __DIR__ . '/includes/nav.php';
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── Faisceaux plein écran, infinis (débordent des bords) ── */
-.beam-cosmos {
+/* ── Faisceaux infinis : halo de rayons qui tournent et sortent de tous les bords ── */
+.beam-cosmos, .beam-cosmos2 {
   position: fixed;
   top: 50%; left: 50%;
-  width: 230vmax; height: 230vmax;
+  width: 260vmax; height: 260vmax;
   transform: translate(-50%, -50%);
   z-index: 0;
   pointer-events: none;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0deg,
-    transparent 188deg,
-    rgba(52,211,153,0.08) 216deg,
-    rgba(52,211,153,0.26) 248deg,
-    rgba(14,165,233,0.30) 268deg,
-    rgba(16,185,129,0.26) 288deg,
-    rgba(16,185,129,0.08) 316deg,
-    transparent 344deg,
-    transparent 360deg
-  );
-  animation: beam-spin-cosmos 9s linear infinite;
-  filter: blur(8px);
-  -webkit-mask-image: radial-gradient(circle at center, transparent 140px, #000 420px);
-  mask-image: radial-gradient(circle at center, transparent 140px, #000 420px);
+  transform-origin: center;
+  will-change: transform;
 }
-/* Second balayage, plus lent et inversé, pour la profondeur */
-.beam-cosmos::after {
-  content: '';
-  position: absolute; inset: 0;
-  background: conic-gradient(
+/* 6 rayons répartis autour, tournants */
+.beam-cosmos {
+  background: repeating-conic-gradient(
     from 0deg,
-    transparent 0deg,
-    transparent 30deg,
-    rgba(14,165,233,0.12) 60deg,
-    rgba(52,211,153,0.10) 90deg,
-    transparent 130deg,
-    transparent 360deg
+    transparent 0deg 24deg,
+    rgba(52,211,153,0.00) 26deg,
+    rgba(52,211,153,0.34) 30deg,
+    rgba(14,165,233,0.38) 34deg,
+    rgba(16,185,129,0.34) 38deg,
+    rgba(52,211,153,0.00) 42deg,
+    transparent 44deg 60deg
   );
-  animation: beam-spin-cosmos-rev 14s linear infinite;
+  filter: blur(3px);
+  animation: beam-spin-cosmos 18s linear infinite;
+  -webkit-mask-image: radial-gradient(circle at center, transparent 120px, #000 340px, #000 100%);
+  mask-image: radial-gradient(circle at center, transparent 120px, #000 340px, #000 100%);
+}
+/* 6 rayons décalés, plus fins, tournant en sens inverse, pour la profondeur */
+.beam-cosmos2 {
+  background: repeating-conic-gradient(
+    from 30deg,
+    transparent 0deg 40deg,
+    rgba(14,165,233,0.18) 46deg,
+    rgba(52,211,153,0.16) 52deg,
+    transparent 58deg 60deg
+  );
+  filter: blur(6px);
+  animation: beam-spin-cosmos-rev 30s linear infinite;
+  -webkit-mask-image: radial-gradient(circle at center, transparent 100px, #000 300px, #000 100%);
+  mask-image: radial-gradient(circle at center, transparent 100px, #000 300px, #000 100%);
 }
 @keyframes beam-spin-cosmos { to { transform: translate(-50%, -50%) rotate(360deg); } }
-@keyframes beam-spin-cosmos-rev { to { transform: rotate(-360deg); } }
+@keyframes beam-spin-cosmos-rev { to { transform: translate(-50%, -50%) rotate(-360deg); } }
 @media (prefers-reduced-motion: reduce) {
-  .beam-cosmos, .beam-cosmos::after { animation: none; }
+  .beam-cosmos, .beam-cosmos2 { animation: none; }
 }
 </style>
 
