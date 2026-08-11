@@ -108,7 +108,7 @@ if ($token) {
 
     <?php $milo_moment = in_array($plan, ['mission','lancement','assistant','seo'], true); ?>
     <?php if ($milo_moment): ?>
-    <div class="ok-milo"><img src="/assets/img/milo-avatar.jpg" alt="Milo, votre copilote IA"><span class="tag">MILO · IA</span></div>
+    <div class="ok-milo"><img src="/assets/img/milo-avatar.jpg" alt="Milo, votre copilote IA"></div>
     <?php else: ?>
     <div class="ok-check">
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
