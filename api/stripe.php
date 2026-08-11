@@ -72,7 +72,6 @@ if ($action === 'create_checkout_report') {
     $client_name = trim(($billing['first_name'] ?? '') . ' ' . ($billing['last_name'] ?? ''));
 
     $session_params = [
-        'payment_method_types' => ['card'],
         'line_items' => [[
             'price_data' => [
                 'currency'     => 'eur',
@@ -117,7 +116,6 @@ if ($action === 'create_checkout_report') {
     ]);
 
     $session_params = [
-        'payment_method_types' => ['card'],
         'line_items'           => [['price' => $stripe_price->id, 'quantity' => 1]],
         'mode'                 => 'subscription',
         'billing_address_collection' => 'required',
@@ -151,7 +149,6 @@ if ($action === 'create_checkout_report') {
         : 'Outil installé, paramétré et actif, guidé par Milo (IA) · Satisfait ou remboursé';
 
     $session_params = [
-        'payment_method_types' => ['card'],
         'line_items' => [[
             'price_data' => [
                 'currency'     => 'eur',
@@ -186,7 +183,6 @@ if ($action === 'create_checkout_report') {
     $report_id = $db->lastInsertId();
 
     $session_params = [
-        'payment_method_types' => ['card'],
         'line_items' => [[
             'price_data' => [
                 'currency'     => 'eur',

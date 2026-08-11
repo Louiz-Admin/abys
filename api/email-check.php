@@ -9,6 +9,13 @@
 require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/email.php';
 
+// ── Garde : l'extension IMAP doit être installée (sinon on sort proprement) ──
+if (!function_exists('imap_open')) {
+    header('Content-Type: application/json');
+    http_response_code(200);
+    die(json_encode(['skipped' => 'extension imap non installée sur ce serveur']));
+}
+
 // ── Sécurité ──────────────────────────────────────────────────────────────────
 $db       = get_db();
 $settings = [];
