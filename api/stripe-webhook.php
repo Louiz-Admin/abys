@@ -46,7 +46,7 @@ if ($event->type === 'checkout.session.completed') {
             email_report_paid($customer_email, $rdata['url'], $rdata['token']);
         }
         // Notif admin
-        notify_admin("Nouveau paiement rapport 249€ — {$customer_email}", "
+        notify_admin("Nouveau paiement rapport " . ($session->amount_total / 100) . "€ — {$customer_email}", "
             <p>Nouveau paiement rapport premium reçu.</p>
             <div class='info-box'>
               Email : <strong>{$customer_email}</strong><br>

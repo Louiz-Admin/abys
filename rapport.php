@@ -8,7 +8,7 @@ $token = $_GET['token'] ?? '';
 if (!$token) { header('Location: /'); exit; }
 
 $stmt = get_db()->prepare("
-    SELECT r.*, l.url, l.sector, a.score
+    SELECT r.*, l.url, l.secteur, a.score
     FROM reports r
     JOIN leads l ON r.lead_id = l.id
     JOIN audits a ON r.audit_id = a.id
@@ -40,7 +40,7 @@ $plan    = $content['action_plan']   ?? [];
         Plan d'action IA pour <strong style="font-weight:700"><?= htmlspecialchars($report['url']) ?></strong>
       </h1>
       <p style="color:var(--ink-4);font-size:14px">
-        Généré le <?= date('d/m/Y', strtotime($report['paid_at'])) ?> · Secteur : <?= htmlspecialchars($report['sector']) ?>
+        Généré le <?= date('d/m/Y', strtotime($report['paid_at'])) ?> · Secteur : <?= htmlspecialchars($report['secteur'] ?? '') ?>
       </p>
     </div>
     <div style="text-align:right">

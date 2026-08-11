@@ -15,7 +15,7 @@ if (!$token) { http_response_code(400); die(json_encode(['error' => 'Token manqu
 $db = get_db();
 
 $stmt = $db->prepare("
-    SELECT r.*, a.recommendations, a.score, l.url, l.sector
+    SELECT r.*, a.recommendations, a.score, l.url, l.secteur
     FROM reports r
     JOIN audits a ON r.audit_id = a.id
     JOIN leads l ON r.lead_id = l.id
@@ -43,7 +43,7 @@ $prompt = <<<PROMPT
 Tu es un expert IA pour PME françaises. Génère un rapport premium COMPLET en JSON pour cette entreprise.
 
 Site : {$report['url']}
-Secteur : {$report['sector']}
+Secteur : {$report['secteur']}
 Score IA actuel : {$report['score']}/100
 
 Opportunités identifiées :

@@ -21,7 +21,13 @@ $input  = json_decode(file_get_contents('php://input'), true);
 $action = $input['action'] ?? '';
 $db     = get_db();
 
-$settings = $db->query("SELECT `key`, value FROM settings WHERE `key` IN ('stripe_sk','stripe_pk','price_report','price_assistant')")->fetchAll(PDO::FETCH_KEY_PAIR);
+$settings = $db->query("SELECT `key`, value FROM settings WHERE `key` IN ('stripe_sk','stripe_pk','price_report','price_assistant','payments_enabled')")->fetchAll(PDO::FETCH_KEY_PAIR);
+
+// Interrupteur global des paiements (bascule de compte Stripe en cours)
+if (($settings['payments_enabled'] ?? '1') !== '1') {
+    http_response_code(503);
+    die(json_encode(['error' => 'Paiement momentanément indisponible — réessayez dans quelques heures.']));
+}
 $sk = decrypt_value($settings['stripe_sk'] ?? '');
 if (!$sk) { http_response_code(500); die(json_encode(['error' => 'Stripe non configuré'])); }
 

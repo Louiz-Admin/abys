@@ -11,9 +11,10 @@ vendor/
 uploads/reports/*
 !uploads/reports/.gitkeep
 
-# Logs, OS, état d'outils
+# Logs, OS, état d'outils, dossier Claude
 *.log
 .DS_Store
+.claude/
 .autodeploy-state.json
 
 # Outils de déploiement IONOS (obsolètes avec git)
