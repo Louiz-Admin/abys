@@ -86,19 +86,20 @@ include __DIR__ . '/includes/nav.php';
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
+/* On retire les anciens faisceaux carrés autour de la boîte (source des bords droits) */
+.beam-ring::before, .beam-ring::after { display: none !important; }
+
 /* ── Faisceaux infinis : halo de rayons qui tournent et sortent de tous les bords ── */
-.beam-cosmos, .beam-cosmos2 {
+.beam-cosmos {
   position: fixed;
   top: 50%; left: 50%;
-  width: 260vmax; height: 260vmax;
+  width: 300vmax; height: 300vmax;
   transform: translate(-50%, -50%);
+  border-radius: 50%;              /* cercle : aucun bord droit possible */
   z-index: 0;
   pointer-events: none;
   transform-origin: center;
   will-change: transform;
-}
-/* 6 rayons répartis autour, tournants */
-.beam-cosmos {
   background: repeating-conic-gradient(
     from 0deg,
     transparent 0deg 24deg,
@@ -109,29 +110,15 @@ include __DIR__ . '/includes/nav.php';
     rgba(52,211,153,0.00) 42deg,
     transparent 44deg 60deg
   );
-  filter: blur(3px);
-  animation: beam-spin-cosmos 18s linear infinite;
-  -webkit-mask-image: radial-gradient(circle at center, transparent 120px, #000 340px, #000 100%);
-  mask-image: radial-gradient(circle at center, transparent 120px, #000 340px, #000 100%);
-}
-/* 6 rayons décalés, plus fins, tournant en sens inverse, pour la profondeur */
-.beam-cosmos2 {
-  background: repeating-conic-gradient(
-    from 30deg,
-    transparent 0deg 40deg,
-    rgba(14,165,233,0.18) 46deg,
-    rgba(52,211,153,0.16) 52deg,
-    transparent 58deg 60deg
-  );
-  filter: blur(6px);
-  animation: beam-spin-cosmos-rev 30s linear infinite;
-  -webkit-mask-image: radial-gradient(circle at center, transparent 100px, #000 300px, #000 100%);
-  mask-image: radial-gradient(circle at center, transparent 100px, #000 300px, #000 100%);
+  filter: blur(4px);
+  animation: beam-spin-cosmos 20s linear infinite;
+  /* les rayons partent près de la boîte et s'estompent en douceur vers l'extérieur, jamais de bord franc */
+  -webkit-mask-image: radial-gradient(circle at center, transparent 120px, #000 360px, rgba(0,0,0,0.6) 60vmax, transparent 95vmax);
+  mask-image: radial-gradient(circle at center, transparent 120px, #000 360px, rgba(0,0,0,0.6) 60vmax, transparent 95vmax);
 }
 @keyframes beam-spin-cosmos { to { transform: translate(-50%, -50%) rotate(360deg); } }
-@keyframes beam-spin-cosmos-rev { to { transform: translate(-50%, -50%) rotate(-360deg); } }
 @media (prefers-reduced-motion: reduce) {
-  .beam-cosmos, .beam-cosmos2 { animation: none; }
+  .beam-cosmos { animation: none; }
 }
 </style>
 
