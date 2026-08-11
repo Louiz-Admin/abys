@@ -610,7 +610,60 @@ h1.hero-title strong {
 }
 </style>
 
-<!-- ══════ HERO CENTRÉ ══════ -->
+<style>
+/* ══════════════════════════════════════════════════════════
+   ACCUEIL « ABYSSE » (piste A) : hero sombre immersif + faisceaux
+   Override scoped, aucun hook JS touché (#url-input, #btn-audit, #hero-title)
+   ══════════════════════════════════════════════════════════ */
+.hero-v2{
+  background:#041712 !important;
+  color:#fff;
+  min-height:auto !important;
+  justify-content:center;
+  padding:60px 24px 74px !important;
+}
+.hero-v2::before{ /* faisceaux (mêmes que page paiement / audit) */
+  content:''; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:repeating-conic-gradient(from 200deg at 62% -8%,
+    transparent 0deg, transparent 6deg,
+    rgba(52,211,153,.10) 9deg, rgba(14,165,233,.13) 11deg, rgba(52,211,153,.10) 13deg,
+    transparent 16deg, transparent 24deg);
+  -webkit-mask-image:radial-gradient(120% 90% at 62% -8%, #000 20%, transparent 72%);
+          mask-image:radial-gradient(120% 90% at 62% -8%, #000 20%, transparent 72%);
+}
+.hero-v2::after{
+  content:''; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(80% 55% at 62% -6%, rgba(16,185,129,.26), transparent 60%),
+    linear-gradient(180deg, rgba(4,20,16,.05), rgba(3,13,10,.55));
+}
+.hero-content{ z-index:2; }
+.hero-badge{ background:rgba(255,255,255,.06) !important; border-color:rgba(255,255,255,.14) !important; color:#D1FAE5 !important; backdrop-filter:blur(6px); }
+.hero-badge strong{ color:#fff !important; }
+h1.hero-title{ color:#fff !important; }
+.hero-sub{ color:rgba(255,255,255,.62) !important; }
+.hero-audit-box{ background:rgba(255,255,255,.055) !important; border-color:rgba(255,255,255,.13) !important; backdrop-filter:blur(14px); }
+.hero-no-site{ color:rgba(255,255,255,.5) !important; text-decoration-color:rgba(255,255,255,.25) !important; }
+.hero-no-site:hover{ color:#6EE7B7 !important; }
+.hero-sphere-wrap{ display:none !important; }         /* pas de sphère dans la version Abysse */
+.premium-stats{ margin-top:44px; margin-bottom:0; }
+.pstat-card{ background:rgba(255,255,255,.05) !important; border-color:rgba(255,255,255,.12) !important; box-shadow:none !important; }
+.pstat-card.pstat-accent{ border:2px solid transparent !important;
+  background:linear-gradient(rgba(4,23,18,.6),rgba(4,23,18,.6)) padding-box, var(--gradient) border-box !important; }
+.pstat-label{ color:rgba(255,255,255,.62) !important; }
+.pstat-sub{ color:rgba(255,255,255,.4) !important; }
+
+/* Nav intégrée au hero sombre en haut de page ; redevient claire au scroll */
+.nav{ transition:background 220ms var(--ease), border-color 220ms var(--ease); }
+body:not(.nav-solid) .mif-bar{ background:transparent; border-bottom-color:rgba(255,255,255,.08); color:rgba(255,255,255,.6); }
+body:not(.nav-solid) .nav{ background:transparent; border-bottom-color:rgba(255,255,255,.08); }
+body:not(.nav-solid) .nav-logo-name,
+body:not(.nav-solid) .nav-logo-name strong{ color:#fff; }
+body:not(.nav-solid) .nav-links a{ color:rgba(255,255,255,.72); }
+body:not(.nav-solid) .nav-links a:hover{ color:#6EE7B7; }
+</style>
+
+<!-- ══════ HERO CENTRÉ · version Abysse ══════ -->
 <section class="hero-v2">
 
   <!-- Zone de contenu centrée -->
@@ -700,6 +753,16 @@ h1.hero-title strong {
   </div>
 
 </section>
+
+<script>
+/* Nav Abysse : transparente sur le hero, solide et claire dès qu'on scrolle */
+(function(){
+  var seuil = 60;
+  function maj(){ document.body.classList.toggle('nav-solid', window.scrollY > seuil); }
+  maj();
+  window.addEventListener('scroll', maj, { passive: true });
+})();
+</script>
 
 <!-- ══════ TESTIMONIALS ══════ -->
 <section class="testi-section">
