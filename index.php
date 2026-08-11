@@ -622,31 +622,33 @@ h1.hero-title strong {
   justify-content:center;
   padding:60px 24px 74px !important;
 }
-.hero-v2::before{ /* faisceaux animés : balayage latéral irrégulier (pseudo-aléatoire) */
-  content:''; position:absolute; inset:0; z-index:0; pointer-events:none;
-  background:repeating-conic-gradient(from 200deg at 62% -8%,
-    transparent 0deg, transparent 6deg,
-    rgba(52,211,153,.10) 9deg, rgba(14,165,233,.13) 11deg, rgba(52,211,153,.10) 13deg,
-    transparent 16deg, transparent 24deg);
-  -webkit-mask-image:radial-gradient(120% 90% at 62% -8%, #000 20%, transparent 72%);
-          mask-image:radial-gradient(120% 90% at 62% -8%, #000 20%, transparent 72%);
-  transform-origin:62% -8%;      /* pivot = point d'émanation des rayons */
-  will-change:transform;
-  backface-visibility:hidden;
-  animation:beam-drift 26s ease-in-out infinite;
+.hero-v2::before{ display:none; }   /* ancien faisceau conique retiré (source du saccadé) */
+
+/* Faisceaux « god rays » : calques indépendants, balayage fluide et désynchronisé */
+.hero-beams{ position:absolute; inset:0; z-index:0; overflow:hidden; pointer-events:none; }
+.hero-beams span{
+  position:absolute; top:-34%; left:var(--l); width:130px; height:185%;
+  transform-origin:top center; transform:rotate(var(--a));
 }
-/* Balayage gauche-droite volontairement irrégulier pour un effet aléatoire */
-@keyframes beam-drift{
-  0%   { transform:rotate(-5deg)  translateX(-1.4%); }
-  18%  { transform:rotate(3.2deg) translateX(1.6%); }
-  35%  { transform:rotate(-1.5deg) translateX(-0.4%); }
-  52%  { transform:rotate(5.6deg) translateX(2.2%); }
-  67%  { transform:rotate(-3.4deg) translateX(-1.8%); }
-  83%  { transform:rotate(1.8deg) translateX(0.8%); }
-  100% { transform:rotate(-5deg)  translateX(-1.4%); }
+.hero-beams span::before{
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(to bottom,
+    rgba(155,247,208,.34), rgba(58,206,231,.12) 52%, transparent 80%);
+  /* bords latéraux adoucis par un masque (pas par un gros flou) => rais nets */
+  -webkit-mask-image:linear-gradient(to right, transparent 0%, #000 42%, #000 58%, transparent 100%);
+          mask-image:linear-gradient(to right, transparent 0%, #000 42%, #000 58%, transparent 100%);
+  filter:blur(7px);
+  mix-blend-mode:screen;
+  transform-origin:top center;
+  will-change:transform;
+  animation:ray-sweep var(--d) ease-in-out var(--delay,0s) infinite alternate;
+}
+@keyframes ray-sweep{
+  from{ transform:rotate(calc(var(--s) * -1)); }
+  to  { transform:rotate(var(--s)); }
 }
 @media (prefers-reduced-motion: reduce){
-  .hero-v2::before{ animation:none; transform:rotate(-1deg); }
+  .hero-beams span::before{ animation:none; }
 }
 .hero-v2::after{
   content:''; position:absolute; inset:0; z-index:0; pointer-events:none;
@@ -682,6 +684,18 @@ body:not(.nav-solid) .nav-links a:hover{ color:#6EE7B7; }
 
 <!-- ══════ HERO CENTRÉ · version Abysse ══════ -->
 <section class="hero-v2">
+
+  <!-- Faisceaux god-rays animés (balayage indépendant, fluide) -->
+  <div class="hero-beams" aria-hidden="true">
+    <span style="--a:-30deg;--l:47%;--d:8.5s;--s:8deg;--delay:-2s"></span>
+    <span style="--a:-20deg;--l:51%;--d:6.5s;--s:10deg;--delay:-5s"></span>
+    <span style="--a:-11deg;--l:54%;--d:10s;--s:7deg;--delay:-1s"></span>
+    <span style="--a:-2deg;--l:57%;--d:7.5s;--s:9deg;--delay:-4s"></span>
+    <span style="--a:8deg;--l:60%;--d:9.5s;--s:8deg;--delay:-6.5s"></span>
+    <span style="--a:18deg;--l:62%;--d:6.8s;--s:11deg;--delay:-3s"></span>
+    <span style="--a:28deg;--l:64%;--d:8.2s;--s:9deg;--delay:-7s"></span>
+    <span style="--a:37deg;--l:66%;--d:11s;--s:7deg;--delay:-2.5s"></span>
+  </div>
 
   <!-- Zone de contenu centrée -->
   <div class="hero-content">
