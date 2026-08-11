@@ -10,7 +10,6 @@ include __DIR__ . '/includes/nav.php';
 
 <!-- Faisceaux infinis : halo de rayons qui tournent et sortent de tous les bords -->
 <div class="beam-cosmos"></div>
-<div class="beam-cosmos2"></div>
 
 <style>
 /* ── Rotating emerald/turquoise beam around loading box ── */
