@@ -655,8 +655,8 @@ h1.hero-title{ color:#fff !important; }
 
 /* Nav intégrée au hero sombre en haut de page ; redevient claire au scroll */
 .nav{ transition:background 220ms var(--ease), border-color 220ms var(--ease); }
-body:not(.nav-solid) .mif-bar{ background:transparent; border-bottom-color:rgba(255,255,255,.08); color:rgba(255,255,255,.6); }
-body:not(.nav-solid) .nav{ background:transparent; border-bottom-color:rgba(255,255,255,.08); }
+body:not(.nav-solid) .mif-bar{ background:#041712; border-bottom-color:rgba(255,255,255,.06); color:rgba(255,255,255,.55); }
+body:not(.nav-solid) .nav{ background:#041712; border-bottom:none; }
 body:not(.nav-solid) .nav-logo-name,
 body:not(.nav-solid) .nav-logo-name strong{ color:#fff; }
 body:not(.nav-solid) .nav-links a{ color:rgba(255,255,255,.72); }
