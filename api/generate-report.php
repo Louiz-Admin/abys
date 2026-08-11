@@ -151,7 +151,7 @@ PROMPT;
            $token,
        ]);
 
-    // Email client — envoyé UNIQUEMENT ici, une fois le rapport réellement prêt
+    // Email client : envoye UNIQUEMENT ici, une fois le rapport reellement pret
     $email_addr = $report['lead_email'] ?? '';
     if ($email_addr && !empty($report['url'])) {
         email_report_paid($email_addr, $report['url'], $token);

@@ -3,7 +3,7 @@ $page_title = 'Analyse en cours · ABYS AI';
 $extra_js   = ['/assets/js/audit.js'];
 include __DIR__ . '/includes/head.php';
 // PLEIN ÉCRAN VOLONTAIRE : pas de nav, pas de footer, aucun lien cliquable
-// pendant le moment des faisceaux — on ne veut pas perdre les visiteurs impatients.
+// pendant le moment des faisceaux : on ne veut pas perdre les visiteurs impatients.
 ?>
 <style>
   html, body { margin: 0; padding: 0; background: #F0FDF8; }

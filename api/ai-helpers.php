@@ -165,7 +165,7 @@ function parse_ai_json(string $text): array {
  * Répare un JSON tronqué par la limite de tokens.
  * Parcourt le texte, mémorise chaque frontière de valeur (fin de chaîne,
  * fermeture d'objet/tableau, virgule) avec l'état de la pile d'ouvertures,
- * puis tente — de la plus longue à la plus courte — de refermer proprement
+ * puis tente, de la plus longue à la plus courte, de refermer proprement
  * jusqu'à obtenir un JSON décodable contenant "opportunities".
  */
 function repair_truncated_json(string $text): string {
