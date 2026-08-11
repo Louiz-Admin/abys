@@ -592,8 +592,7 @@ include __DIR__ . '/includes/nav.php';
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-bottom: 32px;
-  flex: 1;
+  margin-bottom: 24px;
 }
 .offer-feature {
   display: flex;
@@ -629,6 +628,7 @@ include __DIR__ . '/includes/nav.php';
   gap: 8px;
   padding: 0 24px;
   height: 52px;
+  margin-top: auto;           /* colle le bouton en bas : les CTA des 2 cartes s'alignent */
   border-radius: 14px;
   font-size: 16px;
   font-weight: 600;

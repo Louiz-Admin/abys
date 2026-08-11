@@ -93,30 +93,33 @@ include __DIR__ . '/includes/nav.php';
 .beam-cosmos {
   position: fixed;
   top: 50%; left: 50%;
-  width: 300vmax; height: 300vmax;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;              /* cercle : aucun bord droit possible */
+  width: 200vmax; height: 200vmax;
+  margin: -100vmax 0 0 -100vmax;      /* centrage sans translate : le translate reste libre pour l'animation GPU */
+  border-radius: 50%;                  /* cercle : aucun bord droit possible */
   z-index: 0;
   pointer-events: none;
-  transform-origin: center;
+  transform-origin: center center;
   will-change: transform;
+  backface-visibility: hidden;
+  /* rayons doux obtenus par les transitions du dégradé (pas de filtre flou = fluide) */
   background: repeating-conic-gradient(
     from 0deg,
-    transparent 0deg 24deg,
-    rgba(52,211,153,0.00) 26deg,
-    rgba(52,211,153,0.34) 30deg,
-    rgba(14,165,233,0.38) 34deg,
-    rgba(16,185,129,0.34) 38deg,
-    rgba(52,211,153,0.00) 42deg,
-    transparent 44deg 60deg
+    transparent 0deg,
+    transparent 20deg,
+    rgba(52,211,153,0.20) 30deg,
+    rgba(14,165,233,0.26) 36deg,
+    rgba(52,211,153,0.20) 42deg,
+    transparent 52deg,
+    transparent 60deg
   );
-  filter: blur(4px);
-  animation: beam-spin-cosmos 20s linear infinite;
-  /* les rayons partent près de la boîte et s'estompent en douceur vers l'extérieur, jamais de bord franc */
-  -webkit-mask-image: radial-gradient(circle at center, transparent 120px, #000 360px, rgba(0,0,0,0.6) 60vmax, transparent 95vmax);
-  mask-image: radial-gradient(circle at center, transparent 120px, #000 360px, rgba(0,0,0,0.6) 60vmax, transparent 95vmax);
+  -webkit-mask-image: radial-gradient(circle at center, transparent 130px, #000 380px, #000 52%, transparent 82%);
+  mask-image: radial-gradient(circle at center, transparent 130px, #000 380px, #000 52%, transparent 82%);
+  animation: beam-spin-cosmos 26s linear infinite;
 }
-@keyframes beam-spin-cosmos { to { transform: translate(-50%, -50%) rotate(360deg); } }
+@keyframes beam-spin-cosmos {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
 @media (prefers-reduced-motion: reduce) {
   .beam-cosmos { animation: none; }
 }
