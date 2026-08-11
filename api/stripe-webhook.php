@@ -30,6 +30,11 @@ if ($event->type === 'checkout.session.completed') {
     $meta    = $session->metadata;
     $mode    = $session->mode;
 
+    // Carte enregistrée pour le paiement 1 clic des missions (tout paiement avec lead_id)
+    if ($mode === 'payment' && !empty($meta->lead_id)) {
+        save_card_for_lead($db, (int)$meta->lead_id, $session);
+    }
+
     if ($mode === 'payment' && isset($meta->report_id)) {
         $db->prepare("UPDATE reports SET stripe_payment_id=?, paid_at=NOW(), expires_at=DATE_ADD(NOW(), INTERVAL 90 DAY) WHERE id=?")
            ->execute([$session->payment_intent, $meta->report_id]);
@@ -121,6 +126,35 @@ if ($event->type === 'customer.subscription.deleted') {
 
 http_response_code(200);
 echo json_encode(['received' => true]);
+
+/**
+ * Enregistre le client Stripe + la carte du lead pour le paiement 1 clic.
+ * La carte reste chez Stripe ; on ne stocke que des identifiants + les 4 derniers chiffres.
+ */
+function save_card_for_lead(PDO $db, int $lead_id, $session): void {
+    if (!$lead_id || empty($session->customer) || empty($session->payment_intent)) return;
+    try {
+        // Migration auto (MariaDB : IF NOT EXISTS supporté)
+        $db->exec("ALTER TABLE leads
+            ADD COLUMN IF NOT EXISTS stripe_customer_id VARCHAR(64) NULL,
+            ADD COLUMN IF NOT EXISTS stripe_pm_id VARCHAR(64) NULL,
+            ADD COLUMN IF NOT EXISTS card_last4 VARCHAR(4) NULL,
+            ADD COLUMN IF NOT EXISTS card_brand VARCHAR(20) NULL");
+
+        $pi = \Stripe\PaymentIntent::retrieve($session->payment_intent);
+        $pm_id = is_object($pi->payment_method ?? null) ? $pi->payment_method->id : ($pi->payment_method ?? '');
+        if (!$pm_id) return;
+        $pm = \Stripe\PaymentMethod::retrieve($pm_id);
+        $last4 = $pm->card->last4 ?? '';
+        $brand = $pm->card->brand ?? '';
+
+        $db->prepare("UPDATE leads SET stripe_customer_id=?, stripe_pm_id=?, card_last4=?, card_brand=? WHERE id=?")
+           ->execute([$session->customer, $pm_id, $last4, $brand, $lead_id]);
+        error_log("[ABYS webhook] Carte enregistrée lead {$lead_id} · {$brand} •••• {$last4}");
+    } catch (\Exception $e) {
+        error_log('[ABYS webhook] save_card_for_lead: ' . $e->getMessage());
+    }
+}
 
 /**
  * Déclenche la génération du rapport côté serveur en « fire-and-forget ».

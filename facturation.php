@@ -159,6 +159,10 @@ include __DIR__ . '/includes/nav.php';
         <p style="font-size: 12px; color: var(--ink-4); text-align: center; margin-top: 12px">
           🔒 Paiement sécurisé Stripe · Vos données ne sont jamais revendues
         </p>
+        <p style="font-size: 11.5px; color: var(--ink-4); text-align: center; margin-top: 6px; line-height: 1.5">
+          En payant, vous autorisez ABYS à conserver votre carte de façon sécurisée (Stripe) pour vos
+          futures missions. Elle ne sera débitée que sur votre validation explicite, en un clic.
+        </p>
       </div>
     </div>
 

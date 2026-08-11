@@ -398,7 +398,8 @@ for ($m = 0; $m <= 12; $m++) {
       <div class="txt"><b>Mission lancement avec Milo</b> : cet outil installé, paramétré et actif dans votre entreprise, guidé jusqu'au premier résultat. Satisfait ou remboursé.</div>
       <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
         <?php if ($turl): ?><a class="rp-btn ghost" href="<?= htmlspecialchars($turl) ?>" target="_blank" rel="noopener">Voir l'outil</a><?php endif; ?>
-        <a class="rp-btn" href="/facturation.php?plan=mission&tool=<?= urlencode($tool) ?>">Lancer la mission · 79€</a>
+        <a class="rp-btn rp-mission-btn" data-plan="mission" data-tool="<?= htmlspecialchars($tool, ENT_QUOTES) ?>"
+           href="/facturation.php?plan=mission&tool=<?= urlencode($tool) ?>">Lancer la mission · 79€</a>
       </div>
     </div>
   </div>
@@ -451,7 +452,7 @@ for ($m = 0; $m <= 12; $m++) {
     </div>
     <div style="text-align:center">
       <div class="price">199€ <small>· 3 missions + 90 j</small></div>
-      <a class="rp-btn" style="margin-top:10px" href="/facturation.php?plan=lancement">Démarrer le forfait</a>
+      <a class="rp-btn rp-mission-btn" data-plan="lancement" data-tool="" style="margin-top:10px" href="/facturation.php?plan=lancement">Démarrer le forfait</a>
     </div>
   </div>
 
@@ -507,6 +508,57 @@ for ($m = 0; $m <= 12; $m++) {
     function leave(){ cross.style.opacity=0; hd.style.opacity=0; tip.style.opacity=0; }
     hit.addEventListener('mousemove',move); hit.addEventListener('mouseleave',leave);
     svg.addEventListener('touchmove',function(e){ if(e.touches[0]) move(e.touches[0]); },{passive:true});
+  }
+
+  // ── Paiement 1 clic des missions (carte enregistrée) ──
+  var TOKEN = new URLSearchParams(location.search).get('token') || '';
+  var card = null;
+  function api(body){ return fetch('/api/charge-mission.php',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(Object.assign({token:TOKEN},body))}).then(function(r){return r.json();}); }
+
+  if (TOKEN) {
+    api({action:'info'}).then(function(j){
+      if (!j || !j.card) return;   // pas de carte : liens classiques inchangés
+      card = j.card;
+      document.querySelectorAll('.rp-mission-btn').forEach(function(btn){
+        btn.dataset.armed = '0';
+        btn.addEventListener('click', function(ev){
+          ev.preventDefault();
+          if (btn.dataset.armed === 'done') { window.location.href = '/compte/'; return; }
+          if (btn.dataset.armed === '2') { return; }   // paiement en cours
+          var plan = btn.dataset.plan, tool = btn.dataset.tool || '';
+          var price = plan === 'lancement' ? '199€' : '79€';
+          if (btn.dataset.armed !== '1') {
+            // Clic 1 : armer la confirmation (10 s pour confirmer)
+            btn.dataset.armed = '1';
+            btn.dataset.label = btn.textContent;
+            btn.textContent = 'Confirmer · ' + price + ' sur •••• ' + card.last4;
+            btn.style.background = '#0A1F1A';
+            setTimeout(function(){ if (btn.dataset.armed === '1'){ btn.dataset.armed='0'; btn.textContent=btn.dataset.label; btn.style.background=''; } }, 10000);
+            return;
+          }
+          // Clic 2 : débit
+          btn.dataset.armed = '2';
+          btn.textContent = 'Paiement en cours…';
+          api({action:'charge', plan:plan, tool:tool}).then(function(r){
+            if (r && r.success) {
+              btn.textContent = 'Mission activée · Milo vous attend';
+              btn.style.background = '#059669';
+              btn.href = '/compte/';
+              btn.dataset.armed = 'done';
+              btn.addEventListener('click', function(e2){ e2.stopPropagation(); }, {once:false});
+              setTimeout(function(){ window.location.href = '/compte/'; }, 1800);
+            } else if (r && r.fallback) {
+              window.location.href = btn.getAttribute('href');   // parcours classique
+            } else {
+              btn.textContent = (r && r.error) ? 'Erreur · réessayer' : 'Erreur · réessayer';
+              btn.style.background = '';
+              btn.dataset.armed = '0';
+            }
+          }).catch(function(){ window.location.href = btn.getAttribute('href'); });
+        });
+      });
+    }).catch(function(){});
   }
 })();
 </script>
