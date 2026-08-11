@@ -201,8 +201,12 @@ for ($m = 0; $m <= 12; $m++) {
 .rp-steps li::before{ content:counter(s); position:absolute; left:0; top:0; width:26px; height:26px; border-radius:50%; background:rgba(16,185,129,.1); color:#059669; font-size:12.5px; font-weight:700; display:flex; align-items:center; justify-content:center; }
 .rp-tips{ background:rgba(14,165,233,.06); border:1px solid rgba(14,165,233,.15); border-radius:10px; padding:12px 16px; font-size:13px; color:var(--ink-3,#4B5563); line-height:1.6; margin-top:10px; }
 .rp-cta{ display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; background:linear-gradient(135deg,rgba(16,185,129,.07),rgba(14,165,233,.05)); border:1px solid rgba(16,185,129,.2); border-radius:14px; padding:15px 18px; margin-top:16px; }
-.rp-cta .txt{ font-size:13.5px; color:var(--ink-2,#1F2937); line-height:1.5; }
+.rp-cta .txt{ font-size:13.5px; color:var(--ink-2,#1F2937); line-height:1.5; display:flex; align-items:center; gap:12px; }
 .rp-cta .txt b{ color:#059669; }
+.rp-milo-mini{ display:none; width:46px; height:46px; border-radius:50%; border:2px solid #10B981; object-fit:cover; flex-shrink:0;
+  box-shadow:0 0 0 4px rgba(16,185,129,.14); animation:milo-pop .35s cubic-bezier(.3,1.4,.5,1); }
+.rp-milo-mini.on{ display:block; }
+@keyframes milo-pop{ from{ transform:scale(.5); opacity:0; } to{ transform:scale(1); opacity:1; } }
 .rp-btn{ display:inline-block; background:#10B981; color:#fff; font-weight:600; font-size:14px; border-radius:11px; padding:11px 20px; text-decoration:none; white-space:nowrap; transition:background .15s, transform .15s; }
 .rp-btn:hover{ background:#059669; transform:translateY(-1px); }
 .rp-btn.ghost{ background:transparent; color:#059669; border:1px solid rgba(16,185,129,.4); }
@@ -395,7 +399,7 @@ for ($m = 0; $m <= 12; $m++) {
     </details>
     <?php endif; ?>
     <div class="rp-cta rp-noprint">
-      <div class="txt"><b>Mission lancement avec Milo</b> : cet outil installé, paramétré et actif dans votre entreprise, guidé jusqu'au premier résultat. Satisfait ou remboursé.</div>
+      <div class="txt"><img class="rp-milo-mini" src="/assets/img/milo-avatar.jpg" alt="Milo"><span class="txt-msg"><b>Mission lancement avec Milo</b> : cet outil installé, paramétré et actif dans votre entreprise, guidé jusqu'au premier résultat. Satisfait ou remboursé.</span></div>
       <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
         <?php if ($turl): ?><a class="rp-btn ghost" href="<?= htmlspecialchars($turl) ?>" target="_blank" rel="noopener">Voir l'outil</a><?php endif; ?>
         <a class="rp-btn rp-mission-btn" data-plan="mission" data-tool="<?= htmlspecialchars($tool, ENT_QUOTES) ?>"
@@ -451,6 +455,7 @@ for ($m = 0; $m <= 12; $m++) {
       <p>Choisissez vos 3 outils prioritaires : Milo les met en place avec vous, un par un, jusqu'au premier résultat. Inclut 90 jours d'assistance complète.</p>
     </div>
     <div style="text-align:center">
+      <img class="rp-milo-mini" src="/assets/img/milo-avatar.jpg" alt="Milo" style="margin:0 auto 8px">
       <div class="price">199€ <small>· 3 missions + 90 j</small></div>
       <a class="rp-btn rp-mission-btn" data-plan="lancement" data-tool="" style="margin-top:10px" href="/facturation.php?plan=lancement">Démarrer le forfait</a>
     </div>
@@ -522,6 +527,13 @@ for ($m = 0; $m <= 12; $m++) {
       card = j.card;
       document.querySelectorAll('.rp-mission-btn').forEach(function(btn){
         btn.dataset.armed = '0';
+        var zone = btn.closest('.rp-cta') || btn.parentElement;
+        var milo = zone ? zone.querySelector('.rp-milo-mini') : null;
+        var msg  = zone ? zone.querySelector('.txt-msg') : null;
+        if (msg) msg.dataset.orig = msg.innerHTML;
+        function showMilo(html){ if (milo) milo.classList.add('on'); if (msg && html) msg.innerHTML = html; }
+        function resetMilo(){ if (milo) milo.classList.remove('on'); if (msg) msg.innerHTML = msg.dataset.orig; }
+
         btn.addEventListener('click', function(ev){
           ev.preventDefault();
           if (btn.dataset.armed === 'done') { window.location.href = '/compte/'; return; }
@@ -529,12 +541,15 @@ for ($m = 0; $m <= 12; $m++) {
           var plan = btn.dataset.plan, tool = btn.dataset.tool || '';
           var price = plan === 'lancement' ? '199€' : '79€';
           if (btn.dataset.armed !== '1') {
-            // Clic 1 : armer la confirmation (10 s pour confirmer)
+            // Clic 1 : armer la confirmation (10 s), Milo apparaît
             btn.dataset.armed = '1';
             btn.dataset.label = btn.textContent;
             btn.textContent = 'Confirmer · ' + price + ' sur •••• ' + card.last4;
             btn.style.background = '#0A1F1A';
-            setTimeout(function(){ if (btn.dataset.armed === '1'){ btn.dataset.armed='0'; btn.textContent=btn.dataset.label; btn.style.background=''; } }, 10000);
+            showMilo('<b>Je suis prêt.</b> Confirmez, et je démarre ' +
+              (plan === 'lancement' ? 'la mise en action de vos 3 outils' : ('la mise en action' + (tool ? ' de <b>' + tool + '</b>' : ''))) +
+              ' avec vous, jusqu’au premier résultat.');
+            setTimeout(function(){ if (btn.dataset.armed === '1'){ btn.dataset.armed='0'; btn.textContent=btn.dataset.label; btn.style.background=''; resetMilo(); } }, 10000);
             return;
           }
           // Clic 2 : débit
@@ -542,18 +557,19 @@ for ($m = 0; $m <= 12; $m++) {
           btn.textContent = 'Paiement en cours…';
           api({action:'charge', plan:plan, tool:tool}).then(function(r){
             if (r && r.success) {
-              btn.textContent = 'Mission activée · Milo vous attend';
+              btn.textContent = 'Mission activée · rejoindre Milo';
               btn.style.background = '#059669';
               btn.href = '/compte/';
               btn.dataset.armed = 'done';
-              btn.addEventListener('click', function(e2){ e2.stopPropagation(); }, {once:false});
-              setTimeout(function(){ window.location.href = '/compte/'; }, 1800);
+              showMilo('<b>C’est parti.</b> Votre mission est activée : je vous attends dans votre espace pour commencer tout de suite.');
+              setTimeout(function(){ window.location.href = '/compte/'; }, 2200);
             } else if (r && r.fallback) {
               window.location.href = btn.getAttribute('href');   // parcours classique
             } else {
               btn.textContent = (r && r.error) ? 'Erreur · réessayer' : 'Erreur · réessayer';
               btn.style.background = '';
               btn.dataset.armed = '0';
+              resetMilo();
             }
           }).catch(function(){ window.location.href = btn.getAttribute('href'); });
         });
