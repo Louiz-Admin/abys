@@ -37,13 +37,15 @@ if ($event->type === 'checkout.session.completed') {
         $db->prepare("INSERT INTO payments (lead_id, stripe_payment_intent, amount, type, reference_id, status) VALUES (?,?,?,?,?,'succeeded')")
            ->execute([$meta->lead_id, $session->payment_intent, $session->amount_total / 100, 'report', $meta->report_id]);
 
-        // Email client · confirmation + lien rapport
+        // Déclenche la génération du rapport côté serveur, sans attendre le navigateur.
+        // L'email "rapport prêt" est envoyé par generate-report.php À LA FIN,
+        // une fois le contenu réellement généré (plus d'email prématuré/contradictoire).
         $customer_email = $session->customer_details->email ?? $session->customer_email ?? '';
         $report_row = $db->prepare("SELECT r.token, l.url FROM reports r JOIN leads l ON r.lead_id=l.id WHERE r.id=?");
         $report_row->execute([$meta->report_id]);
         $rdata = $report_row->fetch();
-        if ($customer_email && $rdata) {
-            email_report_paid($customer_email, $rdata['url'], $rdata['token']);
+        if ($rdata) {
+            trigger_report_generation($rdata['token']);
         }
         // Notif admin
         notify_admin("Nouveau paiement rapport " . ($session->amount_total / 100) . "€ · {$customer_email}", "
@@ -72,9 +74,9 @@ if ($event->type === 'checkout.session.completed') {
         ");
         if ($customer_email) {
             send_email($customer_email, 'Votre mission de lancement ABYS est activée', "
-                <h2>Votre mission est activée ✅</h2>
+                <h2>Votre mission est activée</h2>
                 <p>Merci pour votre confiance. Milo, votre copilote IA, vous attend dans votre espace pour démarrer la mise en action" . ($tool ? " de <strong>" . htmlspecialchars($tool) . "</strong>" : " de vos outils") . ".</p>
-                <a class='btn' href='https://abys.ai/compte/'>Démarrer avec Milo →</a>
+                <a class='btn' href='https://abys.ai/compte/'>Démarrer avec Milo</a>
                 <p style='font-size:13px;color:#6B7280'>Objectif : outil installé, paramétré, premier résultat. Satisfait ou remboursé.</p>
             ");
         }
@@ -118,3 +120,23 @@ if ($event->type === 'customer.subscription.deleted') {
 
 http_response_code(200);
 echo json_encode(['received' => true]);
+
+/**
+ * Déclenche la génération du rapport côté serveur en « fire-and-forget ».
+ * On ouvre une requête HTTP vers generate-report.php avec un timeout très court :
+ * PHP-FPM démarre le traitement, et generate-report.php (ignore_user_abort)
+ * poursuit jusqu'au bout même après la déconnexion. Le webhook n'est pas bloqué.
+ */
+function trigger_report_generation(string $token): void {
+    $ch = curl_init('https://abys.ai/api/generate-report.php');
+    curl_setopt_array($ch, [
+        CURLOPT_POST           => true,
+        CURLOPT_POSTFIELDS     => json_encode(['token' => $token]),
+        CURLOPT_HTTPHEADER     => ['Content-Type: application/json'],
+        CURLOPT_TIMEOUT_MS     => 900,   // fire-and-forget : on ne bloque pas la réponse au webhook
+        CURLOPT_NOSIGNAL       => 1,
+        CURLOPT_RETURNTRANSFER => true,
+    ]);
+    curl_exec($ch);
+    curl_close($ch);
+}

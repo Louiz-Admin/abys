@@ -2,8 +2,13 @@
 $page_title = 'Analyse en cours · ABYS AI';
 $extra_js   = ['/assets/js/audit.js'];
 include __DIR__ . '/includes/head.php';
-include __DIR__ . '/includes/nav.php';
+// PLEIN ÉCRAN VOLONTAIRE : pas de nav, pas de footer, aucun lien cliquable
+// pendant le moment des faisceaux — on ne veut pas perdre les visiteurs impatients.
 ?>
+<style>
+  html, body { margin: 0; padding: 0; background: #F0FDF8; }
+  body { overflow-x: hidden; }
+</style>
 
 <!-- Canvas animation de fond -->
 <canvas id="bg-canvas" style="position:fixed;inset:0;width:100%;height:100%;z-index:-1;display:block"></canvas>
@@ -186,7 +191,13 @@ include __DIR__ . '/includes/nav.php';
 
   <!-- Phase erreur (masquée initialement) -->
   <div id="phase-error" style="display:none;background:rgba(255,255,255,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:24px;padding:48px;max-width:480px;width:100%;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,0.10),0 1px 3px rgba(0,0,0,0.06)">
-    <div style="font-size:48px;margin-bottom:20px;line-height:1">⚠️</div>
+    <div style="width:52px;height:52px;border-radius:50%;margin:0 auto 20px;background:rgba(16,185,129,0.12);display:flex;align-items:center;justify-content:center">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 8v5" stroke="#059669" stroke-width="2.2" stroke-linecap="round"/>
+        <circle cx="12" cy="16.5" r="1.3" fill="#059669"/>
+        <circle cx="12" cy="12" r="9" stroke="#10B981" stroke-width="2"/>
+      </svg>
+    </div>
     <h2 style="font-size:22px;font-weight:700;margin:0 0 12px;color:#111827">Analyse à finaliser</h2>
     <p style="font-size:15px;color:var(--ink-3,#6B7280);margin:0 0 28px;line-height:1.6">
       Nous n'avons pas pu terminer l'analyse automatique de votre site.<br>
@@ -199,9 +210,13 @@ include __DIR__ . '/includes/nav.php';
 
 </div>
 
-<?php include __DIR__ . '/includes/footer.php'; ?>
+<!-- Plein écran : ni nav ni footer. On charge les scripts explicitement (ce que faisait footer.php). -->
+<script src="/assets/js/app.js"></script>
+<?php if (!empty($extra_js)): foreach ($extra_js as $js): ?>
+<script src="<?= htmlspecialchars($js) ?>"></script>
+<?php endforeach; endif; ?>
 
-<!-- Script inline APRÈS footer.php → app.js et audit.js sont déjà chargés -->
+<!-- Script inline APRÈS app.js/audit.js déjà chargés -->
 <script>
 /* ─── Canvas : particules réseau neuronal ─── */
 (function () {

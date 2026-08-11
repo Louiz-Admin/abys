@@ -223,17 +223,17 @@ HTML;
 function email_report_paid(string $to, string $url, string $token): void {
     $report_url = 'https://abys.ai/rapport.php?token=' . urlencode($token);
     $body = <<<HTML
-<h2>Votre rapport IA est prêt ✅</h2>
-<p>Merci pour votre confiance. Votre plan d'action IA personnalisé pour <strong>{$url}</strong> est en cours de génération.</p>
-<a class="btn" href="{$report_url}">Accéder à mon rapport →</a>
+<h2>Votre rapport IA est prêt</h2>
+<p>Merci pour votre confiance. Votre plan d'action IA personnalisé pour <strong>{$url}</strong> est disponible dès maintenant.</p>
+<a class="btn" href="{$report_url}">Accéder à mon rapport</a>
 <div class="info-box">
   <strong>Ce que contient votre rapport :</strong><br>
-  • 7+ opportunités IA avec tutoriels pas-à-pas<br>
-  • Plan d'action sur 12 mois priorisé<br>
-  • Simulation ROI interactive<br>
-  • Analyse concurrentielle de votre secteur
+  · Vos opportunités IA avec tutoriels pas à pas<br>
+  · Plan d'action sur 12 mois priorisé<br>
+  · Estimation du temps et du budget récupérés chaque mois<br>
+  · Analyse de votre secteur
 </div>
-<p style="font-size:13px;color:#6B7280">Conservez ce lien, il vous donne accès à vie à votre rapport.<br>En cas de problème : <a href="mailto:contact@abys.ai">contact@abys.ai</a></p>
+<p style="font-size:13px;color:#6B7280">Conservez ce lien : il vous donne accès à vie à votre rapport.<br>Une question ? <a href="mailto:contact@abys.ai">contact@abys.ai</a></p>
 HTML;
     send_email($to, 'Votre rapport IA ABYS est prêt', $body);
 }
@@ -245,15 +245,15 @@ function email_subscription_welcome(string $to, string $plan = 'assistant'): voi
     $plan_label = $plan === 'seo' ? 'SEO & Visibilité IA' : 'Assistant IA';
     $price      = $plan === 'seo' ? '49€' : '29€';
     $body = <<<HTML
-<h2>Bienvenue dans votre abonnement {$plan_label} 🎉</h2>
+<h2>Bienvenue dans votre abonnement {$plan_label}</h2>
 <p>Votre abonnement <strong>{$plan_label} · {$price}/mois</strong> est actif. Votre espace personnel est prêt.</p>
 <div class="info-box">
   <strong>Prochaines étapes :</strong><br>
-  • Connectez-vous à votre espace : <a href="https://abys.ai/compte/">abys.ai/compte</a><br>
-  • Posez votre première question à votre assistant IA<br>
-  • Résiliable à tout moment · sans condition
+  · Connectez-vous à votre espace : <a href="https://abys.ai/compte/">abys.ai/compte</a><br>
+  · Posez votre première question à votre assistant IA<br>
+  · Résiliable à tout moment, sans condition
 </div>
-<a class="btn" href="https://abys.ai/compte/">Accéder à mon espace →</a>
+<a class="btn" href="https://abys.ai/compte/">Accéder à mon espace</a>
 <p style="font-size:13px;color:#6B7280">Questions immédiates : <a href="mailto:contact@abys.ai">contact@abys.ai</a></p>
 HTML;
     send_email($to, "Votre abonnement ABYS {$plan_label} est actif", $body);
@@ -266,16 +266,16 @@ function email_pack_confirm(string $to, string $name = ''): void {
     $greeting = $name ? "Bonjour {$name}," : "Bonjour,";
     $body = <<<HTML
 <h2>{$greeting}</h2>
-<h2>Votre Forfait Intégral est activé ✅</h2>
+<h2>Votre Forfait Intégral est activé</h2>
 <p>Merci pour votre confiance. <strong>Milo, votre copilote IA</strong>, vous attend dès maintenant dans votre espace pour démarrer le déploiement de vos outils, un par un.</p>
 <div class="info-box">
   <strong>Ce qui vous attend :</strong><br>
-  • Rapport Premium complet (7+ opportunités)<br>
-  • Toutes vos missions de lancement · chaque outil installé et actif<br>
-  • Guidage pas à pas par Milo, jusqu'au premier résultat<br>
-  • 6 mois d'assistance complète, 24h/24
+  · Rapport Premium complet<br>
+  · Toutes vos missions de lancement, chaque outil installé et actif<br>
+  · Guidage pas à pas par Milo, jusqu'au premier résultat<br>
+  · 6 mois d'assistance complète, 24h/24
 </div>
-<a class="btn" href="https://abys.ai/compte/">Démarrer avec Milo →</a>
+<a class="btn" href="https://abys.ai/compte/">Démarrer avec Milo</a>
 <p style="font-size:13px;color:#6B7280">Questions : <a href="mailto:contact@abys.ai">contact@abys.ai</a></p>
 HTML;
     send_email($to, 'Votre Pack IA Accompagné ABYS · Confirmation', $body);

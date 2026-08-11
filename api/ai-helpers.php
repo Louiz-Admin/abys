@@ -27,7 +27,8 @@ function call_claude(string $prompt, array $settings, bool $fast = false): array
 
     // Haiku pour audit gratuit (3-5s), Sonnet pour rapport premium (qualité maximale)
     $model      = $fast ? 'claude-haiku-4-5' : 'claude-sonnet-4-5';
-    $max_tokens = $fast ? 2500 : 3500;
+    $max_tokens = $fast ? 2500 : 8000;   // premium : marge large pour éviter la troncature du JSON
+    $timeout    = $fast ? 45 : 180;      // Sonnet + 8000 tokens peut prendre 60-120s
 
     $body = json_encode([
         'model'      => $model,
@@ -39,9 +40,26 @@ function call_claude(string $prompt, array $settings, bool $fast = false): array
         'x-api-key: ' . $key,
         'anthropic-version: 2023-06-01',
         'content-type: application/json',
-    ]);
+    ], $timeout);
 
     $data = json_decode($response, true);
+
+    // ── Erreur explicite renvoyée par l'API Anthropic ──
+    if (isset($data['type']) && $data['type'] === 'error') {
+        $msg = $data['error']['message'] ?? 'erreur inconnue';
+        error_log('[ABYS AI] Anthropic error: ' . $msg . ' · raw: ' . substr($response, 0, 400));
+        throw new Exception('API Claude : ' . $msg);
+    }
+    if (!isset($data['content'][0]['text'])) {
+        error_log('[ABYS AI] Réponse API sans contenu · raw: ' . substr((string)$response, 0, 400));
+        throw new Exception('Réponse API Claude vide ou malformée');
+    }
+
+    // Diagnostic : troncature par la limite de tokens
+    if (($data['stop_reason'] ?? '') === 'max_tokens') {
+        error_log('[ABYS AI] stop_reason=max_tokens · réponse tronquée (model=' . $model . ', max=' . $max_tokens . ')');
+    }
+
     $text = $data['content'][0]['text'] ?? '';
     return parse_ai_json($text);
 }
@@ -97,14 +115,15 @@ function call_local(string $prompt, array $settings): array {
     return parse_ai_json($text);
 }
 
-function http_post_ai(string $url, string $body, array $headers): string {
+function http_post_ai(string $url, string $body, array $headers, int $timeout = 45): string {
     $ch = curl_init($url);
     curl_setopt_array($ch, [
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_POST           => true,
         CURLOPT_POSTFIELDS     => $body,
         CURLOPT_HTTPHEADER     => $headers,
-        CURLOPT_TIMEOUT        => 45,
+        CURLOPT_TIMEOUT        => $timeout,
+        CURLOPT_CONNECTTIMEOUT => 15,
     ]);
     $result = curl_exec($ch);
     $err    = curl_error($ch);
@@ -114,15 +133,78 @@ function http_post_ai(string $url, string $body, array $headers): string {
 }
 
 function parse_ai_json(string $text): array {
+    // Retire les éventuelles clôtures markdown ```json ... ```
     $text = preg_replace('/^```json\s*/m', '', $text);
     $text = preg_replace('/^```\s*$/m', '', $text);
     $text = trim($text);
 
-    $data = json_decode($text, true);
-    if (!$data || !isset($data['opportunities'])) {
+    // Isole le début du bloc JSON (premier {)
+    $start = strpos($text, '{');
+    if ($start !== false) {
+        $text = substr($text, $start);
+    }
+
+    // Cas nominal : bloc complet, on coupe au dernier }
+    $end = strrpos($text, '}');
+    $candidate = ($end !== false) ? substr($text, 0, $end + 1) : $text;
+    $data = json_decode($candidate, true);
+
+    // Cas tronqué / bruité : réparation robuste par pile
+    if (!is_array($data)) {
+        $data = json_decode(repair_truncated_json($text), true);
+    }
+
+    if (!is_array($data) || !isset($data['opportunities'])) {
+        error_log('[ABYS AI] parse_ai_json échec · texte brut (600c): ' . substr($text, 0, 600));
         throw new Exception('Réponse IA invalide : ' . substr($text, 0, 200));
     }
     return $data;
+}
+
+/**
+ * Répare un JSON tronqué par la limite de tokens.
+ * Parcourt le texte, mémorise chaque frontière de valeur (fin de chaîne,
+ * fermeture d'objet/tableau, virgule) avec l'état de la pile d'ouvertures,
+ * puis tente — de la plus longue à la plus courte — de refermer proprement
+ * jusqu'à obtenir un JSON décodable contenant "opportunities".
+ */
+function repair_truncated_json(string $text): string {
+    $inStr = false; $esc = false; $len = strlen($text);
+    $stack = [];
+    $cands = [];   // [longueur, copie_de_pile] à chaque frontière de valeur
+    for ($i = 0; $i < $len; $i++) {
+        $c = $text[$i];
+        if ($esc) { $esc = false; continue; }
+        if ($c === '\\') { $esc = true; continue; }
+        if ($c === '"') {
+            $inStr = !$inStr;
+            if (!$inStr) { $cands[] = [$i + 1, $stack]; }   // chaîne fermée
+            continue;
+        }
+        if ($inStr) continue;
+        if ($c === '{' || $c === '[') {
+            $stack[] = $c;
+        } elseif ($c === '}' || $c === ']') {
+            array_pop($stack);
+            $cands[] = [$i + 1, $stack];
+        } elseif ($c === ',') {
+            $cands[] = [$i, $stack];   // frontière avant la virgule
+        }
+    }
+
+    for ($k = count($cands) - 1; $k >= 0; $k--) {
+        [$clen, $cstack] = $cands[$k];
+        $out = rtrim(substr($text, 0, $clen));
+        $out = preg_replace('/,\s*$/', '', $out);
+        for ($j = count($cstack) - 1; $j >= 0; $j--) {
+            $out .= ($cstack[$j] === '{') ? '}' : ']';
+        }
+        $d = json_decode($out, true);
+        if (is_array($d) && isset($d['opportunities'])) {
+            return $out;
+        }
+    }
+    return $text;
 }
 
 function save_audit(PDO $db, int $lead_id, array $result, string $provider, bool $scraping_success): int {
