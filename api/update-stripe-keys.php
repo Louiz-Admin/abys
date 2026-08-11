@@ -28,7 +28,11 @@ $wh = ask("Secret du webhook (whsec_...) : ");
 if (!str_starts_with($wh, 'whsec_')) { die("Refus : le secret webhook doit commencer par whsec_. Abandon.\n"); }
 
 // Verification reelle de la cle aupres de Stripe avant enregistrement
-require_once __DIR__ . '/../lib/stripe/init.php';
+if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+    require_once __DIR__ . '/../vendor/autoload.php';
+} else {
+    require_once __DIR__ . '/../lib/stripe/init.php';
+}
 try {
     \Stripe\Stripe::setApiKey($sk);
     $acct = \Stripe\Account::retrieve();
