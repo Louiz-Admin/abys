@@ -77,7 +77,8 @@ body{margin:0;height:100vh;display:flex;flex-direction:column;overflow:hidden}
 .msg{display:flex;gap:12px;max-width:720px}
 .msg.user{align-self:flex-end;flex-direction:row-reverse}
 .msg-avatar{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
-.msg.assistant .msg-avatar{background:linear-gradient(135deg,#059669,#064E3B);color:#fff}
+.msg.assistant .msg-avatar{background:#052E16;border:2px solid #10B981;overflow:hidden}
+.msg-avatar img{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%}
 .msg.user .msg-avatar{background:var(--border-2);color:var(--ink-3)}
 .msg-bubble{padding:12px 16px;border-radius:16px;font-size:14px;line-height:1.65;max-width:560px}
 .msg.assistant .msg-bubble{background:var(--white);border:1px solid var(--border);color:var(--ink-2);border-bottom-left-radius:4px}
@@ -183,26 +184,26 @@ body{margin:0;height:100vh;display:flex;flex-direction:column;overflow:hidden}
   <!-- Zone de chat -->
   <div class="chat-area">
     <div class="chat-header">
-      <div class="chat-title">Assistant IA personnel</div>
-      <div class="chat-status">Disponible 24h/24</div>
+      <div class="chat-title">Milo · votre copilote IA</div>
+      <div class="chat-status">En ligne 24h/24</div>
     </div>
 
     <div class="messages" id="messages">
       <!-- Message de bienvenue -->
       <div class="msg assistant">
-        <div class="msg-avatar">A</div>
+        <div class="msg-avatar"><img src="/assets/img/milo-avatar.jpg" alt="Milo"></div>
         <div>
           <div class="msg-bubble">
-            <p>Bonjour <?= htmlspecialchars($client['name'] ? explode(' ', $client['name'])[0] : '') ?> 👋</p>
-            <p>Je suis votre assistant IA personnel. Je connais votre activité <?php if($audit_url): ?>(<strong><?= htmlspecialchars($audit_url) ?></strong>)<?php endif; ?> et les outils les plus adaptés à votre secteur.</p>
-            <p>Posez-moi n'importe quelle question sur le déploiement de l'IA dans votre entreprise · je vous guide étape par étape.</p>
+            <p>Bonjour <?= htmlspecialchars($client['name'] ? explode(' ', $client['name'])[0] : '') ?>, je suis Milo.</p>
+            <p>Je suis une IA, et c'est votre avantage : je suis là 24h/24, je connais votre activité <?php if($audit_url): ?>(<strong><?= htmlspecialchars($audit_url) ?></strong>)<?php endif; ?> et les outils les plus adaptés à votre secteur.</p>
+            <p>Posez-moi n'importe quelle question sur le déploiement de l'IA dans votre entreprise, je vous guide étape par étape.</p>
           </div>
         </div>
       </div>
 
       <?php foreach($history as $msg): ?>
       <div class="msg <?= $msg['role'] ?>">
-        <div class="msg-avatar"><?= $msg['role'] === 'assistant' ? 'A' : '👤' ?></div>
+        <div class="msg-avatar"><?= $msg['role'] === 'assistant' ? '<img src="/assets/img/milo-avatar.jpg" alt="Milo">' : '👤' ?></div>
         <div>
           <div class="msg-bubble" data-raw="<?= htmlspecialchars($msg['content']) ?>"><?= nl2br(htmlspecialchars($msg['content'])) ?></div>
           <div class="msg-time"><?= date('H:i', strtotime($msg['created_at'])) ?></div>
@@ -212,7 +213,7 @@ body{margin:0;height:100vh;display:flex;flex-direction:column;overflow:hidden}
 
       <!-- Typing indicator -->
       <div class="msg assistant typing" id="typing-indicator">
-        <div class="msg-avatar">A</div>
+        <div class="msg-avatar"><img src="/assets/img/milo-avatar.jpg" alt="Milo"></div>
         <div class="msg-bubble">
           <div class="typing-dots">
             <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
@@ -277,7 +278,7 @@ function sendSuggestion(text) {
 function appendMessage(role, html) {
   const div = document.createElement('div');
   div.className = `msg ${role}`;
-  const avatar = role === 'assistant' ? 'A' : '👤';
+  const avatar = role === 'assistant' ? '<img src="/assets/img/milo-avatar.jpg" alt="Milo">' : '👤';
   div.innerHTML = `
     <div class="msg-avatar">${avatar}</div>
     <div><div class="msg-bubble">${html}</div></div>

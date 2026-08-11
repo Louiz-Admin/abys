@@ -38,10 +38,28 @@ $page_canonical = $page_canonical ?? (SITE_URL . $_SERVER['REQUEST_URI']);
   $tracking = [];
   try {
       $tdb = get_db();
-      foreach ($tdb->query("SELECT `key`,value FROM settings WHERE `key` IN ('ga4_id','gads_id','gads_conversion_label','meta_pixel_id')")->fetchAll() as $r) {
+      foreach ($tdb->query("SELECT `key`,value FROM settings WHERE `key` IN ('ga4_id','gads_id','gads_conversion_label','meta_pixel_id','imap_cron_key')")->fetchAll() as $r) {
           $tracking[$r['key']] = $r['value'];
       }
   } catch (Exception $e) {}
+
+  // ── Déclencheur Milo email (poor-man's cron : au plus 1 fois / 5 min) ────
+  // Le trafic du site réveille email-check.php en fire-and-forget. Aucun cron requis.
+  try {
+      $lockf = sys_get_temp_dir() . '/abys_milocheck.lock';
+      if (!is_file($lockf) || (time() - filemtime($lockf)) > 300) {
+          @touch($lockf);
+          $ck = $tracking['imap_cron_key'] ?? 'abys_cron_2026_x7k9p';
+          $chm = curl_init('https://abys.ai/api/email-check.php?key=' . rawurlencode($ck));
+          curl_setopt_array($chm, [
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_TIMEOUT_MS     => 500,   // fire-and-forget : ne ralentit jamais la page
+              CURLOPT_NOSIGNAL       => 1,
+          ]);
+          @curl_exec($chm);
+          @curl_close($chm);
+      }
+  } catch (Throwable $e) { /* jamais bloquant */ }
   $ga4_id    = $tracking['ga4_id']    ?? '';
   $gads_id   = $tracking['gads_id']   ?? '';  // AW-XXXXXXXXX
   ?>
