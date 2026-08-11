@@ -792,7 +792,7 @@ include __DIR__ . '/includes/nav.php';
   function extractCompanyNameSim(title, h1, domain) {
     var candidates = [];
     if (title) {
-      var parts = title.split(/\s*[-|–-·•\/]\s*/);
+      var parts = title.split(/\s*[-|\u2013\u2014\u00B7\u2022\/]\s*/);
       var stop  = /^(accueil|home|bienvenue|contact|actualit[eé]s?|news|blog|[àa] propos|about|site officiel|page d'accueil)$/i;
       parts.forEach(function (p) { p = p.trim(); if (p && !stop.test(p) && p.length > 1 && p.length < 60) candidates.push(p); });
     }

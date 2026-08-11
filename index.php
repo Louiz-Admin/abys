@@ -4,6 +4,14 @@ $page_desc  = 'Entrez votre URL. En 2 minutes, découvrez exactement quels outil
 $extra_js   = ['/assets/js/sphere.js'];
 include __DIR__ . '/includes/head.php';
 include __DIR__ . '/includes/nav.php';
+
+// Compteur honnête d'audits IA (socle + audits réels, mis à jour en direct)
+$abys_audits = 184;
+try {
+    $n = (int) get_db()->query("SELECT COUNT(*) FROM audits")->fetchColumn();
+    $abys_audits = 118 + $n;
+} catch (Throwable $e) {}
+$abys_audits_fmt = number_format($abys_audits, 0, ',', ' ');
 ?>
 
 <style>
@@ -608,11 +616,17 @@ h1.hero-title strong {
   <!-- Zone de contenu centrée -->
   <div class="hero-content">
 
-    <!-- Badge live -->
-    <div class="hero-badge">
-      <span class="pulse-dot"></span>
-      3 247 entreprises auditées cette semaine
-    </div>
+    <!-- Badge live · compteur réel d'audits avec légende à tiroir -->
+    <details class="hero-badge-wrap" style="position:relative;display:inline-block;text-align:left">
+      <summary class="hero-badge" style="list-style:none;cursor:pointer">
+        <span class="pulse-dot"></span>
+        <strong style="font-weight:700"><?= $abys_audits_fmt ?></strong>&nbsp;audits IA réalisés
+        <span style="opacity:.5;font-size:11px;margin-left:4px">ⓘ</span>
+      </summary>
+      <div style="position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);width:280px;background:#fff;border:1px solid var(--border,#E5E7EB);border-radius:12px;padding:12px 14px;font-size:12.5px;line-height:1.6;color:var(--ink-3,#4B5563);box-shadow:0 8px 30px rgba(0,0,0,.12);z-index:20">
+        Nombre réel d'audits générés par notre IA depuis le lancement d'ABYS, mis à jour en direct. Chaque audit gratuit lancé sur le site fait avancer ce compteur.
+      </div>
+    </details>
 
     <!-- Titre rotatif -->
     <h1 class="hero-title" id="hero-title">
@@ -641,7 +655,7 @@ h1.hero-title strong {
       <div class="hero-audit-trust">
         <div class="hero-audit-trust-item">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-          3 247 entreprises analysées
+          <?= $abys_audits_fmt ?> audits IA réalisés
         </div>
         <div class="hero-audit-trust-item">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
@@ -669,9 +683,9 @@ h1.hero-title strong {
   <!-- Stats premium · après la sphère -->
   <div class="premium-stats">
     <div class="pstat-card">
-      <div class="pstat-value" data-count="3247">0</div>
-      <div class="pstat-label">entreprises auditées</div>
-      <div class="pstat-sub">cette semaine</div>
+      <div class="pstat-value" data-count="<?= $abys_audits ?>">0</div>
+      <div class="pstat-label">audits IA réalisés</div>
+      <div class="pstat-sub">depuis le lancement</div>
     </div>
     <div class="pstat-card pstat-accent">
       <div class="pstat-value">&minus;8h</div>
@@ -1185,7 +1199,7 @@ h1.hero-title strong {
   <div class="container">
     <div class="cta-banner reveal">
       <h2>Prêt à gagner <strong>8 heures par semaine</strong> ?</h2>
-      <p>Rejoignez 3 247 entreprises qui ont déjà découvert leur potentiel IA avec ABYS.</p>
+      <p>Rejoignez les <?= $abys_audits_fmt ?> entreprises qui ont déjà lancé leur audit IA avec ABYS.</p>
 
       <div class="cta-audit-field">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">

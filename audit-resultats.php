@@ -1013,7 +1013,7 @@ include __DIR__ . '/includes/nav.php';
   function extractCompanyName(title, h1, domain) {
     var candidates = [];
     if (title) {
-      var parts = title.split(/\s*[-|–-·•\/]\s*/);
+      var parts = title.split(/\s*[-|\u2013\u2014\u00B7\u2022\/]\s*/);
       var stop = /^(accueil|home|bienvenue|welcome|contact|actualité|actualités|news|blog|à propos|about|page d'accueil|site officiel)$/i;
       parts.forEach(function(p) { p = p.trim(); if (p && !stop.test(p) && p.length > 1) candidates.push(p); });
     }

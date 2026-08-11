@@ -8,6 +8,9 @@ include __DIR__ . '/includes/nav.php';
 <!-- Canvas animation de fond -->
 <canvas id="bg-canvas" style="position:fixed;inset:0;width:100%;height:100%;z-index:-1;display:block"></canvas>
 
+<!-- Faisceaux infinis balayant tout l'écran -->
+<div class="beam-cosmos"></div>
+
 <style>
 /* ── Rotating emerald/turquoise beam around loading box ── */
 @property --beam-angle {
@@ -82,6 +85,52 @@ include __DIR__ . '/includes/nav.php';
   box-shadow: 0 8px 40px rgba(0,0,0,0.10), 0 1px 3px rgba(0,0,0,0.06);
 }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Faisceaux plein écran, infinis (débordent des bords) ── */
+.beam-cosmos {
+  position: fixed;
+  top: 50%; left: 50%;
+  width: 230vmax; height: 230vmax;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  pointer-events: none;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 188deg,
+    rgba(52,211,153,0.08) 216deg,
+    rgba(52,211,153,0.26) 248deg,
+    rgba(14,165,233,0.30) 268deg,
+    rgba(16,185,129,0.26) 288deg,
+    rgba(16,185,129,0.08) 316deg,
+    transparent 344deg,
+    transparent 360deg
+  );
+  animation: beam-spin-cosmos 9s linear infinite;
+  filter: blur(8px);
+  -webkit-mask-image: radial-gradient(circle at center, transparent 140px, #000 420px);
+  mask-image: radial-gradient(circle at center, transparent 140px, #000 420px);
+}
+/* Second balayage, plus lent et inversé, pour la profondeur */
+.beam-cosmos::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 30deg,
+    rgba(14,165,233,0.12) 60deg,
+    rgba(52,211,153,0.10) 90deg,
+    transparent 130deg,
+    transparent 360deg
+  );
+  animation: beam-spin-cosmos-rev 14s linear infinite;
+}
+@keyframes beam-spin-cosmos { to { transform: translate(-50%, -50%) rotate(360deg); } }
+@keyframes beam-spin-cosmos-rev { to { transform: rotate(-360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .beam-cosmos, .beam-cosmos::after { animation: none; }
+}
 </style>
 
 <!-- Contenu principal centré -->
