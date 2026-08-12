@@ -1,591 +1,362 @@
 <?php
-$page_title = 'Questionnaire · ABYS AI';
-$extra_js   = ['/assets/js/audit.js'];
+$page_title = 'Votre audit IA en 2 minutes · ABYS AI';
 include __DIR__ . '/includes/head.php';
-include __DIR__ . '/includes/nav.php';
+// TUNNEL PLEIN ÉCRAN : pas de nav, pas de footer. Une question à la fois, posée par Milo.
 ?>
 <style>
-.q-hero { text-align:center; padding:52px 0 32px; }
-.q-hero h1 { font-size:40px; font-weight:300; letter-spacing:-0.04em; margin-bottom:12px; }
-.q-hero p { font-size:16px; color:var(--ink-3); max-width:520px; margin:0 auto; line-height:1.6; }
+  html, body { margin:0; padding:0; background:#F0FDF8; }
+  body { overflow-x:hidden; font-family:var(--font, -apple-system, sans-serif); }
 
-/* Progress bar */
-.q-progress-wrap { max-width:800px; margin:0 auto 28px; padding:0 24px; }
-.q-progress-bar-bg { height:4px; background:var(--border); border-radius:4px; overflow:hidden; }
-.q-progress-bar { height:4px; background:var(--green); border-radius:4px; transition:width 400ms ease; }
-.q-progress-label { font-size:12px; color:var(--ink-4); margin-top:6px; text-align:right; }
+  /* Faisceaux discrets en fond (cohérents avec le moment d'audit) */
+  .qt-beams { position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none; opacity:.5; }
+  .qt-beams span { position:absolute; top:-35%; left:var(--l); width:120px; height:180%;
+    transform-origin:top center; transform:rotate(var(--a)); }
+  .qt-beams span::before { content:''; position:absolute; inset:0;
+    background:linear-gradient(to bottom, rgba(52,211,153,.13), rgba(14,165,233,.05) 55%, transparent 80%);
+    -webkit-mask-image:linear-gradient(to right, transparent, #000 42%, #000 58%, transparent);
+            mask-image:linear-gradient(to right, transparent, #000 42%, #000 58%, transparent);
+    filter:blur(8px); transform-origin:top center; will-change:transform;
+    animation:qt-ray var(--d) ease-in-out var(--delay,0s) infinite alternate; }
+  @keyframes qt-ray { from{ transform:rotate(calc(var(--s) * -1)); } to{ transform:rotate(var(--s)); } }
+  @media (prefers-reduced-motion: reduce){ .qt-beams span::before{ animation:none; } }
 
-/* Section titles */
-.q-section-title {
-  font-size:13px; font-weight:700; color:var(--green-deep);
-  letter-spacing:0.08em; text-transform:uppercase;
-  margin:36px 0 16px; display:flex; align-items:center; gap:8px;
-}
-.q-section-title::after {
-  content:''; flex:1; height:1px; background:var(--border);
-}
+  /* Barre de progression */
+  .qt-top { position:fixed; top:0; left:0; right:0; z-index:10; }
+  .qt-bar { height:4px; background:rgba(16,185,129,.12); }
+  .qt-bar i { display:block; height:100%; width:0; background:linear-gradient(90deg,#10B981,#0EA5E9);
+    transition:width .45s cubic-bezier(.3,1,.4,1); }
+  .qt-meta { display:flex; justify-content:space-between; align-items:center; padding:14px 22px; }
+  .qt-logo { display:flex; align-items:center; gap:8px; font-size:14px; letter-spacing:.14em; color:#0A1F1A; }
+  .qt-logo b { font-weight:800; } .qt-logo i { font-style:normal; color:#10B981; font-weight:600; }
+  .qt-count { font-size:12.5px; font-weight:600; color:#6B7280; letter-spacing:.04em; }
 
-.q-block { background:#fff; border:1px solid var(--border); border-radius:20px; padding:32px; margin-bottom:20px; box-shadow:var(--shadow-sm); }
-.q-block h3 { font-size:17px; font-weight:600; color:var(--ink-2); margin-bottom:20px; display:flex; align-items:center; gap:10px; line-height:1.4; }
-.q-num { display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; background:var(--green); color:#fff; border-radius:50%; font-size:13px; font-weight:700; flex-shrink:0; }
+  /* Scène */
+  .qt-stage { position:relative; z-index:2; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:96px 22px 60px; }
+  .qt-step { width:100%; max-width:640px; opacity:0; transform:translateY(22px); pointer-events:none;
+    position:absolute; transition:opacity .38s ease, transform .38s cubic-bezier(.3,1,.4,1); }
+  .qt-step.on { opacity:1; transform:none; pointer-events:auto; position:relative; }
+  .qt-step.out { opacity:0; transform:translateY(-22px); }
 
-.opt-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
-.opt-grid.col2 { grid-template-columns:repeat(2,1fr); }
-.opt-grid.col4 { grid-template-columns:repeat(4,1fr); }
-@media(max-width:640px){ .opt-grid,.opt-grid.col2,.opt-grid.col4 { grid-template-columns:repeat(2,1fr); } }
-@media(max-width:420px){ .opt-grid,.opt-grid.col2,.opt-grid.col4 { grid-template-columns:1fr 1fr; } }
+  /* Milo pose la question */
+  .qt-milo { display:flex; gap:14px; align-items:flex-start; margin-bottom:26px; }
+  .qt-milo img { width:52px; height:52px; border-radius:50%; border:2px solid #10B981; object-fit:cover; flex-shrink:0;
+    box-shadow:0 0 0 5px rgba(16,185,129,.12); }
+  .qt-q { background:#fff; border:1px solid #E5E7EB; border-radius:4px 18px 18px 18px; padding:16px 20px;
+    box-shadow:0 8px 30px -14px rgba(2,30,20,.25); }
+  .qt-q h2 { font-size:clamp(19px,2.6vw,23px); font-weight:700; letter-spacing:-.02em; color:#0A1F1A; margin:0; line-height:1.35; }
+  .qt-q p { font-size:13.5px; color:#6B7280; margin:6px 0 0; }
 
-.opt-box {
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  gap:8px; padding:16px 10px; border:2px solid var(--border); border-radius:14px;
-  cursor:pointer; text-align:center; font-size:13px; font-weight:500; color:var(--ink-2);
-  background:#fff; transition:border-color 150ms,background 150ms,transform 100ms;
-  user-select:none; min-height:80px;
-}
-.opt-box:hover { border-color:#10B981; background:#F0FDF4; }
-.opt-box.selected { border-color:#10B981; background:#F0FDF4; color:#065F46; }
-.opt-box.selected .ico { transform:scale(1.08); }
+  /* Options */
+  .qt-opts { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:10px; }
+  .qt-opts.wide { grid-template-columns:1fr; max-width:520px; }
+  .qt-opt { display:flex; align-items:center; gap:12px; background:#fff; border:1.5px solid #E5E7EB; border-radius:14px;
+    padding:14px 16px; cursor:pointer; font-size:14.5px; font-weight:500; color:#1F2937; text-align:left;
+    transition:border-color .15s, transform .12s, box-shadow .15s; user-select:none; font-family:inherit; }
+  .qt-opt:hover { border-color:rgba(16,185,129,.55); transform:translateY(-1px); box-shadow:0 8px 22px -12px rgba(16,185,129,.35); }
+  .qt-opt.sel { border-color:#10B981; background:#ECFDF5; box-shadow:0 0 0 3px rgba(16,185,129,.12); }
+  .qt-opt .ic { font-size:19px; flex-shrink:0; }
+  .qt-opt .k { margin-left:auto; font-size:10.5px; font-weight:700; color:#9CA3AF; border:1px solid #E5E7EB;
+    border-radius:6px; padding:2px 7px; flex-shrink:0; }
+  .qt-opt.sel .k { color:#059669; border-color:rgba(16,185,129,.4); }
 
-/* Compact option (no icon) */
-.opt-box.compact {
-  min-height:unset; padding:12px 14px; flex-direction:row;
-  justify-content:flex-start; gap:10px; text-align:left;
-}
+  /* Champs texte (étape finale) */
+  .qt-fields { display:flex; flex-direction:column; gap:10px; max-width:440px; }
+  .qt-fields input { padding:15px 16px; border-radius:13px; border:1.5px solid #E5E7EB; font-size:15.5px;
+    font-family:inherit; outline:none; background:#fff; transition:border-color .15s, box-shadow .15s; }
+  .qt-fields input:focus { border-color:#10B981; box-shadow:0 0 0 3px rgba(16,185,129,.12); }
+  .qt-fields input.err { border-color:#EF4444; }
 
-.multi-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
-@media(max-width:500px){ .multi-grid { grid-template-columns:1fr; } }
-.multi-box {
-  display:flex; align-items:center; gap:10px; padding:12px 14px;
-  border:2px solid var(--border); border-radius:12px; cursor:pointer;
-  font-size:13px; font-weight:500; color:var(--ink-2); background:#fff;
-  transition:border-color 150ms,background 150ms;
-}
-.multi-box:hover { border-color:#10B981; background:#F0FDF4; }
-.multi-box.selected { border-color:#10B981; background:#F0FDF4; color:#065F46; }
+  /* Navigation bas */
+  .qt-nav { display:flex; align-items:center; gap:14px; margin-top:26px; }
+  .qt-back { background:none; border:none; color:#6B7280; font-size:13.5px; cursor:pointer; font-family:inherit;
+    display:flex; align-items:center; gap:6px; padding:8px 4px; }
+  .qt-back:hover { color:#0A1F1A; }
+  .qt-next { margin-left:auto; background:linear-gradient(90deg,#059669,#0EA5E9 55%,#10B981); color:#fff; border:none;
+    font-family:inherit; font-size:15px; font-weight:700; border-radius:13px; padding:14px 28px; cursor:pointer;
+    box-shadow:0 10px 26px -10px rgba(16,185,129,.7); transition:transform .12s, opacity .15s; }
+  .qt-next:hover { transform:translateY(-1px); }
+  .qt-next:disabled { opacity:.4; cursor:not-allowed; transform:none; }
+  .qt-hint { font-size:12px; color:#9CA3AF; margin-top:12px; }
 
-/* Range slider */
-.q-slider-wrap { padding:4px 0; }
-.q-slider { -webkit-appearance:none; appearance:none; width:100%; height:6px; border-radius:6px; background:var(--border); outline:none; margin:16px 0 8px; }
-.q-slider::-webkit-slider-thumb { -webkit-appearance:none; appearance:none; width:22px; height:22px; border-radius:50%; background:var(--green); cursor:pointer; border:2px solid #fff; box-shadow:0 2px 8px rgba(16,185,129,0.4); }
-.q-slider-labels { display:flex; justify-content:space-between; font-size:12px; color:var(--ink-4); }
-.q-slider-val { font-size:18px; font-weight:700; color:var(--green-deep); text-align:center; margin:4px 0; }
-
-/* Text input */
-.q-input {
-  width:100%; padding:14px 16px; border:2px solid var(--border); border-radius:12px;
-  font-size:15px; color:var(--ink-1); outline:none; transition:border-color 150ms;
-  box-sizing:border-box; font-family:inherit; background:var(--bg);
-}
-.q-input:focus { border-color:#10B981; }
-.q-input::placeholder { color:var(--ink-4); }
-
-/* Textarea */
-.q-textarea {
-  width:100%; padding:14px 16px; border:2px solid var(--border); border-radius:12px;
-  font-size:14px; color:var(--ink-1); outline:none; transition:border-color 150ms;
-  box-sizing:border-box; font-family:inherit; resize:vertical; min-height:90px; background:var(--bg);
-}
-.q-textarea:focus { border-color:#10B981; }
-
-/* Email */
-.email-input {
-  width:100%; padding:14px 16px; border:2px solid var(--border); border-radius:12px;
-  font-size:15px; color:var(--ink-1); outline:none; transition:border-color 150ms;
-  box-sizing:border-box; font-family:inherit;
-}
-.email-input:focus { border-color:#10B981; }
-
-.submit-btn {
-  width:100%; padding:18px; background:linear-gradient(90deg,#059669 0%,#0EA5E9 30%,#10B981 50%,#0EA5E9 70%,#059669 100%);
-  background-size:300% 100%; animation:btn-shine 3s linear infinite;
-  color:#fff; border:none; border-radius:14px;
-  font-size:16px; font-weight:700; cursor:pointer;
-  box-shadow:0 4px 20px rgba(16,185,129,0.35);
-  position:relative; overflow:hidden;
-}
-.submit-btn:disabled { opacity:0.6; cursor:not-allowed; animation:none; }
-@keyframes btn-shine { 0%{background-position:0% 0%} 100%{background-position:300% 0%} }
-
-.loading-state { display:none; text-align:center; padding:60px 20px; }
-
-/* Hint */
-.q-hint { font-size:12px; color:var(--ink-4); margin-top:8px; line-height:1.5; }
-
-/* Icon system */
-.ico {
-  display:inline-flex; align-items:center; justify-content:center;
-  width:44px; height:44px; border-radius:12px;
-  background:linear-gradient(135deg,rgba(16,185,129,0.08),rgba(14,165,233,0.08));
-  border:1px solid rgba(16,185,129,0.15);
-  animation:ico-pulse 3s ease-in-out infinite;
-  flex-shrink:0; transition:transform 100ms;
-}
-.ico svg { width:22px; height:22px; stroke:#10B981; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
-.ico-sm { width:32px; height:32px; border-radius:8px; }
-.ico-sm svg { width:16px; height:16px; }
-@keyframes ico-pulse {
-  0%,100% { box-shadow:0 0 0 0 rgba(16,185,129,0); }
-  50% { box-shadow:0 0 12px 2px rgba(16,185,129,0.18); }
-}
-@keyframes spin { to { transform:rotate(360deg); } }
+  /* Écran de chargement final */
+  .qt-loading { text-align:center; display:none; }
+  .qt-loading img { width:76px; height:76px; border-radius:50%; border:3px solid #10B981; object-fit:cover;
+    box-shadow:0 0 0 7px rgba(16,185,129,.12); margin-bottom:18px; }
+  .qt-spin { width:44px; height:44px; margin:0 auto 16px; border-radius:50%;
+    border:3px solid rgba(16,185,129,.15); border-top-color:#10B981; animation:qtspin .9s linear infinite; }
+  @keyframes qtspin { to { transform:rotate(360deg); } }
+  .qt-loading h2 { font-size:24px; font-weight:300; letter-spacing:-.03em; color:#0A1F1A; margin:0 0 8px; }
+  .qt-loading h2 b { font-weight:700; }
+  .qt-loading p { font-size:14px; color:#6B7280; min-height:22px; transition:opacity .3s; }
 </style>
 
-<div class="q-hero">
-  <div class="container">
-    <div class="badge" style="margin:0 auto 16px">Audit personnalisé</div>
-    <h1>Quelques questions pour<br><strong>affiner votre audit</strong></h1>
-    <p>Plus on en sait sur vous et votre entreprise, plus les recommandations seront pertinentes. 3 à 4 minutes suffisent.</p>
+<!-- Faisceaux -->
+<div class="qt-beams" aria-hidden="true">
+  <span style="--a:-18deg;--l:56%;--d:9s;--s:8deg;--delay:-2s"></span>
+  <span style="--a:-4deg;--l:62%;--d:7s;--s:10deg;--delay:-5s"></span>
+  <span style="--a:12deg;--l:68%;--d:10.5s;--s:7deg;--delay:-1s"></span>
+  <span style="--a:26deg;--l:73%;--d:8s;--s:9deg;--delay:-4s"></span>
+</div>
+
+<!-- Progression -->
+<div class="qt-top">
+  <div class="qt-bar"><i id="qt-bar"></i></div>
+  <div class="qt-meta">
+    <div class="qt-logo">
+      <svg width="26" height="26" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="9" fill="#052E16"/><path d="M16 7L24.5 24" stroke="#10B981" stroke-width="2.4" stroke-linecap="round"/><path d="M16 7L7.5 24" stroke="#10B981" stroke-width="2.4" stroke-linecap="round"/><line x1="10.5" y1="19" x2="21.5" y2="19" stroke="#10B981" stroke-width="2" stroke-linecap="round"/><circle cx="16" cy="7" r="2" fill="#34D399"/></svg>
+      <span><b>ABYS</b><i> AI</i></span>
+    </div>
+    <div class="qt-count" id="qt-count">1/10</div>
   </div>
 </div>
 
-<!-- Progress -->
-<div class="q-progress-wrap">
-  <div class="q-progress-bar-bg">
-    <div class="q-progress-bar" id="q-progress" style="width:0%"></div>
-  </div>
-  <div class="q-progress-label" id="q-progress-label">0 / 12 questions</div>
-</div>
+<div class="qt-stage">
+  <div id="qt-steps"></div>
 
-<div class="container" style="max-width:800px;padding-bottom:80px">
-
-  <div id="questionnaire">
-
-    <!-- ════════════════════════════════════════
-         SECTION 1 · L'ENTREPRISE
-         ════════════════════════════════════════ -->
-    <div class="q-section-title">🏢 Votre entreprise</div>
-
-    <!-- Q1 : Secteur -->
-    <div class="q-block" data-q="1">
-      <h3><span class="q-num">1</span> Quel est votre secteur d'activité ?</h3>
-      <div class="opt-grid" id="grid-sector">
-        <div class="opt-box" data-group="sector" data-value="Artisan / BTP">
-          <span class="ico"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
-          Artisan / BTP
-        </div>
-        <div class="opt-box" data-group="sector" data-value="Commerce de détail">
-          <span class="ico"><svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></span>
-          Commerce
-        </div>
-        <div class="opt-box" data-group="sector" data-value="Restauration">
-          <span class="ico"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></span>
-          Restauration
-        </div>
-        <div class="opt-box" data-group="sector" data-value="Santé / Bien-être">
-          <span class="ico"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>
-          Santé / Bien-être
-        </div>
-        <div class="opt-box" data-group="sector" data-value="Services / Conseil">
-          <span class="ico"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>
-          Services / Conseil
-        </div>
-        <div class="opt-box" data-group="sector" data-value="Immobilier">
-          <span class="ico"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
-          Immobilier
-        </div>
-        <div class="opt-box" data-group="sector" data-value="Transport / Logistique">
-          <span class="ico"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></span>
-          Transport
-        </div>
-        <div class="opt-box" data-group="sector" data-value="Juridique / Comptabilité">
-          <span class="ico"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
-          Juridique / Compta
-        </div>
-        <div class="opt-box" data-group="sector" data-value="Beauté / Esthétique">
-          <span class="ico"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/></svg></span>
-          Beauté
-        </div>
-        <div class="opt-box" data-group="sector" data-value="Agriculture">
-          <span class="ico"><svg viewBox="0 0 24 24"><path d="M12 22V12"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/><path d="M8 5.07A9.92 9.92 0 0 1 12 4c1.68 0 3.26.42 4.65 1.16"/><path d="M12 4V2"/></svg></span>
-          Agriculture
-        </div>
-        <div class="opt-box" data-group="sector" data-value="E-commerce">
-          <span class="ico"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></span>
-          E-commerce
-        </div>
-        <div class="opt-box" data-group="sector" data-value="Autre">
-          <span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
-          Autre
-        </div>
-      </div>
-    </div>
-
-    <!-- Q2 : Taille -->
-    <div class="q-block" data-q="2">
-      <h3><span class="q-num">2</span> Combien de personnes dans votre entreprise ?</h3>
-      <div class="opt-grid col2">
-        <div class="opt-box" data-group="size" data-value="Juste moi (auto-entrepreneur)">
-          <span class="ico"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
-          Juste moi
-        </div>
-        <div class="opt-box" data-group="size" data-value="2 à 5 personnes">
-          <span class="ico"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 1-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
-          2 – 5
-        </div>
-        <div class="opt-box" data-group="size" data-value="6 à 20 personnes">
-          <span class="ico"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 1-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
-          6 – 20
-        </div>
-        <div class="opt-box" data-group="size" data-value="Plus de 20 personnes">
-          <span class="ico"><svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><line x1="9" y1="22" x2="9" y2="2"/><line x1="14" y1="22" x2="14" y2="2"/></svg></span>
-          20+
-        </div>
-      </div>
-    </div>
-
-    <!-- Q3 : Ancienneté -->
-    <div class="q-block" data-q="3">
-      <h3><span class="q-num">3</span> Depuis combien de temps existe votre entreprise ?</h3>
-      <div class="opt-grid col2">
-        <div class="opt-box compact" data-group="age" data-value="Moins d'1 an">🌱 Moins d'un an</div>
-        <div class="opt-box compact" data-group="age" data-value="1 à 3 ans">🌿 1 à 3 ans</div>
-        <div class="opt-box compact" data-group="age" data-value="3 à 10 ans">🌳 3 à 10 ans</div>
-        <div class="opt-box compact" data-group="age" data-value="Plus de 10 ans">🏛 Plus de 10 ans</div>
-      </div>
-    </div>
-
-    <!-- Q4 : CA / budget -->
-    <div class="q-block" data-q="4">
-      <h3><span class="q-num">4</span> Quel est l'ordre de grandeur de votre chiffre d'affaires annuel ?</h3>
-      <p class="q-hint" style="margin-bottom:16px">Cette information nous aide à calibrer le ROI de vos automatisations · elle reste confidentielle.</p>
-      <div class="opt-grid col2">
-        <div class="opt-box compact" data-group="revenue" data-value="Moins de 50 000€">Moins de 50 000€</div>
-        <div class="opt-box compact" data-group="revenue" data-value="50 000 à 150 000€">50 000 à 150 000€</div>
-        <div class="opt-box compact" data-group="revenue" data-value="150 000 à 500 000€">150 000 à 500 000€</div>
-        <div class="opt-box compact" data-group="revenue" data-value="Plus de 500 000€">Plus de 500 000€</div>
-      </div>
-    </div>
-
-    <!-- ════════════════════════════════════════
-         SECTION 2 · LE DIRIGEANT
-         ════════════════════════════════════════ -->
-    <div class="q-section-title">👤 Vous, le dirigeant</div>
-
-    <!-- Q5 : Votre rôle réel -->
-    <div class="q-block" data-q="5">
-      <h3><span class="q-num">5</span> Au quotidien, quelle est votre principale casquette ?</h3>
-      <div class="multi-grid" id="grid-role">
-        <div class="multi-box" data-group="role" data-value="Commercial / prospection">
-          <span class="ico ico-sm"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
-          Commercial / prospection
-        </div>
-        <div class="multi-box" data-group="role" data-value="Opérationnel / terrain">
-          <span class="ico ico-sm"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
-          Opérationnel / terrain
-        </div>
-        <div class="multi-box" data-group="role" data-value="Administratif / gestion">
-          <span class="ico ico-sm"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
-          Administratif / gestion
-        </div>
-        <div class="multi-box" data-group="role" data-value="Recrutement / RH">
-          <span class="ico ico-sm"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></span>
-          Recrutement / RH
-        </div>
-        <div class="multi-box" data-group="role" data-value="Stratégie / pilotage">
-          <span class="ico ico-sm"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
-          Stratégie / pilotage
-        </div>
-        <div class="multi-box" data-group="role" data-value="Communication / marketing">
-          <span class="ico ico-sm"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></span>
-          Communication / marketing
-        </div>
-      </div>
-      <p class="q-hint">Sélectionnez une ou plusieurs réponses.</p>
-    </div>
-
-    <!-- Q6 : Temps perdu en admin -->
-    <div class="q-block" data-q="6">
-      <h3><span class="q-num">6</span> Combien d'heures par semaine passez-vous sur des tâches administratives ou répétitives dont vous vous passeriez volontiers ?</h3>
-      <div class="q-slider-wrap">
-        <div class="q-slider-val" id="admin-time-val">5h / semaine</div>
-        <input type="range" class="q-slider" id="admin-time-slider" min="1" max="30" step="1" value="5">
-        <div class="q-slider-labels">
-          <span>1h</span>
-          <span>15h</span>
-          <span>30h+</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Q7 : Appétence pour le numérique -->
-    <div class="q-block" data-q="7">
-      <h3><span class="q-num">7</span> Comment vous sentez-vous avec les outils numériques ?</h3>
-      <div class="opt-grid col2">
-        <div class="opt-box" data-group="digital" data-value="Je préfère le papier et les habitudes existantes">
-          <span class="ico"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span>
-          Je préfère le papier
-        </div>
-        <div class="opt-box" data-group="digital" data-value="J'utilise quelques outils basiques (Excel, email…)">
-          <span class="ico"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>
-          Quelques outils basiques
-        </div>
-        <div class="opt-box" data-group="digital" data-value="J'utilise plusieurs logiciels métier">
-          <span class="ico"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
-          Plusieurs logiciels métier
-        </div>
-        <div class="opt-box" data-group="digital" data-value="Je suis curieux des nouvelles technologies">
-          <span class="ico"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
-          Curieux des technos
-        </div>
-      </div>
-    </div>
-
-    <!-- Q8 : Objectif principal -->
-    <div class="q-block" data-q="8">
-      <h3><span class="q-num">8</span> Si l'IA vous libérait du temps, qu'en feriez-vous en priorité ?</h3>
-      <div class="multi-grid">
-        <div class="multi-box" data-group="goal" data-value="Développer mon activité commerciale">
-          <span class="ico ico-sm"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
-          Développer mon activité
-        </div>
-        <div class="multi-box" data-group="goal" data-value="Améliorer la qualité de mon service">
-          <span class="ico ico-sm"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
-          Améliorer mon service
-        </div>
-        <div class="multi-box" data-group="goal" data-value="Retrouver du temps personnel / vie de famille">
-          <span class="ico ico-sm"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
-          Temps perso / famille
-        </div>
-        <div class="multi-box" data-group="goal" data-value="Réduire mon stress et ma charge mentale">
-          <span class="ico ico-sm"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>
-          Réduire mon stress
-        </div>
-        <div class="multi-box" data-group="goal" data-value="Embaucher ou déléguer plus facilement">
-          <span class="ico ico-sm"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 1-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
-          Embaucher / déléguer
-        </div>
-        <div class="multi-box" data-group="goal" data-value="Réduire mes coûts de fonctionnement">
-          <span class="ico ico-sm"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 1 0 0 7h5a3.5 3.5 0 1 1 0 7H6"/></svg></span>
-          Réduire mes coûts
-        </div>
-      </div>
-    </div>
-
-    <!-- ════════════════════════════════════════
-         SECTION 3 · L'ÉQUIPE & LES TÂCHES
-         ════════════════════════════════════════ -->
-    <div class="q-section-title">👥 Votre équipe &amp; vos tâches</div>
-
-    <!-- Q9 : Pain points -->
-    <div class="q-block" data-q="9">
-      <h3><span class="q-num">9</span> Quelles tâches prennent le plus de temps dans votre entreprise ?<br><small style="font-size:13px;font-weight:400;color:var(--ink-3)">Sélectionnez tout ce qui s'applique</small></h3>
-      <div class="multi-grid" id="grid-pain">
-        <div class="multi-box" data-group="pain" data-value="Emails et communication">
-          <span class="ico ico-sm"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
-          Emails et communication
-        </div>
-        <div class="multi-box" data-group="pain" data-value="Devis et facturation">
-          <span class="ico ico-sm"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
-          Devis et facturation
-        </div>
-        <div class="multi-box" data-group="pain" data-value="Comptabilité et saisie">
-          <span class="ico ico-sm"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
-          Comptabilité et saisie
-        </div>
-        <div class="multi-box" data-group="pain" data-value="Réseaux sociaux et marketing">
-          <span class="ico ico-sm"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></span>
-          Réseaux sociaux
-        </div>
-        <div class="multi-box" data-group="pain" data-value="Prise de rendez-vous">
-          <span class="ico ico-sm"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
-          Prise de rendez-vous
-        </div>
-        <div class="multi-box" data-group="pain" data-value="Gestion des commandes / stocks">
-          <span class="ico ico-sm"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></span>
-          Commandes / stocks
-        </div>
-        <div class="multi-box" data-group="pain" data-value="Rédaction de documents">
-          <span class="ico ico-sm"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span>
-          Rédaction
-        </div>
-        <div class="multi-box" data-group="pain" data-value="Support client / SAV">
-          <span class="ico ico-sm"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
-          Support client / SAV
-        </div>
-        <div class="multi-box" data-group="pain" data-value="Recrutement et onboarding">
-          <span class="ico ico-sm"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></span>
-          Recrutement / onboarding
-        </div>
-        <div class="multi-box" data-group="pain" data-value="Reporting et tableaux de bord">
-          <span class="ico ico-sm"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg></span>
-          Reporting / tableaux
-        </div>
-      </div>
-    </div>
-
-    <!-- Q10 : Résistance de l'équipe -->
-    <div class="q-block" data-q="10">
-      <h3><span class="q-num">10</span> Si vous avez des collaborateurs · comment perçoivent-ils les nouveaux outils numériques ?</h3>
-      <div class="opt-grid col2">
-        <div class="opt-box compact" data-group="team_adoption" data-value="Très réticents · ils préfèrent les habitudes actuelles">😬 Très réticents</div>
-        <div class="opt-box compact" data-group="team_adoption" data-value="Prudents · à convaincre avec des preuves concrètes">🤔 Prudents à convaincre</div>
-        <div class="opt-box compact" data-group="team_adoption" data-value="Ouverts · prêts à essayer si c'est simple">🙂 Ouverts si c'est simple</div>
-        <div class="opt-box compact" data-group="team_adoption" data-value="Enthousiastes · demandeurs de nouveautés">🚀 Enthousiastes</div>
-        <div class="opt-box compact" data-group="team_adoption" data-value="Je suis seul(e)">👤 Je suis seul(e)</div>
-      </div>
-    </div>
-
-    <!-- Q11 : Outils déjà utilisés -->
-    <div class="q-block" data-q="11">
-      <h3><span class="q-num">11</span> Quels outils / logiciels utilisez-vous déjà ?<br><small style="font-size:13px;font-weight:400;color:var(--ink-3)">Sélectionnez tout ce qui s'applique</small></h3>
-      <div class="multi-grid">
-        <div class="multi-box" data-group="tools" data-value="Suite Office / Google Workspace">📊 Office / Google Workspace</div>
-        <div class="multi-box" data-group="tools" data-value="Logiciel de comptabilité (Sage, QuickBooks…)">📒 Logiciel compta</div>
-        <div class="multi-box" data-group="tools" data-value="CRM (Salesforce, HubSpot, Pipedrive…)">🤝 CRM</div>
-        <div class="multi-box" data-group="tools" data-value="E-commerce (Shopify, WooCommerce…)">🛒 E-commerce</div>
-        <div class="multi-box" data-group="tools" data-value="Outil de réservation (Calendly, Doctolib…)">📅 Réservation en ligne</div>
-        <div class="multi-box" data-group="tools" data-value="Logiciel RH (Lucca, Payfit…)">👥 Logiciel RH</div>
-        <div class="multi-box" data-group="tools" data-value="Outil marketing (Mailchimp, Brevo…)">📧 Emailing / marketing</div>
-        <div class="multi-box" data-group="tools" data-value="Aucun outil particulier">❌ Aucun outil particulier</div>
-      </div>
-    </div>
-
-    <!-- Q12 : Email -->
-    <div class="q-block" data-q="12">
-      <h3><span class="q-num">12</span> Vos coordonnées pour recevoir vos résultats</h3>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
-        <div>
-          <label style="font-size:13px;font-weight:600;color:var(--ink-2);display:block;margin-bottom:6px">Prénom</label>
-          <input type="text" id="q-prenom" class="q-input" placeholder="Marie" autocomplete="given-name">
-        </div>
-        <div>
-          <label style="font-size:13px;font-weight:600;color:var(--ink-2);display:block;margin-bottom:6px">Nom</label>
-          <input type="text" id="q-nom" class="q-input" placeholder="Dupont" autocomplete="family-name">
-        </div>
-      </div>
-      <label style="font-size:13px;font-weight:600;color:var(--ink-2);display:block;margin-bottom:6px">Email professionnel</label>
-      <input type="email" id="q-email" class="email-input" placeholder="marie@monentreprise.fr" autocomplete="email"/>
-      <p class="q-hint">Utilisé uniquement pour votre audit personnalisé. Pas de spam, désinscription en 1 clic.</p>
-    </div>
-
-    <button class="submit-btn" id="q-submit" onclick="submitQuestionnaire()">
-      Lancer mon audit personnalisé →
-    </button>
-  </div>
-
-  <!-- Loading -->
-  <div class="loading-state" id="q-loading">
-    <div style="width:60px;height:60px;border-radius:50%;border:4px solid rgba(16,185,129,0.15);border-top-color:#10B981;animation:spin 900ms linear infinite;margin:0 auto 20px"></div>
-    <p style="font-size:18px;font-weight:600;color:var(--ink-2);margin-bottom:8px">Analyse en cours…</p>
-    <p style="color:var(--ink-3);font-size:14px">Notre IA prépare vos recommandations personnalisées</p>
+  <!-- Chargement final -->
+  <div class="qt-loading" id="qt-loading">
+    <img src="/assets/img/milo-avatar.jpg" alt="Milo">
+    <div class="qt-spin"></div>
+    <h2>Merci. <b>J'analyse vos réponses.</b></h2>
+    <p id="qt-loadmsg">Je croise votre profil avec plus de 300 outils IA…</p>
   </div>
 </div>
 
-<?php include __DIR__ . '/includes/footer.php'; ?>
+<script src="/assets/js/app.js"></script>
+<script src="/assets/js/audit.js"></script>
 <script>
-/* ── Sélection radio (1 seul choix par groupe) ── */
-document.querySelectorAll('.opt-box[data-group]').forEach(box => {
-  box.addEventListener('click', () => {
-    const group = box.dataset.group;
-    document.querySelectorAll(`.opt-box[data-group="${group}"]`).forEach(b => b.classList.remove('selected'));
-    box.classList.add('selected');
-    updateProgress();
-  });
+/* ══════════════ Tunnel Milo : une question à la fois ══════════════ */
+
+const STEPS = [
+  {
+    key: 'Secteur', type: 'single', required: true,
+    q: "Dans quel univers travaillez-vous ?",
+    sub: "C'est la question la plus importante : tout mon audit part de là.",
+    opts: [
+      ['🔧','Artisanat & BTP'], ['🍽️','Restauration & food'], ['🛍️','Commerce & e-commerce'],
+      ['💼','Services & conseil'], ['🧑‍⚕️','Santé & bien-être'], ['🏨','Tourisme & hébergement'],
+      ['🚚','Transport & logistique'], ['🌾','Agriculture'], ['🏠','Immobilier'], ['✨','Autre secteur'],
+    ],
+  },
+  {
+    key: 'Taille', type: 'single', required: true,
+    q: "Vous êtes combien dans l'entreprise ?",
+    opts: [ ['🧑','Je suis seul(e)'], ['👥','2 à 5'], ['👨‍👩‍👧','6 à 20'], ['🏢','21 à 50'], ['🏭','Plus de 50'] ],
+  },
+  {
+    key: "Ancienneté entreprise", type: 'single',
+    q: "Elle existe depuis combien de temps ?",
+    opts: [ ['🌱','Moins de 2 ans'], ['🌿','2 à 5 ans'], ['🌳','5 à 15 ans'], ['🏛️','Plus de 15 ans'] ],
+  },
+  {
+    key: "Chiffre d'affaires", type: 'single',
+    q: "Votre chiffre d'affaires annuel, à la louche ?",
+    sub: "Ça reste entre nous : ça me sert uniquement à calibrer les gains possibles.",
+    opts: [ ['','Moins de 100 k€'], ['','100 à 300 k€'], ['','300 k€ à 1 M€'], ['','Plus de 1 M€'], ['🤫','Je préfère ne pas dire'] ],
+  },
+  {
+    key: 'Tâches chronophages', type: 'multi', required: true,
+    q: "Qu'est-ce qui vous vole le plus de temps ?",
+    sub: "Choisissez tout ce qui vous parle : c'est là que je vais chercher vos gains.",
+    opts: [
+      ['📧','Emails et devis'], ['🧾','Factures et impayés'], ['📅','Planning et rendez-vous'],
+      ['💬','Répondre aux clients'], ['📣','Communication et réseaux'], ['🧮','Comptabilité et paperasse'],
+      ['🧑‍💼','Recrutement'], ['📦','Stocks et fournisseurs'],
+    ],
+  },
+  {
+    key: 'Temps admin/semaine', type: 'single',
+    q: "Combien d'heures par semaine partent dans l'administratif ?",
+    sub: "La moyenne des indépendants français est autour de 8 heures.",
+    opts: [ ['','Moins de 5 h'], ['','5 à 10 h'], ['','10 à 20 h'], ['','Plus de 20 h'] ],
+  },
+  {
+    key: 'Objectifs prioritaires', type: 'multi',
+    q: "Qu'est-ce qui compte le plus pour vous en ce moment ?",
+    opts: [
+      ['⏱️','Gagner du temps'], ['📈','Trouver plus de clients'], ['👀','Être plus visible en ligne'],
+      ['💶','Sécuriser ma trésorerie'], ['😌','Souffler un peu'], ['🚀','Développer une nouvelle offre'],
+    ],
+  },
+  {
+    key: 'Appétence numérique', type: 'single',
+    q: "Avec les outils numériques, vous êtes plutôt…",
+    opts: [
+      ['🫣',"Ce n'est pas mon truc"], ['🙂','À l\'aise avec les bases'],
+      ['😎','Plutôt à l\'aise'], ['🤓','Très à l\'aise, curieux(se) de tout'],
+    ],
+  },
+  {
+    key: 'Adoption équipe', type: 'single',
+    skipIf: a => (a['Taille'] || '').includes('seul'),
+    q: "Et votre équipe, face aux nouveaux outils ?",
+    opts: [ ['🧗','Plutôt réticente'], ['🤝','Prête à essayer si c\'est simple'], ['⚡','Motivée et curieuse'] ],
+  },
+  {
+    key: 'Outils déjà utilisés', type: 'multi',
+    q: "Utilisez-vous déjà certains de ces outils ?",
+    sub: "Aucun, c'est très bien aussi : je pars de votre réalité.",
+    opts: [
+      ['🤖','ChatGPT ou une IA de rédaction'], ['📊','Un logiciel de facturation'], ['📅','Un agenda en ligne'],
+      ['📣','Canva ou un outil de visuels'], ['🧮','Un logiciel de comptabilité'], ['🚫','Aucun de ceux-là'],
+    ],
+  },
+  {
+    key: '_contact', type: 'contact', required: true,
+    q: "C'est tout ! Où envoyons-nous votre audit ?",
+    sub: "Votre plan personnalisé arrive à l'écran dans 30 secondes, et par email pour le garder.",
+  },
+];
+
+const answers = {};
+let cur = 0;
+const $steps = document.getElementById('qt-steps');
+const visible = () => STEPS.filter(s => !s.skipIf || !s.skipIf(answers));
+
+/* ── Rendu d'une étape ── */
+function render(idx, dir) {
+  const seq = visible();
+  cur = Math.max(0, Math.min(idx, seq.length - 1));
+  const st = seq[cur];
+
+  document.getElementById('qt-count').textContent = (cur + 1) + '/' + seq.length;
+  document.getElementById('qt-bar').style.width = Math.round(((cur) / seq.length) * 100) + '%';
+
+  const old = $steps.querySelector('.qt-step.on');
+  if (old) { old.classList.add('out'); old.classList.remove('on'); setTimeout(() => old.remove(), 380); }
+
+  const el = document.createElement('div');
+  el.className = 'qt-step';
+  let inner = `
+    <div class="qt-milo">
+      <img src="/assets/img/milo-avatar.jpg" alt="Milo">
+      <div class="qt-q"><h2>${st.q}</h2>${st.sub ? `<p>${st.sub}</p>` : ''}</div>
+    </div>`;
+
+  if (st.type === 'contact') {
+    inner += `
+      <div class="qt-fields">
+        <input type="text" id="qt-prenom" placeholder="Votre prénom (facultatif)" autocomplete="given-name">
+        <input type="email" id="qt-email" placeholder="votre@email.fr" autocomplete="email" inputmode="email">
+      </div>
+      <div class="qt-nav">
+        <button class="qt-back" onclick="go(-1)">&larr; Retour</button>
+        <button class="qt-next" id="qt-submit" onclick="submitTunnel()">Voir mon audit</button>
+      </div>
+      <div class="qt-hint">Gratuit, sans carte bancaire. Vos réponses ne sont jamais revendues.</div>`;
+  } else {
+    const multi = st.type === 'multi';
+    inner += `<div class="qt-opts${st.opts.some(o=>o[1].length>26)?' wide':''}">` + st.opts.map((o, i) => `
+      <button class="qt-opt" data-i="${i}" onclick="pick(${i})">
+        ${o[0] ? `<span class="ic">${o[0]}</span>` : ''}<span>${o[1]}</span>
+        ${i < 9 ? `<span class="k">${i + 1}</span>` : ''}
+      </button>`).join('') + `</div>
+      <div class="qt-nav">
+        ${cur > 0 ? '<button class="qt-back" onclick="go(-1)">&larr; Retour</button>' : '<span></span>'}
+        ${multi ? '<button class="qt-next" id="qt-next" onclick="go(1)" disabled>Continuer</button>'
+                : (st.required ? '' : '<button class="qt-next" style="background:#fff;color:#6B7280;box-shadow:none;border:1.5px solid #E5E7EB" onclick="go(1)">Passer</button>')}
+      </div>
+      ${multi ? '<div class="qt-hint">Plusieurs choix possibles. Touches 1-9 au clavier.</div>' : '<div class="qt-hint">Un clic suffit. Touches 1-9 au clavier.</div>'}`;
+  }
+
+  el.innerHTML = inner;
+  $steps.appendChild(el);
+  requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('on')));
+
+  // restaurer la sélection déjà faite
+  const prev = answers[st.key];
+  if (prev && st.type !== 'contact') {
+    st.opts.forEach((o, i) => {
+      if ((st.type === 'multi' ? prev.split(', ') : [prev]).includes(o[1])) {
+        el.querySelectorAll('.qt-opt')[i]?.classList.add('sel');
+      }
+    });
+    if (st.type === 'multi') el.querySelector('#qt-next')?.removeAttribute('disabled');
+  }
+  if (st.type === 'contact') setTimeout(() => el.querySelector('#qt-email')?.focus(), 420);
+}
+
+/* ── Sélection ── */
+function pick(i) {
+  const seq = visible(); const st = seq[cur];
+  const btns = $steps.querySelectorAll('.qt-step.on .qt-opt');
+  if (st.type === 'multi') {
+    btns[i].classList.toggle('sel');
+    const sel = [...btns].filter(b => b.classList.contains('sel')).map(b => st.opts[b.dataset.i][1]);
+    answers[st.key] = sel.join(', ');
+    const nx = $steps.querySelector('.qt-step.on #qt-next');
+    if (nx) nx.disabled = sel.length === 0;
+  } else {
+    btns.forEach(b => b.classList.remove('sel'));
+    btns[i].classList.add('sel');
+    answers[st.key] = st.opts[i][1];
+    setTimeout(() => go(1), 260);   // auto-avance fluide
+  }
+}
+
+function go(dir) {
+  const seq = visible(); const st = seq[cur];
+  if (dir > 0 && st.required && st.type !== 'contact' && !answers[st.key]) return;
+  if (cur + dir >= seq.length) return;
+  render(cur + dir, dir);
+}
+
+/* ── Clavier ── */
+document.addEventListener('keydown', e => {
+  const st = visible()[cur];
+  if (!st || st.type === 'contact') { if (e.key === 'Enter') { document.getElementById('qt-submit')?.click(); } return; }
+  const n = parseInt(e.key);
+  if (n >= 1 && n <= (st.opts?.length || 0)) pick(n - 1);
+  if (e.key === 'Enter' && st.type === 'multi' && answers[st.key]) go(1);
+  if (e.key === 'Backspace' && cur > 0) { e.preventDefault(); go(-1); }
 });
-
-/* ── Sélection multi ── */
-document.querySelectorAll('.multi-box').forEach(box => {
-  box.addEventListener('click', () => {
-    box.classList.toggle('selected');
-    updateProgress();
-  });
-});
-
-/* ── Slider admin time ── */
-const slider    = document.getElementById('admin-time-slider');
-const sliderVal = document.getElementById('admin-time-val');
-if (slider) {
-  slider.addEventListener('input', () => {
-    const v = parseInt(slider.value);
-    sliderVal.textContent = v + 'h / semaine';
-    updateProgress();
-  });
-}
-
-/* ── Progress bar ── */
-const TOTAL_Q = 12;
-function updateProgress() {
-  const answered = countAnswered();
-  const pct = Math.round(answered / TOTAL_Q * 100);
-  document.getElementById('q-progress').style.width = pct + '%';
-  document.getElementById('q-progress-label').textContent = answered + ' / ' + TOTAL_Q + ' questions';
-}
-function countAnswered() {
-  const radios  = ['sector','size','age','revenue','digital','team_adoption'];
-  const multis  = ['role','goal','pain','tools'];
-  let count = 0;
-  radios.forEach(g  => { if (document.querySelector(`.opt-box[data-group="${g}"].selected`)) count++; });
-  multis.forEach(g  => { if (document.querySelectorAll(`.multi-box[data-group="${g}"].selected`).length) count++; });
-  if (slider && parseInt(slider.value) > 1) count++;  // slider
-  const email = (document.getElementById('q-email')?.value || '').trim();
-  if (email.includes('@')) count++;
-  return Math.min(count, TOTAL_Q);
-}
 
 /* ── Soumission ── */
-async function submitQuestionnaire() {
-  const email  = document.getElementById('q-email').value.trim();
-  const prenom = document.getElementById('q-prenom').value.trim();
-  const nom    = document.getElementById('q-nom').value.trim();
-
-  if (!email || !email.includes('@')) {
-    document.getElementById('q-email').focus();
-    document.getElementById('q-email').style.borderColor = '#EF4444';
-    return;
+const LOAD_MSGS = [
+  "Je croise votre profil avec plus de 300 outils IA…",
+  "Je calcule vos gains de temps et d'argent…",
+  "Je sélectionne les outils adaptés à votre secteur…",
+  "Je rédige vos recommandations personnalisées…",
+  "Presque prêt, encore quelques secondes…",
+];
+async function submitTunnel() {
+  const email  = (document.getElementById('qt-email')?.value || '').trim();
+  const prenom = (document.getElementById('qt-prenom')?.value || '').trim();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    const f = document.getElementById('qt-email'); f.classList.add('err'); f.focus(); return;
   }
 
-  const getRadio  = g => document.querySelector(`.opt-box[data-group="${g}"].selected`)?.dataset.value || '';
-  const getMulti  = g => [...document.querySelectorAll(`.multi-box[data-group="${g}"].selected`)].map(b => b.dataset.value).join(', ');
+  document.getElementById('qt-steps').style.display = 'none';
+  document.getElementById('qt-count').style.visibility = 'hidden';
+  document.getElementById('qt-bar').style.width = '100%';
+  document.getElementById('qt-loading').style.display = 'block';
 
-  const sector      = getRadio('sector');
-  const size        = getRadio('size');
-  const age         = getRadio('age');
-  const revenue     = getRadio('revenue');
-  const digital     = getRadio('digital');
-  const teamAdopt   = getRadio('team_adoption');
-  const pain        = getMulti('pain');
-  const role        = getMulti('role');
-  const goal        = getMulti('goal');
-  const tools       = getMulti('tools');
-  const adminTime   = slider ? slider.value + 'h/semaine' : '';
+  let mi = 0;
+  const t = setInterval(() => {
+    mi = (mi + 1) % LOAD_MSGS.length;
+    const p = document.getElementById('qt-loadmsg');
+    p.style.opacity = 0; setTimeout(() => { p.textContent = LOAD_MSGS[mi]; p.style.opacity = 1; }, 280);
+  }, 3200);
 
-  if (!sector) {
-    document.getElementById('grid-sector').scrollIntoView({behavior:'smooth', block:'center'});
-    document.getElementById('grid-sector').style.outline = '2px solid #EF4444';
-    setTimeout(() => document.getElementById('grid-sector').style.outline = '', 2000);
-    return;
-  }
-
-  document.getElementById('questionnaire').style.display = 'none';
-  document.getElementById('q-loading').style.display = 'block';
-
-  const answers = {
-    'Secteur'                          : sector,
-    'Taille'                           : size,
-    'Ancienneté entreprise'            : age,
-    'Chiffre d\'affaires'              : revenue,
-    'Rôles du dirigeant'               : role,
-    'Temps admin/semaine'              : adminTime,
-    'Appétence numérique'              : digital,
-    'Objectifs prioritaires'           : goal,
-    'Tâches chronophages'              : pain,
-    'Adoption équipe'                  : teamAdopt,
-    'Outils déjà utilisés'            : tools,
-  };
+  const payload = {};
+  STEPS.forEach(s => { if (s.key !== '_contact' && answers[s.key]) payload[s.key] = answers[s.key]; });
 
   try {
     const lead = await ABYS.api('leads.php', {
       action: 'create', url: '', email,
-      sector, source: 'questionnaire'
+      sector: answers['Secteur'] || '', source: 'questionnaire',
     });
     ABYS.store('lead_id', lead.lead_id);
     if (prenom) ABYS.store('prenom', prenom);
-    if (nom)    ABYS.store('nom', nom);
-    await Audit.runFromQuestionnaire(answers);
+    await Audit.runFromQuestionnaire(payload);
   } catch (err) {
-    document.getElementById('questionnaire').style.display = 'block';
-    document.getElementById('q-loading').style.display = 'none';
+    clearInterval(t);
+    document.getElementById('qt-loading').style.display = 'none';
+    document.getElementById('qt-steps').style.display = '';
+    document.getElementById('qt-count').style.visibility = '';
     alert('Erreur : ' + err.message);
   }
 }
+
+render(0, 1);
 </script>

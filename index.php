@@ -329,7 +329,9 @@ h1.hero-title strong {
   position: relative;
   overflow: hidden;
   transition: transform 200ms var(--ease), box-shadow 200ms var(--ease);
+  text-align: left;               /* fini le centrage hérité */
 }
+.tarif-card-home .btn { margin-top: auto; }   /* CTA tous à la même hauteur */
 .tarif-card-home:hover { transform: translateY(-4px); box-shadow: 0 20px 48px rgba(0,0,0,0.14); }
 .tarif-card-home.light { background: #F4FFFC; border: 1px solid var(--border); }
 .tarif-card-home.dark  { background: linear-gradient(150deg,#0A1F1A 0%,#064E3B 100%); border: 2px solid var(--green); color:#fff; }
@@ -342,15 +344,15 @@ h1.hero-title strong {
 .tarif-card-home.light .tc-name  { color: var(--ink-3); }
 .tarif-card-home.dark  .tc-name  { color: rgba(255,255,255,0.7); }
 .tarif-card-home.accent .tc-name { color: rgba(255,255,255,0.7); }
-.tc-price { font-size:40px; font-weight:700; letter-spacing:-0.04em; line-height:1; margin-bottom:2px; }
+.tc-price { font-size:40px; font-weight:700; letter-spacing:-0.04em; line-height:1; margin-bottom:2px; min-height:42px; display:flex; align-items:baseline; }
 .tarif-card-home.light  .tc-price { color: var(--ink-2); }
 .tarif-card-home.dark   .tc-price { color: var(--green-2); }
 .tarif-card-home.accent .tc-price { color: #A78BFA; }
-.tc-period { font-size:13px; margin-bottom:14px; }
+.tc-period { font-size:13px; margin-bottom:14px; min-height:36px; }
 .tarif-card-home.light  .tc-period { color: var(--ink-4); }
 .tarif-card-home.dark   .tc-period { color: rgba(255,255,255,0.45); }
 .tarif-card-home.accent .tc-period { color: rgba(255,255,255,0.45); }
-.tc-aide { display:flex; align-items:center; gap:6px; padding:7px 10px; border-radius:8px; font-size:12px; font-weight:600; margin-bottom:16px; }
+.tc-aide { display:flex; align-items:center; gap:6px; padding:7px 10px; border-radius:8px; font-size:12px; font-weight:600; margin-bottom:16px; min-height:46px; line-height:1.35; }
 .tarif-card-home.light  .tc-aide { background:rgba(16,185,129,0.1); color:var(--green-deep); border:1px solid rgba(16,185,129,0.2); }
 .tarif-card-home.dark   .tc-aide { background:rgba(16,185,129,0.15); color:#6EE7B7; border:1px solid rgba(16,185,129,0.3); }
 .tarif-card-home.accent .tc-aide { background:rgba(167,139,250,0.15); color:#C4B5FD; border:1px solid rgba(167,139,250,0.3); }
@@ -795,312 +797,26 @@ body:not(.nav-solid) .nav-links a:hover{ color:#6EE7B7; }
 })();
 </script>
 
-<!-- ══════ TESTIMONIALS ══════ -->
+<!-- ══════ TRANSPARENCE · IA assumée (remplace les faux témoignages) ══════ -->
 <section class="testi-section">
-  <div class="container text-center">
-    <div class="testi-label">Témoignages clients</div>
-    <h2 class="section-title reveal">Ce qu'ils réalisent<br><strong>vraiment.</strong></h2>
-    <p class="section-sub reveal">Des artisans, commerçants et professionnels qui ont franchi le pas · leurs mots, pas les nôtres.</p>
-
-    <div class="testi-outer">
-      <!-- Carousel viewport -->
-      <div class="testi-viewport">
-        <div class="testi-track" id="testi-track">
-
-          <!-- ── Témoignage 1 ── -->
-          <div class="testi-slide">
-            <div class="testi-photo-col">
-              <img src="https://images.pexels.com/photos/762020/pexels-photo-762020.jpeg?auto=compress&cs=tinysrgb&w=560&h=720&dpr=1" alt="Marie-Claire Fontaine"/>
-              <div class="testi-photo-badge">
-                <div class="testi-logo-bubble" style="background:linear-gradient(135deg,#10B981,#059669)">BF</div>
-                <div>
-                  <div class="testi-person-name">Marie-Claire Fontaine</div>
-                  <div class="testi-person-role">Boulangerie Fontaine · Bordeaux</div>
-                </div>
-              </div>
-            </div>
-            <div class="testi-body-col">
-              <div>
-                <div class="testi-stars">★★★★★</div>
-                <blockquote class="testi-quote">En 3 semaines, j'ai récupéré 3 heures par jour sur la gestion des commandes. C'est comme avoir un employé de plus · sans les charges.</blockquote>
-              </div>
-              <div class="testi-gain-pill">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-                +3h récupérées chaque jour
-              </div>
-            </div>
-          </div>
-
-          <!-- ── Témoignage 2 ── -->
-          <div class="testi-slide">
-            <div class="testi-photo-col">
-              <img src="https://images.pexels.com/photos/1516680/pexels-photo-1516680.jpeg?auto=compress&cs=tinysrgb&w=560&h=720&dpr=1" alt="Thierry Dumont"/>
-              <div class="testi-photo-badge">
-                <div class="testi-logo-bubble" style="background:linear-gradient(135deg,#0EA5E9,#0284C7)">TD</div>
-                <div>
-                  <div class="testi-person-name">Thierry Dumont</div>
-                  <div class="testi-person-role">Plomberie Dumont · Lyon</div>
-                </div>
-              </div>
-            </div>
-            <div class="testi-body-col">
-              <div>
-                <div class="testi-stars">★★★★★</div>
-                <blockquote class="testi-quote">Mes devis sortent en 2 minutes chrono. Avant j'y passais 45 minutes et je perdais des clients parce que j'étais trop lent à répondre.</blockquote>
-              </div>
-              <div class="testi-gain-pill">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-                Devis en 2 min · avant 45 min
-              </div>
-            </div>
-          </div>
-
-          <!-- ── Témoignage 3 ── -->
-          <div class="testi-slide">
-            <div class="testi-photo-col">
-              <img src="https://images.pexels.com/photos/5215024/pexels-photo-5215024.jpeg?auto=compress&cs=tinysrgb&w=560&h=720&dpr=1" alt="Sophie Renard"/>
-              <div class="testi-photo-badge">
-                <div class="testi-logo-bubble" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9)">SR</div>
-                <div>
-                  <div class="testi-person-name">Dr Sophie Renard</div>
-                  <div class="testi-person-role">Cabinet dentaire · Nantes</div>
-                </div>
-              </div>
-            </div>
-            <div class="testi-body-col">
-              <div>
-                <div class="testi-stars">★★★★★</div>
-                <blockquote class="testi-quote">Les rappels de rendez-vous automatiques ont quasiment supprimé les absences. On a récupéré 6 créneaux perdus par semaine en moyenne. Incroyable.</blockquote>
-              </div>
-              <div class="testi-gain-pill">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-                6 créneaux récupérés / semaine
-              </div>
-            </div>
-          </div>
-
-          <!-- ── Témoignage 4 ── -->
-          <div class="testi-slide">
-            <div class="testi-photo-col">
-              <img src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=560&h=720&dpr=1" alt="Alexandre Bertrand"/>
-              <div class="testi-photo-badge">
-                <div class="testi-logo-bubble" style="background:linear-gradient(135deg,#F59E0B,#D97706)">AB</div>
-                <div>
-                  <div class="testi-person-name">Alexandre Bertrand</div>
-                  <div class="testi-person-role">Agence immo. Bertrand · Paris</div>
-                </div>
-              </div>
-            </div>
-            <div class="testi-body-col">
-              <div>
-                <div class="testi-stars">★★★★★</div>
-                <blockquote class="testi-quote">Une annonce immobilière complète rédigée en 30 secondes. Je gère 3 fois plus de biens qu'avant avec la même équipe. Le rapport a tout changé.</blockquote>
-              </div>
-              <div class="testi-gain-pill">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-                ×3 biens gérés, même équipe
-              </div>
-            </div>
-          </div>
-
-          <!-- ── Témoignage 5 ── -->
-          <div class="testi-slide">
-            <div class="testi-photo-col">
-              <img src="https://images.pexels.com/photos/1036623/pexels-photo-1036623.jpeg?auto=compress&cs=tinysrgb&w=560&h=720&dpr=1" alt="Isabelle Martin"/>
-              <div class="testi-photo-badge">
-                <div class="testi-logo-bubble" style="background:linear-gradient(135deg,#EC4899,#BE185D)">IM</div>
-                <div>
-                  <div class="testi-person-name">Isabelle Martin</div>
-                  <div class="testi-person-role">Salon Éclat · Toulouse</div>
-                </div>
-              </div>
-            </div>
-            <div class="testi-body-col">
-              <div>
-                <div class="testi-stars">★★★★★</div>
-                <blockquote class="testi-quote">La gestion des plannings est entièrement automatisée. Mes clientes reçoivent leurs rappels, les annulations sont gérées seules. Je me concentre sur mon métier.</blockquote>
-              </div>
-              <div class="testi-gain-pill">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-                Plannings 100% automatisés
-              </div>
-            </div>
-          </div>
-
-          <!-- ── Témoignage 6 ── -->
-          <div class="testi-slide">
-            <div class="testi-photo-col">
-              <img src="https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=560&h=720&dpr=1" alt="François Leroy"/>
-              <div class="testi-photo-badge">
-                <div class="testi-logo-bubble" style="background:linear-gradient(135deg,#6366F1,#4338CA)">FL</div>
-                <div>
-                  <div class="testi-person-name">François Leroy</div>
-                  <div class="testi-person-role">Transport Leroy & Fils · Strasbourg</div>
-                </div>
-              </div>
-            </div>
-            <div class="testi-body-col">
-              <div>
-                <div class="testi-stars">★★★★★</div>
-                <blockquote class="testi-quote">Le suivi des livraisons est automatisé, mes clients reçoivent des mises à jour en temps réel. Les appels de suivi ont chuté de 80%. Je n'aurais jamais cru ça possible.</blockquote>
-              </div>
-              <div class="testi-gain-pill">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-                -80% d'appels de suivi
-              </div>
-            </div>
-          </div>
-
-          <!-- ── Témoignage 7 ── -->
-          <div class="testi-slide">
-            <div class="testi-photo-col">
-              <img src="https://images.pexels.com/photos/3814446/pexels-photo-3814446.jpeg?auto=compress&cs=tinysrgb&w=560&h=720&dpr=1" alt="Nathalie Girard"/>
-              <div class="testi-photo-badge">
-                <div class="testi-logo-bubble" style="background:linear-gradient(135deg,#F97316,#EA580C)">NG</div>
-                <div>
-                  <div class="testi-person-name">Nathalie Girard</div>
-                  <div class="testi-person-role">Restaurant La Table du Marché · Rennes</div>
-                </div>
-              </div>
-            </div>
-            <div class="testi-body-col">
-              <div>
-                <div class="testi-stars">★★★★★</div>
-                <blockquote class="testi-quote">Les menus de la semaine, les réponses aux avis Google, les posts réseaux sociaux · tout ça c'est l'IA maintenant. Je passe mes soirées avec ma famille au lieu d'être derrière un écran.</blockquote>
-              </div>
-              <div class="testi-gain-pill">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-                2h récupérées chaque soir
-              </div>
-            </div>
-          </div>
-
-          <!-- ── Témoignage 8 ── -->
-          <div class="testi-slide">
-            <div class="testi-photo-col">
-              <img src="https://images.pexels.com/photos/3760263/pexels-photo-3760263.jpeg?auto=compress&cs=tinysrgb&w=560&h=720&dpr=1" alt="Cédric Aumont"/>
-              <div class="testi-photo-badge">
-                <div class="testi-logo-bubble" style="background:linear-gradient(135deg,#0891B2,#0E7490)">CA</div>
-                <div>
-                  <div class="testi-person-name">Cédric Aumont</div>
-                  <div class="testi-person-role">Cabinet Aumont Expertise · Montpellier</div>
-                </div>
-              </div>
-            </div>
-            <div class="testi-body-col">
-              <div>
-                <div class="testi-stars">★★★★★</div>
-                <blockquote class="testi-quote">La saisie comptable prend deux fois moins de temps. Les lettres de mission et les rapports se génèrent en 3 minutes. On a accepté 40% de clients en plus sans embaucher.</blockquote>
-              </div>
-              <div class="testi-gain-pill">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-                +40% de clients, même équipe
-              </div>
-            </div>
-          </div>
-
-          <!-- ── Témoignage 9 ── -->
-          <div class="testi-slide">
-            <div class="testi-photo-col">
-              <img src="https://images.pexels.com/photos/3796217/pexels-photo-3796217.jpeg?auto=compress&cs=tinysrgb&w=560&h=720&dpr=1" alt="Émilie Chassagne"/>
-              <div class="testi-photo-badge">
-                <div class="testi-logo-bubble" style="background:linear-gradient(135deg,#DB2777,#9D174D)">EC</div>
-                <div>
-                  <div class="testi-person-name">Émilie Chassagne</div>
-                  <div class="testi-person-role">Fleurs & Sens · Dijon</div>
-                </div>
-              </div>
-            </div>
-            <div class="testi-body-col">
-              <div>
-                <div class="testi-stars">★★★★★</div>
-                <blockquote class="testi-quote">Mon catalogue en ligne se met à jour tout seul, les commandes de mariage sont suivies automatiquement. J'ai même un assistant qui répond aux demandes de devis pendant que je suis en création.</blockquote>
-              </div>
-              <div class="testi-gain-pill">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-                Devis traités automatiquement
-              </div>
-            </div>
-          </div>
-
-          <!-- ── Témoignage 10 ── -->
-          <div class="testi-slide">
-            <div class="testi-photo-col">
-              <img src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=560&h=720&dpr=1" alt="Julien Moreau"/>
-              <div class="testi-photo-badge">
-                <div class="testi-logo-bubble" style="background:linear-gradient(135deg,#7C3AED,#5B21B6)">JM</div>
-                <div>
-                  <div class="testi-person-name">Julien Moreau</div>
-                  <div class="testi-person-role">Moreau Photographie · Nice</div>
-                </div>
-              </div>
-            </div>
-            <div class="testi-body-col">
-              <div>
-                <div class="testi-stars">★★★★★</div>
-                <blockquote class="testi-quote">La retouche basique des photos, les contrats clients, les relances de paiement · tout automatisé. Je me concentre uniquement sur les shoots. Mon chiffre d'affaires a augmenté de 35% en 6 mois.</blockquote>
-              </div>
-              <div class="testi-gain-pill">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-                +35% de CA en 6 mois
-              </div>
-            </div>
-          </div>
-
-          <!-- ── Témoignage 11 ── -->
-          <div class="testi-slide">
-            <div class="testi-photo-col">
-              <img src="https://images.pexels.com/photos/5668858/pexels-photo-5668858.jpeg?auto=compress&cs=tinysrgb&w=560&h=720&dpr=1" alt="Valérie Dupont"/>
-              <div class="testi-photo-badge">
-                <div class="testi-logo-bubble" style="background:linear-gradient(135deg,#059669,#047857)">VD</div>
-                <div>
-                  <div class="testi-person-name">Valérie Dupont</div>
-                  <div class="testi-person-role">Cabinet Dupont Avocats · Lyon</div>
-                </div>
-              </div>
-            </div>
-            <div class="testi-body-col">
-              <div>
-                <div class="testi-stars">★★★★★</div>
-                <blockquote class="testi-quote">La recherche juridique qui prenait une journée prend maintenant une heure. Les contrats types sont générés en 10 minutes. On a pu accepter deux fois plus de dossiers sans recruter.</blockquote>
-              </div>
-              <div class="testi-gain-pill">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-                ×2 de dossiers traités
-              </div>
-            </div>
-          </div>
-
-          <!-- ── Témoignage 12 ── -->
-          <div class="testi-slide">
-            <div class="testi-photo-col">
-              <img src="https://images.pexels.com/photos/4173251/pexels-photo-4173251.jpeg?auto=compress&cs=tinysrgb&w=560&h=720&dpr=1" alt="Marc Tissier"/>
-              <div class="testi-photo-badge">
-                <div class="testi-logo-bubble" style="background:linear-gradient(135deg,#10B981,#0D9488)">MT</div>
-                <div>
-                  <div class="testi-person-name">Dr Marc Tissier</div>
-                  <div class="testi-person-role">Clinique Vétérinaire du Parc · Bordeaux</div>
-                </div>
-              </div>
-            </div>
-            <div class="testi-body-col">
-              <div>
-                <div class="testi-stars">★★★★★</div>
-                <blockquote class="testi-quote">Les ordonnances, les rappels de vaccination, les fiches de soins post-opératoires · l'IA les génère en quelques secondes. Mes assistantes passent leur temps avec les animaux, pas derrière un écran.</blockquote>
-              </div>
-              <div class="testi-gain-pill">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-                Admin réduite de 4h/jour
-              </div>
-            </div>
-          </div>
-
-        </div><!-- /testi-track -->
-      </div><!-- /testi-viewport -->
-    </div><!-- /testi-outer -->
-
+  <div class="container">
+    <div style="max-width:880px;margin:0 auto;display:flex;gap:28px;align-items:center;flex-wrap:wrap;justify-content:center;text-align:left">
+      <img src="/assets/img/milo-avatar.jpg" alt="Milo, copilote IA d'ABYS"
+           style="width:108px;height:108px;border-radius:50%;border:3px solid #10B981;object-fit:cover;box-shadow:0 0 0 8px rgba(16,185,129,.12);flex-shrink:0">
+      <div style="flex:1;min-width:300px">
+        <div class="testi-label">Transparence</div>
+        <h2 class="section-title" style="font-size:30px;margin-bottom:12px">Pas de faux témoignages ici.<br><strong>Juste des chiffres réels.</strong></h2>
+        <p style="font-size:15.5px;line-height:1.7;color:rgba(255,255,255,.65);margin:0 0 18px;max-width:560px">
+          ABYS est un service opéré par une IA, et nous l'assumons. Je m'appelle Milo : j'analyse votre activité,
+          je rédige votre plan d'action et je vous accompagne jusqu'au premier résultat. Le compteur d'audits
+          ci-dessus est réel, mis à jour en direct. Le reste, c'est à vous d'en juger : l'audit est gratuit.
+        </p>
+        <a href="/audit.php" class="btn btn-primary" onclick="ABYS.store('audit_url','');">Tester gratuitement, jugez vous-même</a>
+      </div>
+    </div>
   </div>
 </section>
+
 
 
 <section class="section" style="background:var(--white)">
@@ -1182,10 +898,10 @@ body:not(.nav-solid) .nav-links a:hover{ color:#6EE7B7; }
           Sans carte bancaire
         </div>
         <div class="tc-features">
-          <div class="tc-feature"><span class="tc-check" style="color:var(--green)">✦</span> Score IA de votre entreprise</div>
-          <div class="tc-feature"><span class="tc-check" style="color:var(--green)">✦</span> 3 opportunités identifiées</div>
-          <div class="tc-feature"><span class="tc-check" style="color:var(--green)">✦</span> Simulation rapide des gains</div>
-          <div class="tc-feature"><span class="tc-check" style="color:var(--green)">✦</span> Logo et profil entreprise</div>
+          <div class="tc-feature"><svg class="tc-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Score IA de votre entreprise</div>
+          <div class="tc-feature"><svg class="tc-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> 3 opportunités identifiées</div>
+          <div class="tc-feature"><svg class="tc-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Simulation rapide des gains</div>
+          <div class="tc-feature"><svg class="tc-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Logo et profil entreprise</div>
         </div>
         <a href="/audit.php" class="btn btn-secondary" style="display:flex;justify-content:center">Démarrer gratuitement →</a>
       </div>
@@ -1245,10 +961,10 @@ body:not(.nav-solid) .nav-links a:hover{ color:#6EE7B7; }
           Finançable plan de formation OPCO
         </div>
         <div class="tc-features">
-          <div class="tc-feature"><span class="tc-check" style="color:var(--green)">✦</span> Questions illimitées via votre espace</div>
-          <div class="tc-feature"><span class="tc-check" style="color:var(--green)">✦</span> Réponses de notre IA 24h/24</div>
-          <div class="tc-feature"><span class="tc-check" style="color:var(--green)">✦</span> Adapté à votre secteur</div>
-          <div class="tc-feature"><span class="tc-check" style="color:var(--green)">✦</span> Résiliable à tout moment</div>
+          <div class="tc-feature"><svg class="tc-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Questions illimitées via votre espace</div>
+          <div class="tc-feature"><svg class="tc-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Réponses de notre IA 24h/24</div>
+          <div class="tc-feature"><svg class="tc-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Adapté à votre secteur</div>
+          <div class="tc-feature"><svg class="tc-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Résiliable à tout moment</div>
         </div>
         <a href="/facturation.php?plan=assistant" class="btn btn-secondary" style="display:flex;justify-content:center">S'abonner →</a>
       </div>
@@ -1331,80 +1047,6 @@ new NeuralSphere('sphere', 'kw-layer', { radius: 190, nodeCount: 90 });
       el.style.opacity = '1';
     }, 400);
   }, 8000);
-})();
-
-/* ── Testimonials infinite peek carousel ─────────────────── */
-(function () {
-  var track = document.getElementById('testi-track');
-  if (!track) return;
-
-  var orig  = Array.from(track.querySelectorAll('.testi-slide'));
-  var total = orig.length;
-  if (total === 0) return;
-
-  /* Clone last → prepend; clone first → append (infinite loop) */
-  var lastClone  = orig[total - 1].cloneNode(true);
-  var firstClone = orig[0].cloneNode(true);
-  track.insertBefore(lastClone, orig[0]);
-  track.appendChild(firstClone);
-
-  var slides = Array.from(track.querySelectorAll('.testi-slide'));
-  var cur = 1; /* start at real first slide */
-  var timer;
-  var snapping = false;
-
-  function stride() {
-    var s  = slides[1] || slides[0];
-    var cs = window.getComputedStyle(s);
-    return s.offsetWidth + parseFloat(cs.marginLeft) + parseFloat(cs.marginRight);
-  }
-
-  function setPos(idx, anim) {
-    var st   = stride();
-    var vpW  = track.parentElement.offsetWidth;
-    var slW  = (slides[1] || slides[0]).offsetWidth;
-    var off  = idx * st - (vpW - slW) / 2;
-    track.style.transition = anim ? 'transform 560ms cubic-bezier(0.25,0.46,0.45,0.94)' : 'none';
-    track.style.transform  = 'translateX(-' + off + 'px)';
-    slides.forEach(function (s, i) { s.classList.toggle('testi-dim', i !== idx); });
-  }
-
-  function goTo(idx) {
-    if (snapping) return;
-    cur = idx;
-    setPos(cur, true);
-  }
-
-  /* Snap on clone after animation */
-  track.addEventListener('transitionend', function () {
-    if (cur === slides.length - 1) {
-      snapping = true; cur = 1; setPos(cur, false);
-      setTimeout(function () { snapping = false; }, 30);
-    } else if (cur === 0) {
-      snapping = true; cur = total; setPos(cur, false);
-      setTimeout(function () { snapping = false; }, 30);
-    }
-  });
-
-  function startTimer() {
-    clearInterval(timer);
-    timer = setInterval(function () { goTo(cur + 1); }, 5200);
-  }
-
-  /* Swipe */
-  var tx = 0;
-  track.addEventListener('touchstart', function (e) { tx = e.touches[0].clientX; }, { passive: true });
-  track.addEventListener('touchend',   function (e) {
-    var d = tx - e.changedTouches[0].clientX;
-    if (Math.abs(d) > 40) { goTo(d > 0 ? cur + 1 : cur - 1); startTimer(); }
-  });
-
-  track.addEventListener('mouseenter', function () { clearInterval(timer); });
-  track.addEventListener('mouseleave', startTimer);
-  window.addEventListener('resize',   function () { setPos(cur, false); });
-
-  setPos(cur, false);
-  startTimer();
 })();
 
 /* ── Counter animation ─────────────────────────────────── */

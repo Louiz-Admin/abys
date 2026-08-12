@@ -20,6 +20,7 @@ include __DIR__ . '/includes/nav.php';
   flex-direction: column;
   position: relative;
   overflow: hidden;
+  text-align: left;               /* fini le centrage hérité des textes multi-lignes */
 }
 .tarif-card.light {
   background: #F4FFFC;
@@ -60,12 +61,15 @@ include __DIR__ . '/includes/nav.php';
 .tarif-card.dark  .tarif-name { color: rgba(255,255,255,0.7); }
 .tarif-card.accent .tarif-name { color: rgba(255,255,255,0.7); }
 
+.tarif-name { min-height: 18px; }
 .tarif-price {
   font-size: 38px;
   font-weight: 700;
   letter-spacing: -0.04em;
   line-height: 1;
   margin-bottom: 2px;
+  min-height: 40px;               /* même hauteur avec ou sans prix barré */
+  display: flex; align-items: baseline;
 }
 .tarif-card.light  .tarif-price { color: var(--ink-2); }
 .tarif-card.dark   .tarif-price { color: var(--green-2); }
@@ -74,6 +78,7 @@ include __DIR__ . '/includes/nav.php';
 .tarif-period {
   font-size: 13px;
   margin-bottom: 16px;
+  min-height: 36px;               /* 2 lignes max : les cartes restent calées */
 }
 .tarif-card.light  .tarif-period { color: var(--ink-4); }
 .tarif-card.dark   .tarif-period { color: rgba(255,255,255,0.45); }
@@ -89,6 +94,8 @@ include __DIR__ . '/includes/nav.php';
   font-size: 12px;
   font-weight: 600;
   margin-bottom: 18px;
+  min-height: 46px;               /* badge 1 ou 2 lignes : même encombrement partout */
+  line-height: 1.35;
 }
 .tarif-card.light .tarif-aide {
   background: rgba(16,185,129,0.1);
@@ -126,8 +133,9 @@ include __DIR__ . '/includes/nav.php';
 
 .tarif-check {
   flex-shrink: 0;
-  margin-top: 1px;
+  margin-top: 3px;
 }
+.tarif-card .btn { margin-top: auto; }   /* CTA calés en bas, à la même hauteur */
 
 /* Prix net après aide */
 .tarif-net {
@@ -182,10 +190,10 @@ include __DIR__ . '/includes/nav.php';
         Sans carte bancaire
       </div>
       <div class="tarif-features">
-        <div class="tarif-feature"><span class="tarif-check" style="color:var(--green)">✦</span> Score IA de votre entreprise</div>
-        <div class="tarif-feature"><span class="tarif-check" style="color:var(--green)">✦</span> 3 opportunités identifiées</div>
-        <div class="tarif-feature"><span class="tarif-check" style="color:var(--green)">✦</span> Simulation rapide des gains</div>
-        <div class="tarif-feature"><span class="tarif-check" style="color:var(--green)">✦</span> Logo et profil entreprise</div>
+        <div class="tarif-feature"><svg class="tarif-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Score IA de votre entreprise</div>
+        <div class="tarif-feature"><svg class="tarif-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> 3 opportunités identifiées</div>
+        <div class="tarif-feature"><svg class="tarif-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Simulation rapide des gains</div>
+        <div class="tarif-feature"><svg class="tarif-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Logo et profil entreprise</div>
       </div>
       <a href="/audit.php" class="btn btn-secondary" style="display:flex;justify-content:center">Démarrer gratuitement →</a>
     </div>
@@ -245,10 +253,10 @@ include __DIR__ . '/includes/nav.php';
         Finançable plan de formation OPCO
       </div>
       <div class="tarif-features">
-        <div class="tarif-feature"><span class="tarif-check" style="color:var(--green)">✦</span> Questions illimitées via votre espace personnel</div>
-        <div class="tarif-feature"><span class="tarif-check" style="color:var(--green)">✦</span> Réponses sous 24h par notre IA</div>
-        <div class="tarif-feature"><span class="tarif-check" style="color:var(--green)">✦</span> Adapté à votre secteur</div>
-        <div class="tarif-feature"><span class="tarif-check" style="color:var(--green)">✦</span> Résiliable à tout moment</div>
+        <div class="tarif-feature"><svg class="tarif-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Questions illimitées via votre espace personnel</div>
+        <div class="tarif-feature"><svg class="tarif-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Réponses sous 24h par notre IA</div>
+        <div class="tarif-feature"><svg class="tarif-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Adapté à votre secteur</div>
+        <div class="tarif-feature"><svg class="tarif-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Résiliable à tout moment</div>
       </div>
       <a href="/facturation.php?plan=assistant" class="btn btn-secondary" style="display:flex;justify-content:center">S'abonner →</a>
     </div>

@@ -43,16 +43,42 @@ $log = ['queued' => 0, 'sent' => 0, 'skipped' => 0, 'escalated' => 0, 'errors' =
 $daily_cap  = (int)($settings['milo_email_daily_cap'] ?? 40);
 $sent_today = (int)$db->query("SELECT COUNT(*) FROM email_inbound_log WHERE replied=1 AND replied_at >= CURDATE()")->fetchColumn();
 
-// ── Template : réponse signée Milo ───────────────────────────────────────────
+// ── Nettoyage anti-« style IA » : appliqué à CHAQUE réponse avant envoi ──────
+// Supprime le markdown, les tirets longs, et toute proposition de rendez-vous
+// (Milo est une IA écrite : pas d'agenda, pas de téléphone, pas de visio).
+function milo_sanitize(string $t): string {
+    // Markdown : gras/italique/titres/puces
+    $t = preg_replace('/\*{1,3}([^*]+)\*{1,3}/u', '$1', $t);
+    $t = preg_replace('/^#{1,6}\s*/mu', '', $t);
+    $t = preg_replace('/^\s*[-•]\s+/mu', '', $t);
+    // Tirets cadratins et demi-cadratins : interdits (règle absolue)
+    $t = str_replace([' — ', ' – ', '—', '–'], [' : ', ' : ', ', ', ', '], $t);
+    // Aucune proposition de créneau/rendez-vous/appel : on retire la phrase entière
+    $t = preg_replace('/[^.!?\n]*(cr[ée]neau|rendez-?vous|\brdv\b|appel(er)?\b|t[ée]l[ée]phon|visio)[^.!?\n]*[.!?]?/iu', '', $t);
+    // Ponctuation : pas de rafales d'exclamations
+    $t = preg_replace('/!{2,}/', '!', $t);
+    // Espaces propres
+    $t = preg_replace("/[ \t]+\n/", "\n", $t);
+    $t = preg_replace("/\n{3,}/", "\n\n", $t);
+    return trim($t);
+}
+
+// ── Template : en-tête Milo AVANT le message (table : compatible tous clients) ──
 function milo_reply_html(string $text): string {
     $body = nl2br(htmlspecialchars($text, ENT_QUOTES, 'UTF-8'));
     return <<<HTML
-<div style="margin-bottom:18px">
-  <img src="https://abys.ai/assets/img/milo-avatar.jpg" alt="Milo" width="52" height="52"
-       style="width:52px;height:52px;border-radius:50%;border:2px solid #10B981;object-fit:cover;vertical-align:middle">
-  <span style="font-size:13px;color:#6B7280;margin-left:10px"><strong style="color:#111827">Milo</strong> · copilote IA d'ABYS · disponible 24h/24</span>
-</div>
-<p>{$body}</p>
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 16px">
+  <tr>
+    <td style="vertical-align:middle;padding-right:12px">
+      <img src="https://abys.ai/assets/img/milo-avatar.jpg" alt="Milo" width="48" height="48"
+           style="display:block;width:48px;height:48px;border-radius:50%;border:2px solid #10B981">
+    </td>
+    <td style="vertical-align:middle;font-size:13px;color:#6B7280;line-height:1.4">
+      <strong style="color:#111827">Milo</strong>, copilote IA d'ABYS<br>abys.ai
+    </td>
+  </tr>
+</table>
+<p style="margin:0">{$body}</p>
 HTML;
 }
 
@@ -124,8 +150,7 @@ foreach ($nums as $num) {
             $prenom = ($msg['from_name'] && $msg['from_name'] !== $from_email) ? ' ' . explode(' ', $msg['from_name'])[0] : '';
             $ai_reply = "Bonjour{$prenom},\n\n"
                 . "Merci pour votre message, je l'ai bien transmis à l'équipe : votre demande mérite une réponse humaine et attentive. "
-                . "Vous recevrez une réponse sous 24h ouvrées.\n\n"
-                . "Milo, copilote IA d'ABYS\nabys.ai";
+                . "Vous recevrez une réponse sous 24h ouvrées.\n\nMilo";
             notify_admin("ESCALADE · email sensible de {$from_email}",
                 '<p><strong>Sujet :</strong> ' . htmlspecialchars($msg['subject']) . '</p><p>' . nl2br(htmlspecialchars($body_text)) . '</p>'
                 . '<p><strong>Action requise :</strong> répondre personnellement sous 24h.</p>');
@@ -133,16 +158,23 @@ foreach ($nums as $num) {
         } else {
             // ── Réponse de Milo (Haiku : rapide et économique) ──
             $system_prompt = <<<PROMPT
-Tu es MILO, le copilote IA d'ABYS (abys.ai), qui aide les PME et artisans français à adopter l'IA simplement. Tu es ouvertement une IA et tu l'assumes : disponible 24h/24, réponse rapide, c'est un avantage.
+Tu es MILO, le copilote IA d'ABYS (abys.ai), qui aide les PME et artisans français à adopter l'IA simplement. Tu es ouvertement une IA et tu l'assumes : disponible 24h/24, réponse immédiate, c'est un avantage.
 
-RÈGLES STRICTES :
-- Réponse courte (3-5 paragraphes max), chaleureuse, concrète, zéro jargon ("workflow", "CRM", "B2B", "pipeline", "leads" interdits)
+STYLE (STRICT) :
+- Écris comme un humain sobre et direct. AUCUN markdown : pas de **, pas de titres, pas de listes à puces.
+- INTERDIT ABSOLU : le tiret long (—) et le tiret demi-long (–). Utilise une virgule ou deux points.
+- Réponse courte (3-4 paragraphes max), chaleureuse, concrète, zéro jargon ("workflow", "CRM", "B2B", "pipeline", "leads" interdits)
+- Un seul point d'exclamation maximum dans tout l'email
 - Commence par le prénom si disponible, sinon "Bonjour,"
-- Termine toujours exactement par : "Milo, copilote IA d'ABYS\nabys.ai"
-- Tarifs : Audit gratuit sur abys.ai | Rapport Premium 99€ (offre de lancement) | Mission lancement 79€ | Forfait Lancement 199€ | Assistant IA 29€/mois
-- JAMAIS de promesse d'argent, de remboursement ou d'engagement contractuel : si on te le demande, dis que tu transmets à l'équipe (réponse sous 24h ouvrées)
+- Termine par une phrase simple puis "Milo" seul sur la dernière ligne (rien d'autre : la signature complète est ajoutée automatiquement)
+
+LIMITES (STRICTES) :
+- Tu es une IA écrite : tu n'as NI agenda, NI téléphone, NI visio. Ne propose JAMAIS de créneau, rendez-vous, appel ou rencontre. Si on t'en demande un, explique avec le sourire que tout se passe par écrit, immédiatement, 24h/24 : par email avec toi, ou via l'audit gratuit sur abys.ai (2 minutes, résultat immédiat). Si la personne tient à parler à un humain, dis que tu transmets à l'équipe (réponse sous 24h ouvrées).
+- JAMAIS de promesse d'argent, de remboursement ou d'engagement contractuel : tu transmets à l'équipe (réponse sous 24h ouvrées)
 - Question complexe ou technique pointue : propose l'audit gratuit ou indique qu'un complément arrivera sous 24h ouvrées
 - Ne promets jamais ce qu'ABYS ne peut pas tenir
+
+Tarifs : Audit gratuit sur abys.ai | Rapport Premium 99€ (offre de lancement) | Mission lancement 79€ | Forfait Lancement 199€ | Assistant IA 29€/mois
 PROMPT;
             $user_prompt = "Email de : {$msg['from_name']} <{$from_email}>\nObjet : {$msg['subject']}\n\nMessage :\n" . $body_text;
 
@@ -159,9 +191,9 @@ PROMPT;
                 CURLOPT_TIMEOUT => 30,
             ]);
             $ai_raw = curl_exec($ch); curl_close($ch);
-            $ai_reply = trim(json_decode($ai_raw, true)['content'][0]['text'] ?? '');
-            if ($ai_reply === '') {
-                $ai_reply = "Bonjour,\n\nMerci pour votre message. Je reviens vers vous très vite avec une réponse complète.\n\nMilo, copilote IA d'ABYS\nabys.ai";
+            $ai_reply = milo_sanitize(trim(json_decode($ai_raw, true)['content'][0]['text'] ?? ''));
+            if (mb_strlen($ai_reply) < 40) {
+                $ai_reply = "Bonjour,\n\nMerci pour votre message. Je reviens vers vous très vite avec une réponse complète.\n\nMilo";
             }
         }
 
