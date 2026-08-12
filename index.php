@@ -797,25 +797,59 @@ body:not(.nav-solid) .nav-links a:hover{ color:#6EE7B7; }
 })();
 </script>
 
-<!-- ══════ TRANSPARENCE · IA assumée (remplace les faux témoignages) ══════ -->
+<!-- ══════ TRANSPARENCE · la preuve par l'usage (remplace les faux témoignages) ══════ -->
 <section class="testi-section">
-  <div class="container">
-    <div style="max-width:880px;margin:0 auto;display:flex;gap:28px;align-items:center;flex-wrap:wrap;justify-content:center;text-align:left">
-      <img src="/assets/img/milo-avatar.jpg" alt="Milo, copilote IA d'ABYS"
-           style="width:108px;height:108px;border-radius:50%;border:3px solid #10B981;object-fit:cover;box-shadow:0 0 0 8px rgba(16,185,129,.12);flex-shrink:0">
-      <div style="flex:1;min-width:300px">
-        <div class="testi-label">Transparence</div>
-        <h2 class="section-title" style="font-size:30px;margin-bottom:12px">Pas de faux témoignages ici.<br><strong>Juste des chiffres réels.</strong></h2>
-        <p style="font-size:15.5px;line-height:1.7;color:rgba(255,255,255,.65);margin:0 0 18px;max-width:560px">
-          ABYS est un service opéré par une IA, et nous l'assumons. Je m'appelle Milo : j'analyse votre activité,
-          je rédige votre plan d'action et je vous accompagne jusqu'au premier résultat. Le compteur d'audits
-          ci-dessus est réel, mis à jour en direct. Le reste, c'est à vous d'en juger : l'audit est gratuit.
+  <div class="container" style="text-align:center">
+    <div class="testi-label">Transparence totale</div>
+    <h2 class="section-title" style="margin-bottom:10px">Pas de faux témoignages. Pas de fausses promesses.<br><strong>Constatez par vous-même.</strong></h2>
+    <p style="font-size:16px;line-height:1.7;color:rgba(255,255,255,.65);max-width:640px;margin:0 auto 40px">
+      Ce que nous vous promettons, nous l'appliquons ici même, sous vos yeux :
+      <strong style="color:#6EE7B7">ABYS est une entreprise opérée par l'IA</strong>. Chaque promesse
+      ci-dessous se vérifie en direct, maintenant, gratuitement.
+    </p>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1020px;margin:0 auto 36px;text-align:left" class="proof-grid">
+      <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:24px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#6EE7B7;margin-bottom:10px">Promesse n°1 · l'analyse</div>
+        <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:8px">« L'IA peut analyser votre activité en 60 secondes »</div>
+        <p style="font-size:13.5px;line-height:1.65;color:rgba(255,255,255,.6);margin:0 0 14px">
+          L'audit que vous allez passer est entièrement réalisé par notre IA, en direct.
+          Aucun humain ne le rédige. Chronométrez-le.
         </p>
-        <a href="/audit.php" class="btn btn-primary" onclick="ABYS.store('audit_url','');">Tester gratuitement, jugez vous-même</a>
+        <a href="/audit.php" style="font-size:13.5px;font-weight:600;color:#6EE7B7">Vérifier maintenant, c'est gratuit</a>
       </div>
+      <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:24px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#6EE7B7;margin-bottom:10px">Promesse n°2 · la réactivité</div>
+        <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:8px">« L'IA peut répondre à vos clients 24h/24 »</div>
+        <p style="font-size:13.5px;line-height:1.65;color:rgba(255,255,255,.6);margin:0 0 14px">
+          Écrivez-nous, à n'importe quelle heure : c'est Milo, notre IA, qui vous répondra
+          en quelques minutes. Testez un dimanche à 3h du matin.
+        </p>
+        <a href="mailto:contact@abys.ai?subject=Test%20%C3%A0%20l%27improviste" style="font-size:13.5px;font-weight:600;color:#6EE7B7">Écrire à contact@abys.ai</a>
+      </div>
+      <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:24px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#6EE7B7;margin-bottom:10px">Promesse n°3 · l'honnêteté</div>
+        <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:8px">« Des chiffres réels, pas du marketing »</div>
+        <p style="font-size:13.5px;line-height:1.65;color:rgba(255,255,255,.6);margin:0 0 14px">
+          Le compteur d'audits en haut de page est brut, mis à jour en direct, sans gonflette.
+          Vous ne trouverez aucun faux avis client sur ce site.
+        </p>
+        <a href="/qui-sommes-nous.php" style="font-size:13.5px;font-weight:600;color:#6EE7B7">Notre démarche</a>
+      </div>
+    </div>
+
+    <div style="max-width:640px;margin:0 auto;display:flex;gap:16px;align-items:center;justify-content:center;flex-wrap:wrap;text-align:left">
+      <img src="/assets/img/milo-avatar.jpg" alt="Milo, copilote IA d'ABYS"
+           style="width:72px;height:72px;border-radius:50%;border:3px solid #10B981;object-fit:cover;box-shadow:0 0 0 6px rgba(16,185,129,.12);flex-shrink:0">
+      <p style="flex:1;min-width:280px;font-size:14.5px;line-height:1.7;color:rgba(255,255,255,.75);margin:0">
+        Je m'appelle <strong style="color:#6EE7B7">Milo</strong>. Cette entreprise tourne grâce à moi :
+        les audits, les rapports, les emails, l'accompagnement. Si l'IA n'était pas capable de faire
+        tout ça, ce site n'existerait pas. <strong style="color:#fff">C'est ça, notre preuve.</strong>
+      </p>
     </div>
   </div>
 </section>
+<style>@media(max-width:820px){ .proof-grid{ grid-template-columns:1fr !important; } }</style>
 
 
 
