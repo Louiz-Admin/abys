@@ -331,9 +331,19 @@ h1.hero-title strong {
   transition: transform 200ms var(--ease), box-shadow 200ms var(--ease);
   text-align: left;               /* fini le centrage hérité */
 }
-.tarif-card-home .btn { margin-top: auto; }   /* CTA tous à la même hauteur */
+/* ── Spec uniforme des cartes (identique à la page tarifs) ──
+   En-tête CENTRÉ · listes à GAUCHE · CTA même hauteur exacte, sans flèche. */
+.tc-plan, .tc-name, .tc-period { text-align: center; }
+.tc-price { justify-content: center; }
+.tc-aide  { justify-content: center; text-align: center; }
+.tarif-card-home > .btn {
+  margin-top: auto;
+  height: 50px; box-sizing: border-box; padding: 0 18px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14.5px; font-weight: 600; border-radius: 12px; line-height: 1;
+}
 .tarif-card-home:hover { transform: translateY(-4px); box-shadow: 0 20px 48px rgba(0,0,0,0.14); }
-.tarif-card-home.light { background: #F4FFFC; border: 1px solid var(--border); }
+.tarif-card-home.light { background: #F4FFFC; border: 2px solid var(--border); }
 .tarif-card-home.dark  { background: linear-gradient(150deg,#0A1F1A 0%,#064E3B 100%); border: 2px solid var(--green); color:#fff; }
 .tarif-card-home.accent { background: linear-gradient(150deg,#0D0D1F 0%,#1E1B4B 100%); border: 2px solid #7C3AED; color:#fff; }
 .tc-plan { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.12em; margin-bottom:12px; }
@@ -937,7 +947,7 @@ body:not(.nav-solid) .nav-links a:hover{ color:#6EE7B7; }
           <div class="tc-feature"><svg class="tc-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Simulation rapide des gains</div>
           <div class="tc-feature"><svg class="tc-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Logo et profil entreprise</div>
         </div>
-        <a href="/audit.php" class="btn btn-secondary" style="display:flex;justify-content:center">Démarrer gratuitement →</a>
+        <a href="/audit.php" class="btn btn-secondary" style="display:flex;justify-content:center">Démarrer gratuitement</a>
       </div>
 
       <!-- Rapport Premium -->
@@ -958,7 +968,7 @@ body:not(.nav-solid) .nav-links a:hover{ color:#6EE7B7; }
           <div class="tc-feature"><svg class="tc-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Analyse concurrentielle IA</div>
           <div class="tc-feature"><svg class="tc-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Accès à vie au rapport</div>
         </div>
-        <a href="/facturation.php?plan=report" class="btn btn-primary" style="display:flex;justify-content:center">Obtenir mon rapport →</a>
+        <a href="/facturation.php?plan=report" class="btn btn-primary" style="display:flex;justify-content:center">Obtenir mon rapport</a>
       </div>
 
       <!-- Pack IA Accompagné -->
@@ -981,7 +991,7 @@ body:not(.nav-solid) .nav-links a:hover{ color:#6EE7B7; }
           <div class="tc-feature"><svg class="tc-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> 30 jours suivi assistant IA</div>
         </div>
         <div class="tc-net">Avec OPCO : peut être financé à 100%</div>
-        <a href="/contact.php?sujet=pack-ia" class="btn" style="display:flex;justify-content:center;background:#7C3AED;color:#fff;border-color:#7C3AED">Réserver mon accompagnement →</a>
+        <a href="/contact.php?sujet=pack-ia" class="btn" style="display:flex;justify-content:center;background:#7C3AED;color:#fff;border-color:#7C3AED">Réserver mon pack</a>
       </div>
 
       <!-- Assistant IA -->
@@ -1000,7 +1010,7 @@ body:not(.nav-solid) .nav-links a:hover{ color:#6EE7B7; }
           <div class="tc-feature"><svg class="tc-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Adapté à votre secteur</div>
           <div class="tc-feature"><svg class="tc-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Résiliable à tout moment</div>
         </div>
-        <a href="/facturation.php?plan=assistant" class="btn btn-secondary" style="display:flex;justify-content:center">S'abonner →</a>
+        <a href="/facturation.php?plan=assistant" class="btn btn-secondary" style="display:flex;justify-content:center">S'abonner</a>
       </div>
 
     </div>

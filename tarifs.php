@@ -24,7 +24,7 @@ include __DIR__ . '/includes/nav.php';
 }
 .tarif-card.light {
   background: #F4FFFC;
-  border: 1px solid var(--border);
+  border: 2px solid var(--border);   /* même épaisseur que les cartes foncées : alignement au pixel */
 }
 .tarif-card.dark {
   background: linear-gradient(150deg, #0A1F1A 0%, #064E3B 100%);
@@ -135,7 +135,18 @@ include __DIR__ . '/includes/nav.php';
   flex-shrink: 0;
   margin-top: 3px;
 }
-.tarif-card .btn { margin-top: auto; }   /* CTA calés en bas, à la même hauteur */
+/* ── Spec uniforme des cartes ──
+   En-tête CENTRÉ (label, nom, prix, période, badge) · listes à GAUCHE ·
+   CTA identiques : même hauteur exacte, texte centré, pas de flèche. */
+.tarif-plan, .tarif-name, .tarif-period { text-align: center; }
+.tarif-price { justify-content: center; }
+.tarif-aide  { justify-content: center; text-align: center; }
+.tarif-card > .btn {
+  margin-top: auto;
+  height: 50px; box-sizing: border-box; padding: 0 18px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14.5px; font-weight: 600; border-radius: 12px; line-height: 1;
+}
 
 /* Prix net après aide */
 .tarif-net {
@@ -195,7 +206,7 @@ include __DIR__ . '/includes/nav.php';
         <div class="tarif-feature"><svg class="tarif-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Simulation rapide des gains</div>
         <div class="tarif-feature"><svg class="tarif-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Logo et profil entreprise</div>
       </div>
-      <a href="/audit.php" class="btn btn-secondary" style="display:flex;justify-content:center">Démarrer gratuitement →</a>
+      <a href="/audit.php" class="btn btn-secondary" style="display:flex;justify-content:center">Démarrer gratuitement</a>
     </div>
 
     <!-- Rapport Premium -->
@@ -216,12 +227,12 @@ include __DIR__ . '/includes/nav.php';
         <div class="tarif-feature"><svg class="tarif-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Analyse concurrentielle IA</div>
         <div class="tarif-feature"><svg class="tarif-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Accès à vie au rapport</div>
       </div>
-      <a href="/facturation.php?plan=report" class="btn btn-primary" style="display:flex;justify-content:center">Obtenir mon rapport →</a>
+      <a href="/facturation.php?plan=report" class="btn btn-primary" style="display:flex;justify-content:center">Obtenir mon rapport</a>
     </div>
 
     <!-- Pack IA Accompagné -->
     <div class="tarif-card accent" style="position:relative">
-      <div style="position:absolute;top:16px;right:16px;background:#7C3AED;color:#fff;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 8px;border-radius:20px">Nouveau</div>
+      <div style="position:absolute;top:14px;right:14px;background:#7C3AED;color:#fff;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 8px;border-radius:20px">Nouveau</div>
       <div class="tarif-plan">Déploiement complet</div>
       <div class="tarif-name">Pack IA Accompagné</div>
       <div class="tarif-price">499€</div>
@@ -239,7 +250,7 @@ include __DIR__ . '/includes/nav.php';
         <div class="tarif-feature"><svg class="tarif-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> 30 jours de suivi par notre assistant IA</div>
       </div>
       <div class="tarif-net">Avec OPCO : peut être financé à 100% · coût net potentiellement 0€</div>
-      <a href="/contact.php?sujet=pack-ia" class="btn" style="display:flex;justify-content:center;background:#7C3AED;color:#fff;border-color:#7C3AED">Réserver mon accompagnement →</a>
+      <a href="/contact.php?sujet=pack-ia" class="btn" style="display:flex;justify-content:center;background:#7C3AED;color:#fff;border-color:#7C3AED">Réserver mon pack</a>
     </div>
 
     <!-- Assistant IA -->
@@ -258,7 +269,7 @@ include __DIR__ . '/includes/nav.php';
         <div class="tarif-feature"><svg class="tarif-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Adapté à votre secteur</div>
         <div class="tarif-feature"><svg class="tarif-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Résiliable à tout moment</div>
       </div>
-      <a href="/facturation.php?plan=assistant" class="btn btn-secondary" style="display:flex;justify-content:center">S'abonner →</a>
+      <a href="/facturation.php?plan=assistant" class="btn btn-secondary" style="display:flex;justify-content:center">S'abonner</a>
     </div>
 
   </div>
