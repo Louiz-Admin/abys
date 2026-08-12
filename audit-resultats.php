@@ -799,6 +799,186 @@ include __DIR__ . '/includes/nav.php';
     <div id="opps-summary-card" style="display:none;margin-top:20px;border-radius:20px;background:linear-gradient(135deg,#064E3B 0%,#065F46 50%,#0A2315 100%);border:1px solid rgba(16,185,129,0.35);padding:22px 28px;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between"></div>
   </section>
 
+  <style>
+  /* ══════ Journée avant/après ══════ */
+  .day-section { margin-top: 56px; }
+  .day-head { display:flex; gap:18px; align-items:flex-start; margin-bottom:26px; }
+  .day-milo { width:64px; height:64px; border-radius:50%; border:3px solid #10B981; object-fit:cover; flex-shrink:0;
+    box-shadow:0 0 0 6px rgba(16,185,129,.12); }
+  .day-eyebrow { font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--green-deep,#059669); margin-bottom:6px; }
+  .day-title { font-size:clamp(22px,3vw,30px); font-weight:300; letter-spacing:-.03em; margin:0 0 6px; color:var(--ink,#0A1F1A); }
+  .day-title strong { font-weight:800; }
+  .day-sub { font-size:14.5px; color:var(--ink-3,#4B5563); margin:0; line-height:1.6; }
+
+  .day-grid { display:grid; grid-template-columns:1fr 44px 1fr; gap:0; align-items:stretch; }
+  @media(max-width:820px){ .day-grid{ grid-template-columns:1fr; } .day-arrow{ transform:rotate(90deg); margin:6px auto; } }
+  .day-col { border-radius:20px; padding:22px 24px; }
+  .day-col-before { background:#fff; border:2px solid var(--border,#E5E7EB); }
+  .day-col-after { background:linear-gradient(155deg,#0A1F1A,#064E3B); border:2px solid #10B981; }
+  .day-arrow { display:flex; align-items:center; justify-content:center; color:#10B981; }
+  .day-col-head { display:flex; align-items:center; gap:10px; margin-bottom:16px; flex-wrap:wrap; }
+  .day-tag { font-size:11px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; border-radius:20px; padding:5px 12px; }
+  .day-tag-before { background:rgba(107,114,128,.1); color:#6B7280; }
+  .day-tag-after { background:rgba(16,185,129,.18); color:#6EE7B7; border:1px solid rgba(16,185,129,.35); }
+  .day-col-note { font-size:12px; }
+  .day-col-before .day-col-note { color:var(--ink-4,#9CA3AF); }
+  .day-col-after .day-col-note { color:rgba(255,255,255,.45); }
+
+  .day-item { display:flex; gap:14px; padding:13px 0; border-top:1px solid rgba(0,0,0,.06); opacity:0; transform:translateY(10px);
+    transition:opacity .5s ease, transform .5s cubic-bezier(.3,1,.4,1); }
+  .day-col-after .day-item { border-top-color:rgba(255,255,255,.08); }
+  .day-item:first-child { border-top:none; }
+  .day-item.in { opacity:1; transform:none; }
+  .day-time { font-size:12.5px; font-weight:800; width:46px; flex-shrink:0; padding-top:1px; }
+  .day-col-before .day-time { color:var(--ink-4,#9CA3AF); }
+  .day-col-after .day-time { color:#6EE7B7; }
+  .day-text { font-size:14px; line-height:1.6; }
+  .day-col-before .day-text { color:var(--ink-3,#4B5563); }
+  .day-col-after .day-text { color:rgba(255,255,255,.85); }
+
+  .day-verdict { margin-top:20px; background:linear-gradient(135deg,rgba(16,185,129,.09),rgba(14,165,233,.06));
+    border:1px solid rgba(16,185,129,.25); border-radius:16px; padding:18px 22px; font-size:15.5px; line-height:1.65;
+    color:var(--ink-2,#1F2937); text-align:center; font-weight:500; }
+
+  /* ══════ Potentiel créatif ══════ */
+  .crea-section { margin-top:56px; }
+  .crea-head { text-align:center; margin-bottom:24px; }
+  .crea-title { font-size:clamp(21px,2.8vw,28px); font-weight:300; letter-spacing:-.03em; margin:0 0 8px; color:var(--ink,#0A1F1A); }
+  .crea-title strong { font-weight:800; }
+  .crea-sub { font-size:14.5px; color:var(--ink-3,#4B5563); margin:0 auto; max-width:600px; line-height:1.65; }
+  .crea-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  @media(max-width:760px){ .crea-grid{ grid-template-columns:1fr; } }
+  .crea-card { background:#fff; border:2px solid var(--border,#E5E7EB); border-radius:18px; padding:24px; }
+  .crea-card .em { font-size:26px; line-height:1; margin-bottom:12px; display:block; }
+  .crea-card h4 { font-size:16px; font-weight:800; margin:0 0 8px; color:var(--ink,#0A1F1A); }
+  .crea-card p { font-size:13.5px; line-height:1.7; color:var(--ink-3,#4B5563); margin:0; }
+
+  /* ══════ Visibilité IA ══════ */
+  .visia-section { position:relative; overflow:hidden; margin-top:56px; border-radius:24px;
+    background:linear-gradient(160deg,#041712,#052E16 55%,#07231a); color:#fff; padding:44px 40px 40px; }
+  @media(max-width:640px){ .visia-section{ padding:32px 22px; } }
+  .visia-beams { position:absolute; inset:0; overflow:hidden; pointer-events:none; }
+  .visia-beams span { position:absolute; top:-40%; left:var(--l); width:110px; height:190%; transform-origin:top center; transform:rotate(var(--a)); }
+  .visia-beams span::before { content:''; position:absolute; inset:0;
+    background:linear-gradient(to bottom, rgba(155,247,208,.22), rgba(58,206,231,.08) 55%, transparent 80%);
+    -webkit-mask-image:linear-gradient(to right, transparent, #000 42%, #000 58%, transparent);
+            mask-image:linear-gradient(to right, transparent, #000 42%, #000 58%, transparent);
+    filter:blur(8px); mix-blend-mode:screen; transform-origin:top center;
+    animation:visia-ray var(--d) ease-in-out var(--delay,0s) infinite alternate; }
+  @keyframes visia-ray { from{ transform:rotate(calc(var(--s) * -1)); } to{ transform:rotate(var(--s)); } }
+  @media (prefers-reduced-motion: reduce){ .visia-beams span::before{ animation:none; } }
+  .visia-in { position:relative; z-index:2; max-width:780px; margin:0 auto; text-align:center; }
+  .visia-eyebrow { display:inline-block; font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+    color:#6EE7B7; background:rgba(16,185,129,.14); border:1px solid rgba(16,185,129,.32); border-radius:30px; padding:6px 13px; margin-bottom:18px; }
+  .visia-title { font-size:clamp(22px,3.1vw,32px); font-weight:300; letter-spacing:-.03em; line-height:1.25; margin:0 0 12px; }
+  .visia-title strong { font-weight:800; }
+  .visia-pitch { font-size:15px; line-height:1.75; color:rgba(255,255,255,.68); max-width:660px; margin:0 auto 26px; }
+
+  .visia-demo { background:rgba(0,0,0,.32); border:1px solid rgba(255,255,255,.12); border-radius:16px; overflow:hidden;
+    margin:0 auto 26px; text-align:left; }
+  .visia-demo-bar { display:flex; align-items:center; gap:7px; padding:11px 16px; background:rgba(255,255,255,.05); border-bottom:1px solid rgba(255,255,255,.08); }
+  .visia-dot { width:9px; height:9px; border-radius:50%; background:rgba(255,255,255,.18); }
+  .visia-demo-title { font-size:11.5px; color:rgba(255,255,255,.45); margin-left:8px; }
+  .visia-demo-body { padding:18px; }
+  .visia-msg { font-size:14px; line-height:1.6; border-radius:14px; padding:11px 15px; margin-bottom:10px; max-width:88%; }
+  .visia-msg-user { background:rgba(16,185,129,.16); color:#D1FAE5; margin-left:auto; border-bottom-right-radius:4px; }
+  .visia-msg-ai { background:rgba(255,255,255,.07); color:rgba(255,255,255,.75); border-bottom-left-radius:4px; display:flex; align-items:center; gap:10px; }
+  .visia-typing { display:inline-flex; gap:4px; }
+  .visia-typing i { width:6px; height:6px; border-radius:50%; background:#6EE7B7; display:block; animation:visia-blink 1.2s infinite; }
+  .visia-typing i:nth-child(2){ animation-delay:.2s } .visia-typing i:nth-child(3){ animation-delay:.4s }
+  @keyframes visia-blink { 0%,60%,100%{ opacity:.25 } 30%{ opacity:1 } }
+  .visia-verdict { margin-top:14px; padding:13px 15px; border-radius:12px; background:rgba(239,68,68,.1);
+    border:1px solid rgba(239,68,68,.3); font-size:13.5px; line-height:1.6; color:#FCA5A5; }
+  .visia-verdict b { color:#FEE2E2; }
+
+  .visia-actions { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:26px; }
+  @media(max-width:760px){ .visia-actions{ grid-template-columns:1fr; } }
+  .visia-act { background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); border-radius:14px; padding:16px 18px;
+    font-size:13.5px; line-height:1.6; color:rgba(255,255,255,.8); display:flex; gap:11px; align-items:flex-start; text-align:left; }
+  .visia-act .n { width:24px; height:24px; border-radius:7px; background:linear-gradient(135deg,#10B981,#0EA5E9); color:#fff;
+    font-size:12px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .visia-cta { display:inline-flex; align-items:center; justify-content:center; height:50px; padding:0 30px; border-radius:12px;
+    background:linear-gradient(90deg,#059669,#0EA5E9 55%,#10B981); color:#fff; font-size:15px; font-weight:700; text-decoration:none;
+    box-shadow:0 12px 30px -12px rgba(16,185,129,.8); transition:transform .15s; }
+  .visia-cta:hover { transform:translateY(-2px); }
+  </style>
+
+  <!-- ══════ VOTRE JOURNÉE, AVANT / APRÈS ══════ -->
+  <section class="day-section reveal" id="day-section" style="display:none">
+    <div class="day-head">
+      <img class="day-milo" src="/assets/img/milo-avatar.jpg" alt="Milo">
+      <div>
+        <div class="day-eyebrow">Milo · votre copilote IA</div>
+        <h2 class="day-title">Voilà à quoi <strong>ressemblerait votre journée</strong></h2>
+        <p class="day-sub" id="day-sub">Ce n'est pas une liste de logiciels. C'est votre quotidien, concrètement transformé.</p>
+      </div>
+    </div>
+
+    <div class="day-grid">
+      <div class="day-col day-col-before">
+        <div class="day-col-head">
+          <span class="day-tag day-tag-before">Aujourd'hui</span>
+          <span class="day-col-note">Votre journée actuelle</span>
+        </div>
+        <div id="day-before-list"></div>
+      </div>
+      <div class="day-arrow" aria-hidden="true">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </div>
+      <div class="day-col day-col-after">
+        <div class="day-col-head">
+          <span class="day-tag day-tag-after">Avec l'IA</span>
+          <span class="day-col-note">Et Milo à vos côtés</span>
+        </div>
+        <div id="day-after-list"></div>
+      </div>
+    </div>
+
+    <div class="day-verdict" id="day-verdict" style="display:none"></div>
+  </section>
+
+  <!-- ══════ CE QUE VOUS POURRIEZ ENFIN OSER ══════ -->
+  <section class="crea-section reveal" id="crea-section" style="display:none">
+    <div class="crea-head">
+      <h2 class="crea-title">L'IA ne fait pas que vous <strong>faire gagner du temps</strong></h2>
+      <p class="crea-sub">Elle vous permet aussi de créer et d'oser des choses que vous ne faites pas aujourd'hui, faute de temps ou de moyens.</p>
+    </div>
+    <div class="crea-grid" id="crea-grid"></div>
+  </section>
+
+  <!-- ══════ VISIBILITÉ IA · le levier ══════ -->
+  <section class="visia-section reveal" id="visia-section" style="display:none">
+    <div class="visia-beams" aria-hidden="true">
+      <span style="--a:-16deg;--l:58%;--d:9s;--s:8deg;--delay:-2s"></span>
+      <span style="--a:0deg;--l:64%;--d:7s;--s:10deg;--delay:-5s"></span>
+      <span style="--a:16deg;--l:70%;--d:10.5s;--s:7deg;--delay:-1s"></span>
+    </div>
+    <div class="visia-in">
+      <div class="visia-eyebrow">Le levier que vos concurrents ignorent</div>
+      <h2 class="visia-title">Vos futurs clients ne demandent plus à Google.<br><strong>Ils demandent à une IA.</strong></h2>
+      <p class="visia-pitch" id="visia-pitch"></p>
+
+      <div class="visia-demo">
+        <div class="visia-demo-bar">
+          <span class="visia-dot"></span><span class="visia-dot"></span><span class="visia-dot"></span>
+          <span class="visia-demo-title">Conversation avec une IA</span>
+        </div>
+        <div class="visia-demo-body">
+          <div class="visia-msg visia-msg-user" id="visia-question"></div>
+          <div class="visia-msg visia-msg-ai">
+            <span class="visia-typing"><i></i><i></i><i></i></span>
+            <span class="visia-answer">Voici les professionnels que je recommande…</span>
+          </div>
+          <div class="visia-verdict" id="visia-verdict"></div>
+        </div>
+      </div>
+
+      <div class="visia-actions" id="visia-actions"></div>
+
+      <a href="/visibilite-ia.php" class="visia-cta">Rendre mon entreprise visible par les IA</a>
+    </div>
+  </section>
+
   <!-- ── Capture email · recevoir les résultats ─────────── -->
   <div class="email-capture-card reveal" id="email-capture">
     <div class="ec-left">
@@ -1215,6 +1395,95 @@ include __DIR__ . '/includes/nav.php';
       grid.appendChild(card);
     });
   }
+
+  /* ══════ Journée avant/après · potentiel créatif · visibilité IA ══════ */
+  (function renderMiloSections(){
+    function esc(s){ return String(s == null ? '' : s).replace(/[<>&]/g, function(c){ return {'<':'&lt;','>':'&gt;','&':'&amp;'}[c]; }); }
+    var sector = decodeEntities(result.sector_label || result.sector || 'votre activité');
+
+    /* ── 1. La journée ── */
+    var before = Array.isArray(result.day_before) ? result.day_before : [];
+    var after  = Array.isArray(result.day_after)  ? result.day_after  : [];
+    if (before.length && after.length) {
+      var sec = document.getElementById('day-section');
+      var bl  = document.getElementById('day-before-list');
+      var al  = document.getElementById('day-after-list');
+      function fill(host, items){
+        host.innerHTML = '';
+        items.forEach(function(it){
+          var d = document.createElement('div');
+          d.className = 'day-item';
+          d.innerHTML = '<span class="day-time">' + esc(decodeEntities(it.time || '')) + '</span>' +
+                        '<span class="day-text">' + esc(decodeEntities(it.text || '')) + '</span>';
+          host.appendChild(d);
+        });
+      }
+      fill(bl, before); fill(al, after);
+      sec.style.display = 'block';
+
+      var vd = decodeEntities(result.day_verdict || '');
+      if (vd) {
+        var vEl = document.getElementById('day-verdict');
+        vEl.textContent = vd;
+        vEl.style.display = 'block';
+      }
+
+      /* Apparition ligne à ligne, avant puis après, pour que la comparaison se lise */
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          if (!en.isIntersecting) return;
+          var rows = sec.querySelectorAll('.day-item');
+          var bRows = bl.querySelectorAll('.day-item');
+          var aRows = al.querySelectorAll('.day-item');
+          bRows.forEach(function(r,i){ setTimeout(function(){ r.classList.add('in'); }, i * 130); });
+          aRows.forEach(function(r,i){ setTimeout(function(){ r.classList.add('in'); }, 420 + i * 130); });
+          io.unobserve(en.target);
+        });
+      }, { threshold: .2 });
+      io.observe(sec);
+    }
+
+    /* ── 2. Potentiel créatif ── */
+    var crea = Array.isArray(result.creative_potential) ? result.creative_potential : [];
+    if (crea.length) {
+      var cg = document.getElementById('crea-grid');
+      cg.innerHTML = '';
+      crea.slice(0, 3).forEach(function(c){
+        var d = document.createElement('div');
+        d.className = 'crea-card';
+        d.innerHTML = (c.emoji ? '<span class="em">' + esc(c.emoji) + '</span>' : '') +
+                      '<h4>' + esc(decodeEntities(c.title || '')) + '</h4>' +
+                      '<p>' + esc(decodeEntities(c.text || '')) + '</p>';
+        cg.appendChild(d);
+      });
+      document.getElementById('crea-section').style.display = 'block';
+    }
+
+    /* ── 3. Visibilité IA ── */
+    var vis = result.ai_visibility || null;
+    if (vis && (vis.pitch || (vis.actions && vis.actions.length))) {
+      document.getElementById('visia-pitch').textContent = decodeEntities(vis.pitch || '');
+      document.getElementById('visia-question').textContent =
+        '« Tu peux me recommander un bon professionnel en ' + sector.toLowerCase() + ' près de chez moi ? »';
+
+      var missed = parseInt(vis.missed_clients_month, 10);
+      var vEl2 = document.getElementById('visia-verdict');
+      vEl2.innerHTML = (missed > 0)
+        ? 'Aujourd\'hui, l\'IA cite vos concurrents. Pas vous. C\'est environ <b>' + missed + ' clients potentiels par mois</b> qui ne vous voient jamais.'
+        : 'Aujourd\'hui, l\'IA cite vos concurrents. Pas vous. <b>Ces clients ne vous voient jamais.</b>';
+
+      var acts = Array.isArray(vis.actions) ? vis.actions : [];
+      var ag = document.getElementById('visia-actions');
+      ag.innerHTML = '';
+      acts.slice(0, 3).forEach(function(a, i){
+        var d = document.createElement('div');
+        d.className = 'visia-act';
+        d.innerHTML = '<span class="n">' + (i + 1) + '</span><span>' + esc(decodeEntities(a)) + '</span>';
+        ag.appendChild(d);
+      });
+      document.getElementById('visia-section').style.display = 'block';
+    }
+  })();
 
   /* ── Vignette récapitulative (tous les outils identifiés) ── */
   var summaryEl = document.getElementById('opps-summary-card');

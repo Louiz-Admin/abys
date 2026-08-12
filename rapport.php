@@ -8,7 +8,7 @@ $token = $_GET['token'] ?? '';
 if (!$token) { header('Location: /'); exit; }
 
 $stmt = get_db()->prepare("
-    SELECT r.*, l.url, l.secteur, a.score
+    SELECT r.*, l.url, l.secteur, a.score, a.recommendations
     FROM reports r
     JOIN leads l ON r.lead_id = l.id
     JOIN audits a ON r.audit_id = a.id
@@ -64,6 +64,12 @@ $comp_vals = [];
 foreach ($opps as $o) { $cp = (int)($o['competitors_using_pct'] ?? 0); if ($cp > 0) $comp_vals[] = $cp; }
 $has_comp = count($comp_vals) > 0;
 $comp_avg = $has_comp ? (int)round(array_sum($comp_vals) / count($comp_vals)) : 0;
+
+// Journée avant/après (générée à l'audit, réutilisée ici sans coût supplémentaire)
+$audit_raw  = json_decode($report['recommendations'] ?? '', true) ?: [];
+$day_before = $audit_raw['day_before'] ?? [];
+$day_after  = $audit_raw['day_after']  ?? [];
+$day_verdict = $audit_raw['day_verdict'] ?? '';
 
 // Courbe ROI cumulée sur 12 mois
 $roi_pts = [];
@@ -303,6 +309,51 @@ for ($m = 0; $m <= 12; $m++) {
   <?php if ($summary): ?>
   <h2 class="rp-h2">L'<strong>essentiel</strong> en 30 secondes</h2>
   <div class="rp-summary"><?= nl2br(htmlspecialchars($summary)) ?></div>
+  <?php endif; ?>
+
+  <!-- Votre journée, avant / après -->
+  <?php if ($day_before && $day_after): ?>
+  <style>
+  .rd-grid{ display:grid; grid-template-columns:1fr 40px 1fr; align-items:stretch; }
+  @media(max-width:820px){ .rd-grid{ grid-template-columns:1fr; } .rd-arrow{ transform:rotate(90deg); margin:6px auto; } }
+  .rd-col{ border-radius:18px; padding:20px 22px; }
+  .rd-before{ background:#fff; border:2px solid var(--border,#E5E7EB); }
+  .rd-after{ background:linear-gradient(155deg,#0A1F1A,#064E3B); border:2px solid #10B981; }
+  .rd-arrow{ display:flex; align-items:center; justify-content:center; color:#10B981; }
+  .rd-tag{ font-size:10.5px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; border-radius:20px; padding:4px 11px; display:inline-block; margin-bottom:14px; }
+  .rd-tag-b{ background:rgba(107,114,128,.1); color:#6B7280; }
+  .rd-tag-a{ background:rgba(16,185,129,.18); color:#6EE7B7; border:1px solid rgba(16,185,129,.35); }
+  .rd-item{ display:flex; gap:12px; padding:11px 0; border-top:1px solid rgba(0,0,0,.06); }
+  .rd-after .rd-item{ border-top-color:rgba(255,255,255,.08); }
+  .rd-item:first-of-type{ border-top:none; }
+  .rd-t{ font-size:12px; font-weight:800; width:44px; flex-shrink:0; }
+  .rd-before .rd-t{ color:var(--ink-4,#9CA3AF); } .rd-after .rd-t{ color:#6EE7B7; }
+  .rd-x{ font-size:13.5px; line-height:1.6; }
+  .rd-before .rd-x{ color:var(--ink-3,#4B5563); } .rd-after .rd-x{ color:rgba(255,255,255,.85); }
+  .rd-verdict{ margin-top:18px; background:linear-gradient(135deg,rgba(16,185,129,.09),rgba(14,165,233,.06));
+    border:1px solid rgba(16,185,129,.25); border-radius:14px; padding:16px 20px; font-size:15px; line-height:1.6;
+    color:var(--ink-2,#1F2937); text-align:center; font-weight:500; }
+  @media print{ .rd-after{ -webkit-print-color-adjust:exact; print-color-adjust:exact; } }
+  </style>
+  <h2 class="rp-h2">Votre journée, <strong>avant et après</strong></h2>
+  <div class="rd-grid">
+    <div class="rd-col rd-before">
+      <span class="rd-tag rd-tag-b">Aujourd'hui</span>
+      <?php foreach ($day_before as $d): ?>
+      <div class="rd-item"><span class="rd-t"><?= htmlspecialchars($d['time'] ?? '') ?></span><span class="rd-x"><?= htmlspecialchars($d['text'] ?? '') ?></span></div>
+      <?php endforeach; ?>
+    </div>
+    <div class="rd-arrow" aria-hidden="true">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </div>
+    <div class="rd-col rd-after">
+      <span class="rd-tag rd-tag-a">Avec l'IA et Milo</span>
+      <?php foreach ($day_after as $d): ?>
+      <div class="rd-item"><span class="rd-t"><?= htmlspecialchars($d['time'] ?? '') ?></span><span class="rd-x"><?= htmlspecialchars($d['text'] ?? '') ?></span></div>
+      <?php endforeach; ?>
+    </div>
+  </div>
+  <?php if ($day_verdict): ?><div class="rd-verdict"><?= htmlspecialchars($day_verdict) ?></div><?php endif; ?>
   <?php endif; ?>
 
   <!-- Infographie : répartition du temps récupéré -->
