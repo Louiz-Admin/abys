@@ -866,6 +866,105 @@ body:not(.nav-solid) .nav-links a:hover{ color:#6EE7B7; }
 <!-- Section « 3 étapes » supprimée : redondante avec la bande de preuve ci-dessus.
      Le parcours détaillé reste sur /comment-ca-marche.php (lien dans la nav). -->
 
+<!-- ══════ VISIBILITÉ IA · le levier ══════ -->
+<style>
+.hv-sec { padding:76px 0; background:var(--white,#fff); }
+.hv-grid { display:grid; grid-template-columns:1.05fr .95fr; gap:48px; align-items:center; max-width:1060px; margin:0 auto; padding:0 24px; }
+@media(max-width:860px){ .hv-grid{ grid-template-columns:1fr; gap:32px; } }
+.hv-kicker { display:inline-flex; align-items:center; gap:8px; font-size:11px; font-weight:700; letter-spacing:.13em; text-transform:uppercase;
+  color:var(--green-deep,#059669); background:rgba(16,185,129,.09); border:1px solid rgba(16,185,129,.2); border-radius:30px; padding:7px 14px; margin-bottom:20px; }
+.hv-sec h2 { font-size:clamp(26px,3.4vw,38px); font-weight:300; letter-spacing:-.04em; line-height:1.15; margin:0 0 16px; color:var(--ink,#0A1F1A); }
+.hv-sec h2 strong { font-weight:800; }
+.hv-sec p.hv-lead { font-size:16px; line-height:1.75; color:var(--ink-3,#4B5563); margin:0 0 22px; max-width:480px; }
+.hv-pts { list-style:none; margin:0 0 26px; padding:0; }
+.hv-pts li { display:flex; gap:10px; align-items:flex-start; font-size:14.5px; line-height:1.6; color:var(--ink-2,#1F2937); margin-bottom:11px; }
+.hv-pts svg { flex-shrink:0; margin-top:3px; }
+.hv-cta { display:inline-flex; align-items:center; justify-content:center; height:50px; padding:0 28px; border-radius:12px;
+  background:linear-gradient(90deg,#059669,#0EA5E9 55%,#10B981); color:#fff; font-size:15px; font-weight:700; text-decoration:none;
+  box-shadow:0 12px 30px -12px rgba(16,185,129,.8); transition:transform .15s; }
+.hv-cta:hover { transform:translateY(-2px); }
+.hv-price { font-size:13.5px; color:var(--ink-4,#9CA3AF); margin-top:12px; }
+/* Fenêtre de conversation */
+.hv-win { background:linear-gradient(160deg,#041712,#052E16 60%,#07231a); border-radius:20px; overflow:hidden;
+  box-shadow:0 30px 70px -26px rgba(2,30,20,.7); border:1px solid rgba(16,185,129,.25); }
+.hv-bar { display:flex; align-items:center; gap:7px; padding:12px 16px; background:rgba(255,255,255,.05); border-bottom:1px solid rgba(255,255,255,.08); }
+.hv-bd { width:9px; height:9px; border-radius:50%; background:rgba(255,255,255,.18); }
+.hv-bt { font-size:11.5px; color:rgba(255,255,255,.45); margin-left:8px; }
+.hv-body { padding:18px; }
+.hv-msg { font-size:13.5px; line-height:1.6; border-radius:13px; padding:10px 14px; margin-bottom:9px; }
+.hv-user { background:rgba(16,185,129,.16); color:#D1FAE5; margin-left:auto; max-width:92%; border-bottom-right-radius:4px; }
+.hv-ai { background:rgba(255,255,255,.07); color:rgba(255,255,255,.72); border-bottom-left-radius:4px; }
+.hv-cite { display:flex; align-items:center; gap:9px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.09);
+  border-radius:10px; padding:8px 11px; margin-top:7px; font-size:12.5px; color:rgba(255,255,255,.6);
+  opacity:0; transform:translateX(-8px); transition:opacity .45s ease, transform .45s cubic-bezier(.3,1,.4,1); }
+.hv-cites.in .hv-cite { opacity:1; transform:none; }
+.hv-cite.you { background:rgba(16,185,129,.16); border-color:rgba(16,185,129,.45); color:#fff; font-weight:600; }
+.hv-rank { width:19px; height:19px; border-radius:6px; background:rgba(255,255,255,.1); color:rgba(255,255,255,.55);
+  font-size:10.5px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.hv-cite.you .hv-rank { background:#10B981; color:#fff; }
+.hv-type { display:inline-flex; gap:4px; vertical-align:middle; }
+.hv-type i { width:6px; height:6px; border-radius:50%; background:#6EE7B7; display:block; animation:hv-bl 1.2s infinite; }
+.hv-type i:nth-child(2){ animation-delay:.2s } .hv-type i:nth-child(3){ animation-delay:.4s }
+@keyframes hv-bl { 0%,60%,100%{ opacity:.25 } 30%{ opacity:1 } }
+</style>
+
+<section class="hv-sec">
+  <div class="hv-grid">
+    <div>
+      <div class="hv-kicker">Le levier que vos concurrents ignorent</div>
+      <h2>Vos clients ne cherchent plus.<br><strong>Ils demandent à une IA.</strong></h2>
+      <p class="hv-lead">
+        Aujourd'hui, 68% des recherches Google se terminent sans le moindre clic : la réponse est donnée
+        directement. Quand quelqu'un demande un professionnel de votre métier, une IA cite quelques noms.
+        La question est simple : est-ce le vôtre ?
+      </p>
+      <ul class="hv-pts">
+        <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Nous posons aux IA les questions que vos clients posent vraiment</li>
+        <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Nous rendons votre activité lisible et citable par les IA</li>
+        <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Vous recevez chaque mois vos citations réellement détectées</li>
+      </ul>
+      <a href="/visibilite-ia.php" class="hv-cta">Découvrir la visibilité IA</a>
+      <div class="hv-price">49€ par mois, sans engagement. Première mesure offerte.</div>
+    </div>
+
+    <div class="hv-win" id="hv-win">
+      <div class="hv-bar"><span class="hv-bd"></span><span class="hv-bd"></span><span class="hv-bd"></span><span class="hv-bt">Conversation avec une IA</span></div>
+      <div class="hv-body">
+        <div class="hv-msg hv-user" id="hv-q"></div>
+        <div class="hv-msg hv-ai">
+          <span class="hv-type" id="hv-type"><i></i><i></i><i></i></span>
+          <span id="hv-answer"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var win = document.getElementById('hv-win'); if (!win) return;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var Q = 'Tu peux me recommander un bon artisan près de chez moi ?';
+  var qEl = document.getElementById('hv-q'), ty = document.getElementById('hv-type'), an = document.getElementById('hv-answer');
+  var CITES = [{n:'Un concurrent que vous connaissez',you:false},{n:'Une entreprise de la ville voisine',you:false},{n:'Votre entreprise',you:true}];
+  function html(){ return '<div class="hv-cites" id="hv-cites">' + CITES.map(function(c,i){
+    return '<div class="hv-cite'+(c.you?' you':'')+'" style="transition-delay:'+(i*200)+'ms"><span class="hv-rank">'+(i+1)+'</span>'+c.n+'</div>'; }).join('') + '</div>'; }
+  function play(){
+    qEl.textContent=''; an.innerHTML=''; ty.style.display='inline-flex';
+    if (reduce) { qEl.textContent='« '+Q+' »'; ty.style.display='none'; an.innerHTML='Voici qui je recommande :'+html();
+      document.getElementById('hv-cites').classList.add('in'); return; }
+    var i=0; qEl.textContent='« ';
+    var t=setInterval(function(){ qEl.textContent='« '+Q.slice(0,++i);
+      if(i>=Q.length){ clearInterval(t); qEl.textContent='« '+Q+' »';
+        setTimeout(function(){ ty.style.display='none'; an.innerHTML='Voici qui je recommande :'+html();
+          setTimeout(function(){ document.getElementById('hv-cites').classList.add('in'); },50); },1200); } },30);
+  }
+  var io=new IntersectionObserver(function(en){ en.forEach(function(e){ if(e.isIntersecting){ play(); io.unobserve(e.target);} }); },{threshold:.3});
+  io.observe(win);
+})();
+</script>
+
+
 <section class="section">
   <div class="container text-center">
     <h2 class="section-title reveal">Votre secteur,<br><strong>nos solutions.</strong></h2>
