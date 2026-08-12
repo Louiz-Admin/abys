@@ -863,32 +863,8 @@ body:not(.nav-solid) .nav-links a:hover{ color:#6EE7B7; }
 
 
 
-<section class="section" style="background:var(--white)">
-  <div class="container text-center">
-    <div class="badge" style="margin:0 auto 16px">Comment ça marche</div>
-    <h2 class="section-title reveal">3 étapes pour transformer<br><strong>votre façon de travailler</strong></h2>
-    <p class="section-sub reveal">De l'audit gratuit au plan d'action concret · tout en 2 minutes.</p>
-    <div class="steps-grid">
-      <div class="step-card reveal">
-        <div class="step-num">1</div>
-        <div class="step-title">Audit IA de votre activité</div>
-        <p class="step-desc">Entrez votre URL. Notre IA analyse votre secteur, vos processus et identifie les meilleures opportunités d'automatisation pour vous.</p>
-        <div class="step-arrow">&rarr;</div>
-      </div>
-      <div class="step-card reveal">
-        <div class="step-num">2</div>
-        <div class="step-title">Vos gains calculés</div>
-        <p class="step-desc">Vous voyez exactement combien d'heures et d'euros vous pouvez économiser avec chaque outil recommandé · chiffres réels, pas d'approximation.</p>
-        <div class="step-arrow">&rarr;</div>
-      </div>
-      <div class="step-card reveal">
-        <div class="step-num">3</div>
-        <div class="step-title">Mise en place guidée</div>
-        <p class="step-desc">Rapport premium + tutoriels personnalisés + assistant IA pour implémenter les outils à votre rythme, sans compétences techniques.</p>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- Section « 3 étapes » supprimée : redondante avec la bande de preuve ci-dessus.
+     Le parcours détaillé reste sur /comment-ca-marche.php (lien dans la nav). -->
 
 <section class="section">
   <div class="container text-center">
