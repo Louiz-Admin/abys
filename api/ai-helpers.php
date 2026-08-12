@@ -27,7 +27,7 @@ function call_claude(string $prompt, array $settings, bool $fast = false): array
 
     // Haiku pour audit gratuit (3-5s), Sonnet pour rapport premium (qualité maximale)
     $model      = $fast ? 'claude-haiku-4-5' : 'claude-sonnet-4-5';
-    $max_tokens = $fast ? 5000 : 8000;   // audit : journée avant/après + visibilité IA · premium : marge large
+    $max_tokens = $fast ? 5000 : 8000;   // audit : transformations + visibilité IA · premium : marge large
     $timeout    = $fast ? 75 : 180;      // Sonnet + 8000 tokens peut prendre 60-120s
 
     $body = json_encode([
@@ -317,19 +317,20 @@ RÈGLES :
 - Le champ sector_emoji doit représenter le secteur de l'entreprise
 
 JSON attendu :
-{"sector":"secteur","sector_label":"Label","sector_emoji":"🏭","company_size":"micro|petite|moyenne","score":<15-75>,"score_label":"Débutant|En chemin|Avancé","opportunities":[{"id":"id","rank":1,"category":"catégorie","emoji":"🤖","tool":"Outil","tool_url":"https://url.com","tool_domain":"domain.com","description":"Ce que ça fait concrètement pour cette entreprise spécifiquement","time_saved_h_week":<n>,"money_saved_eur_month":<n>,"productivity_gain_pct":<n>,"roi_12m_eur":<n>,"difficulty":"Facile|Moyen|Avancé","implementation_days":<n>,"monthly_cost_eur":<0 si gratuit, sinon prix mensuel moyen en euros>,"has_free_plan":<true|false>,"affiliate_commission_pct":<0-30>}],"total_time_saved_h_week":<n>,"total_money_saved_eur_month":<n>,"top3_free":[0,1,2],"summary":"2 phrases sur la situation IA de cette entreprise spécifiquement.","day_before":[{"time":"7h30","text":"Moment concret et pénible de SA journée actuelle, très spécifique à ce métier"},{"time":"12h00","text":"..."},{"time":"18h00","text":"..."},{"time":"21h00","text":"Le soir, la paperasse qui déborde sur la vie perso"}],"day_after":[{"time":"7h30","text":"Le même moment, transformé : ce que l'IA a fait pendant la nuit ou à sa place"},{"time":"12h00","text":"..."},{"time":"18h00","text":"..."},{"time":"21h00","text":"Le soir enfin libéré, avec le bénéfice humain concret"}],"day_verdict":"Une phrase qui résume ce que cette personne récupère vraiment dans sa vie (temps avec la famille, sérénité, fin des oublis).","creative_potential":[{"emoji":"🎨","title":"Titre court","text":"Ce que l'IA lui permet de CRÉER ou d'oser qu'il ne fait pas aujourd'hui, adapté à son métier (contenus, offres nouvelles, supports, présence)"}],"ai_visibility":{"pitch":"2 phrases : quand un client cherche ce métier dans ChatGPT, Claude ou Gemini, aujourd'hui c'est un concurrent qui est cité, pas lui. Expliquer l'enjeu simplement.","actions":["Action concrète 1 pour être cité par les IA","Action 2","Action 3"],"missed_clients_month":<estimation entière et réaliste de clients potentiels captés par les concurrents chaque mois>}}
+{"sector":"secteur","sector_label":"Label","sector_emoji":"🏭","company_size":"micro|petite|moyenne","score":<15-75>,"score_label":"Débutant|En chemin|Avancé","opportunities":[{"id":"id","rank":1,"category":"catégorie","emoji":"🤖","tool":"Outil","tool_url":"https://url.com","tool_domain":"domain.com","description":"Ce que ça fait concrètement pour cette entreprise spécifiquement","time_saved_h_week":<n>,"money_saved_eur_month":<n>,"productivity_gain_pct":<n>,"roi_12m_eur":<n>,"difficulty":"Facile|Moyen|Avancé","implementation_days":<n>,"monthly_cost_eur":<0 si gratuit, sinon prix mensuel moyen en euros>,"has_free_plan":<true|false>,"affiliate_commission_pct":<0-30>}],"total_time_saved_h_week":<n>,"total_money_saved_eur_month":<n>,"top3_free":[0,1,2],"summary":"2 phrases sur la situation IA de cette entreprise spécifiquement.","transformations":[{"task":"Nom court de la tâche (ex : Les devis, Les relances d'impayés)","today":"Comment ça se passe aujourd'hui sans IA, factuel et neutre","with_ai":"Comment ça se passe avec l'outil et Milo, concret et crédible","time_hint":"ex : 6 h/semaine"}],"transformations_verdict":"Une phrase sobre sur ce que l'ensemble représente pour cette entreprise.","creative_potential":[{"icon":"<UN SEUL mot parmi : creation, visibilite, offre, contenu, video, relation, organisation, expertise>","title":"Titre court","text":"Ce que l'IA lui permet de CRÉER ou d'oser qu'il ne fait pas aujourd'hui, adapté à son métier"}],"ai_visibility":{"pitch":"2 phrases : quand un client cherche ce métier dans ChatGPT, Claude ou Gemini, aujourd'hui c'est un concurrent qui est cité, pas lui. Expliquer l'enjeu simplement.","actions":["Action concrète 1 pour être cité par les IA","Action 2","Action 3"],"missed_clients_month":<estimation entière et réaliste de clients potentiels captés par les concurrents chaque mois>}}
 
 Génère exactement {$n} opportunités pertinentes et réalistes pour ce secteur, en variant les catégories d'outils.
 IMPORTANT top3_free : ce tableau DOIT toujours contenir exactement 3 indices entiers (0, 1, 2) pointant vers les 3 meilleures opportunités gratuites à présenter.
 
-RÈGLES POUR LA JOURNÉE AVANT/APRÈS (day_before / day_after) : c'est le cœur émotionnel de l'audit.
-- EXACTEMENT 4 moments, aux MÊMES horaires dans les deux listes, pour qu'on puisse comparer ligne à ligne.
-- Ultra concret et propre à CE métier (un plombier n'a pas la journée d'un restaurateur ni d'un guide touristique).
-- « Avant » : la réalité pénible mais sans condescendance, jamais culpabilisante.
-- « Après » : ce qui change grâce aux outils cités plus haut ET à un copilote IA qui agit pour lui. Reste crédible, jamais magique.
-- Parle de la VRAIE VIE : les soirées récupérées, les clients qui ne s'impatientent plus, les oublis qui disparaissent.
+RÈGLES POUR transformations : c'est le coeur de l'audit.
+- EXACTEMENT 4 transformations, chacune portant sur une TÂCHE réelle du métier (devis, relances, prise de rendez-vous, comptes rendus, réponses clients, stocks...).
+- INTERDIT ABSOLU d'inventer la journée, les horaires, la famille ou la vie privée de la personne : tu ne la connais pas. Parle UNIQUEMENT des tâches professionnelles.
+- « today » : description factuelle et neutre de la façon dont cette tâche se fait sans IA dans ce métier. Jamais culpabilisant, jamais présomptueux, pas de « vous perdez », pas de « vous n'avez pas le temps ».
+- « with_ai » : ce que l'outil et le copilote font à la place, très concret, crédible, jamais magique.
+- « time_hint » : le temps concerné par cette tâche, cohérent avec les opportunités listées.
+- transformations_verdict : une phrase sobre, factuelle, sans pathos.
 
-RÈGLES POUR creative_potential : exactement 3 entrées. L'IA ne sert pas qu'à gagner du temps, elle permet aussi de CRÉER et d'oser (nouvelles offres, meilleurs supports, présence en ligne, idées). Sois inspirant et concret pour ce métier précis.
+RÈGLES POUR creative_potential : exactement 3 entrées. Le champ icon doit contenir EXACTEMENT un mot de la liste imposée, rien d'autre (jamais d'emoji). L'IA ne sert pas qu'à gagner du temps, elle permet aussi de CRÉER et d'oser (nouvelles offres, meilleurs supports, présence en ligne, idées). Sois inspirant et concret pour ce métier précis.
 
 RÈGLES POUR ai_visibility : c'est un levier majeur. Aujourd'hui les gens demandent à ChatGPT « un bon plombier à Nice » ou « que visiter à Nice avec un guide ». Explique l'enjeu sans jargon, avec 3 actions concrètes.
 PROMPT;

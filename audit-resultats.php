@@ -800,43 +800,35 @@ include __DIR__ . '/includes/nav.php';
   </section>
 
   <style>
-  /* ══════ Journée avant/après ══════ */
-  .day-section { margin-top: 56px; }
-  .day-head { display:flex; gap:18px; align-items:flex-start; margin-bottom:26px; }
-  .day-milo { width:64px; height:64px; border-radius:50%; border:3px solid #10B981; object-fit:cover; flex-shrink:0;
+  /* ══════ Concrètement, ce qui change ══════ */
+  .tr-section { margin-top:56px; }
+  .tr-head { display:flex; gap:18px; align-items:flex-start; margin-bottom:24px; }
+  .tr-milo { width:64px; height:64px; border-radius:50%; border:3px solid #10B981; object-fit:cover; flex-shrink:0;
     box-shadow:0 0 0 6px rgba(16,185,129,.12); }
-  .day-eyebrow { font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--green-deep,#059669); margin-bottom:6px; }
-  .day-title { font-size:clamp(22px,3vw,30px); font-weight:300; letter-spacing:-.03em; margin:0 0 6px; color:var(--ink,#0A1F1A); }
-  .day-title strong { font-weight:800; }
-  .day-sub { font-size:14.5px; color:var(--ink-3,#4B5563); margin:0; line-height:1.6; }
+  .tr-eyebrow { font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--green-deep,#059669); margin-bottom:6px; }
+  .tr-title { font-size:clamp(22px,3vw,30px); font-weight:300; letter-spacing:-.03em; margin:0 0 6px; color:var(--ink,#0A1F1A); }
+  .tr-title strong { font-weight:800; }
+  .tr-sub { font-size:14.5px; color:var(--ink-3,#4B5563); margin:0; line-height:1.6; }
 
-  .day-grid { display:grid; grid-template-columns:1fr 44px 1fr; gap:0; align-items:stretch; }
-  @media(max-width:820px){ .day-grid{ grid-template-columns:1fr; } .day-arrow{ transform:rotate(90deg); margin:6px auto; } }
-  .day-col { border-radius:20px; padding:22px 24px; }
-  .day-col-before { background:#fff; border:2px solid var(--border,#E5E7EB); }
-  .day-col-after { background:linear-gradient(155deg,#0A1F1A,#064E3B); border:2px solid #10B981; }
-  .day-arrow { display:flex; align-items:center; justify-content:center; color:#10B981; }
-  .day-col-head { display:flex; align-items:center; gap:10px; margin-bottom:16px; flex-wrap:wrap; }
-  .day-tag { font-size:11px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; border-radius:20px; padding:5px 12px; }
-  .day-tag-before { background:rgba(107,114,128,.1); color:#6B7280; }
-  .day-tag-after { background:rgba(16,185,129,.18); color:#6EE7B7; border:1px solid rgba(16,185,129,.35); }
-  .day-col-note { font-size:12px; }
-  .day-col-before .day-col-note { color:var(--ink-4,#9CA3AF); }
-  .day-col-after .day-col-note { color:rgba(255,255,255,.45); }
-
-  .day-item { display:flex; gap:14px; padding:13px 0; border-top:1px solid rgba(0,0,0,.06); opacity:0; transform:translateY(10px);
-    transition:opacity .5s ease, transform .5s cubic-bezier(.3,1,.4,1); }
-  .day-col-after .day-item { border-top-color:rgba(255,255,255,.08); }
-  .day-item:first-child { border-top:none; }
-  .day-item.in { opacity:1; transform:none; }
-  .day-time { font-size:12.5px; font-weight:800; width:46px; flex-shrink:0; padding-top:1px; }
-  .day-col-before .day-time { color:var(--ink-4,#9CA3AF); }
-  .day-col-after .day-time { color:#6EE7B7; }
-  .day-text { font-size:14px; line-height:1.6; }
-  .day-col-before .day-text { color:var(--ink-3,#4B5563); }
-  .day-col-after .day-text { color:rgba(255,255,255,.85); }
-
-  .day-verdict { margin-top:20px; background:linear-gradient(135deg,rgba(16,185,129,.09),rgba(14,165,233,.06));
+  .tr-row { display:grid; grid-template-columns:1fr 44px 1fr; align-items:stretch; margin-bottom:12px;
+    opacity:0; transform:translateY(12px); transition:opacity .5s ease, transform .5s cubic-bezier(.3,1,.4,1); }
+  .tr-row.in { opacity:1; transform:none; }
+  @media(max-width:820px){ .tr-row{ grid-template-columns:1fr; } .tr-mid{ transform:rotate(90deg); margin:2px auto; } }
+  .tr-cell { border-radius:16px; padding:18px 20px; }
+  .tr-today { background:#fff; border:2px solid var(--border,#E5E7EB); }
+  .tr-ai { background:linear-gradient(155deg,#0A1F1A,#064E3B); border:2px solid #10B981; }
+  .tr-mid { display:flex; align-items:center; justify-content:center; color:#10B981; }
+  .tr-task { display:flex; align-items:center; gap:9px; font-size:12px; font-weight:800; letter-spacing:.04em;
+    text-transform:uppercase; margin-bottom:9px; }
+  .tr-today .tr-task { color:var(--ink-4,#9CA3AF); }
+  .tr-ai .tr-task { color:#6EE7B7; }
+  .tr-hint { margin-left:auto; font-size:11px; font-weight:600; text-transform:none; letter-spacing:0;
+    background:rgba(16,185,129,.14); color:#059669; border-radius:20px; padding:3px 9px; }
+  .tr-ai .tr-hint { background:rgba(16,185,129,.2); color:#6EE7B7; }
+  .tr-txt { font-size:14px; line-height:1.65; }
+  .tr-today .tr-txt { color:var(--ink-3,#4B5563); }
+  .tr-ai .tr-txt { color:rgba(255,255,255,.85); }
+  .tr-verdict { margin-top:18px; background:linear-gradient(135deg,rgba(16,185,129,.09),rgba(14,165,233,.06));
     border:1px solid rgba(16,185,129,.25); border-radius:16px; padding:18px 22px; font-size:15.5px; line-height:1.65;
     color:var(--ink-2,#1F2937); text-align:center; font-weight:500; }
 
@@ -849,7 +841,8 @@ include __DIR__ . '/includes/nav.php';
   .crea-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
   @media(max-width:760px){ .crea-grid{ grid-template-columns:1fr; } }
   .crea-card { background:#fff; border:2px solid var(--border,#E5E7EB); border-radius:18px; padding:24px; }
-  .crea-card .em { font-size:26px; line-height:1; margin-bottom:12px; display:block; }
+  .crea-card .em { width:44px; height:44px; border-radius:13px; background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(14,165,233,.1));
+    border:1px solid rgba(16,185,129,.22); display:flex; align-items:center; justify-content:center; margin-bottom:14px; }
   .crea-card h4 { font-size:16px; font-weight:800; margin:0 0 8px; color:var(--ink,#0A1F1A); }
   .crea-card p { font-size:13.5px; line-height:1.7; color:var(--ink-3,#4B5563); margin:0; }
 
@@ -887,8 +880,18 @@ include __DIR__ . '/includes/nav.php';
   .visia-typing i { width:6px; height:6px; border-radius:50%; background:#6EE7B7; display:block; animation:visia-blink 1.2s infinite; }
   .visia-typing i:nth-child(2){ animation-delay:.2s } .visia-typing i:nth-child(3){ animation-delay:.4s }
   @keyframes visia-blink { 0%,60%,100%{ opacity:.25 } 30%{ opacity:1 } }
+  .visia-answer { display:block; }
+  .visia-rivals { display:flex; flex-direction:column; gap:7px; margin-top:11px; }
+  .visia-rival { display:flex; align-items:center; gap:9px; font-size:13px; color:rgba(255,255,255,.6);
+    background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.09); border-radius:10px; padding:8px 12px;
+    opacity:0; transform:translateX(-8px); transition:opacity .45s ease, transform .45s cubic-bezier(.3,1,.4,1); }
+  .visia-rivals.in .visia-rival { opacity:1; transform:none; }
+  .visia-rank { width:19px; height:19px; border-radius:6px; background:rgba(255,255,255,.1); color:rgba(255,255,255,.55);
+    font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
   .visia-verdict { margin-top:14px; padding:13px 15px; border-radius:12px; background:rgba(239,68,68,.1);
-    border:1px solid rgba(239,68,68,.3); font-size:13.5px; line-height:1.6; color:#FCA5A5; }
+    border:1px solid rgba(239,68,68,.3); font-size:13.5px; line-height:1.6; color:#FCA5A5;
+    opacity:0; transform:translateY(8px); transition:opacity .5s ease, transform .5s cubic-bezier(.3,1,.4,1); }
+  .visia-verdict.in { opacity:1; transform:none; }
   .visia-verdict b { color:#FEE2E2; }
 
   .visia-actions { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:26px; }
@@ -903,38 +906,57 @@ include __DIR__ . '/includes/nav.php';
   .visia-cta:hover { transform:translateY(-2px); }
   </style>
 
-  <!-- ══════ VOTRE JOURNÉE, AVANT / APRÈS ══════ -->
-  <section class="day-section reveal" id="day-section" style="display:none">
-    <div class="day-head">
-      <img class="day-milo" src="/assets/img/milo-avatar.jpg" alt="Milo">
+  <style>
+  /* ══════ Barre d'offre collante ══════ */
+  .sticky-offer { position:fixed; left:0; right:0; bottom:0; z-index:60; transform:translateY(110%);
+    transition:transform .4s cubic-bezier(.3,1,.4,1); pointer-events:none; }
+  .sticky-offer.on { transform:none; pointer-events:auto; }
+  .sticky-inner { max-width:1000px; margin:0 auto 14px; background:linear-gradient(150deg,#0A1F1A,#064E3B);
+    border:1px solid rgba(16,185,129,.4); border-radius:18px; padding:14px 20px; display:flex; align-items:center;
+    gap:18px; flex-wrap:wrap; box-shadow:0 18px 44px -14px rgba(0,0,0,.65); }
+  .sticky-milo { width:42px; height:42px; border-radius:50%; border:2px solid #10B981; object-fit:cover; flex-shrink:0; }
+  .sticky-txt { flex:1; min-width:200px; font-size:13.5px; line-height:1.5; color:rgba(255,255,255,.82); }
+  .sticky-txt b { color:#fff; }
+  .sticky-price { font-size:22px; font-weight:800; color:#34D399; letter-spacing:-.02em; white-space:nowrap; }
+  .sticky-price s { font-size:13px; font-weight:500; color:rgba(255,255,255,.4); margin-right:7px; }
+  .sticky-cta { height:46px; padding:0 24px; border-radius:12px; background:linear-gradient(90deg,#059669,#0EA5E9 55%,#10B981);
+    color:#fff; font-size:14.5px; font-weight:700; text-decoration:none; display:inline-flex; align-items:center;
+    justify-content:center; white-space:nowrap; box-shadow:0 10px 26px -10px rgba(16,185,129,.8); transition:transform .15s; }
+  .sticky-cta:hover { transform:translateY(-1px); }
+  .sticky-close { background:none; border:none; color:rgba(255,255,255,.35); font-size:20px; line-height:1; cursor:pointer;
+    padding:4px 6px; font-family:inherit; }
+  .sticky-close:hover { color:rgba(255,255,255,.7); }
+  @media(max-width:700px){
+    .sticky-inner { gap:12px; padding:12px 14px; margin:0 10px 10px; }
+    .sticky-txt { display:none; }
+    .sticky-cta { flex:1; }
+  }
+  body.has-sticky { padding-bottom:96px; }
+  @media print { .sticky-offer { display:none !important; } body.has-sticky{ padding-bottom:0; } }
+  </style>
+
+  <div class="sticky-offer" id="sticky-offer" aria-hidden="true">
+    <div class="sticky-inner">
+      <img class="sticky-milo" src="/assets/img/milo-avatar.jpg" alt="Milo">
+      <div class="sticky-txt"><b>Votre plan d'action complet</b>, avec les tutoriels et mon accompagnement pendant 30 jours.</div>
+      <div class="sticky-price"><s>249€</s>99€</div>
+      <a class="sticky-cta" href="/facturation.php?plan=report">Obtenir mon rapport</a>
+      <button class="sticky-close" id="sticky-close" aria-label="Masquer">&times;</button>
+    </div>
+  </div>
+
+  <!-- ══════ CONCRÈTEMENT, CE QUI CHANGE ══════ -->
+  <section class="tr-section reveal" id="tr-section" style="display:none">
+    <div class="tr-head">
+      <img class="tr-milo" src="/assets/img/milo-avatar.jpg" alt="Milo">
       <div>
-        <div class="day-eyebrow">Milo · votre copilote IA</div>
-        <h2 class="day-title">Voilà à quoi <strong>ressemblerait votre journée</strong></h2>
-        <p class="day-sub" id="day-sub">Ce n'est pas une liste de logiciels. C'est votre quotidien, concrètement transformé.</p>
+        <div class="tr-eyebrow">Analyse de Milo</div>
+        <h2 class="tr-title">Concrètement, <strong>ce qui change</strong></h2>
+        <p class="tr-sub">Tâche par tâche, ce que ces outils prennent en charge à votre place.</p>
       </div>
     </div>
-
-    <div class="day-grid">
-      <div class="day-col day-col-before">
-        <div class="day-col-head">
-          <span class="day-tag day-tag-before">Aujourd'hui</span>
-          <span class="day-col-note">Votre journée actuelle</span>
-        </div>
-        <div id="day-before-list"></div>
-      </div>
-      <div class="day-arrow" aria-hidden="true">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </div>
-      <div class="day-col day-col-after">
-        <div class="day-col-head">
-          <span class="day-tag day-tag-after">Avec l'IA</span>
-          <span class="day-col-note">Et Milo à vos côtés</span>
-        </div>
-        <div id="day-after-list"></div>
-      </div>
-    </div>
-
-    <div class="day-verdict" id="day-verdict" style="display:none"></div>
+    <div class="tr-list" id="tr-list"></div>
+    <div class="tr-verdict" id="tr-verdict" style="display:none"></div>
   </section>
 
   <!-- ══════ CE QUE VOUS POURRIEZ ENFIN OSER ══════ -->
@@ -1327,15 +1349,14 @@ include __DIR__ . '/includes/nav.php';
     var moneyStr = introMoney > 0 ? '<strong>' + introMoney.toLocaleString('fr-FR') + ' € / mois</strong>' : null;
 
     var sentences = [];
-    sentences.push('En examinant votre activité, nous avons repéré plusieurs tâches où l’IA peut vous soulager concrètement · des choses que vous faites probablement chaque jour sans y penser, mais qui vous coûtent un temps précieux.');
     if (timeStr && moneyStr) {
-      sentences.push('Mis bout à bout, ces automatisations pourraient vous faire gagner ' + timeStr + ', soit jusqu’à ' + moneyStr + ' de valeur retrouvée · l’équivalent d’un collaborateur à temps partiel, sans l’embauche.');
+      sentences.push('Mis bout à bout, ces outils représentent ' + timeStr + ', soit ' + moneyStr + ' de valeur retrouvée.');
     } else if (timeStr) {
-      sentences.push('Mis bout à bout, ces automatisations pourraient vous faire gagner ' + timeStr + ' sur les tâches répétitives qui freinent votre quotidien.');
+      sentences.push('Mis bout à bout, ces outils représentent ' + timeStr + ' sur vos tâches répétitives.');
     } else {
-      sentences.push('Ces automatisations vous libèrent des tâches répétitives pour vous concentrer sur ce qui crée vraiment de la valeur.');
+      sentences.push('Ces outils vous libèrent des tâches répétitives.');
     }
-    sentences.push('Ces outils s’installent en quelques minutes, sans formation et sans technicien. Vous restez maître de votre activité : l’IA gère l’ingrat, vous gardez l’essentiel.');
+    sentences.push('Installation en quelques minutes, sans technicien.');
 
     introEl.innerHTML = '<p style="font-size:15.5px;line-height:1.8;color:rgba(255,255,255,0.9);margin:0">' + sentences.join(' ') + '</p>';
     introEl.style.display = 'block';
@@ -1396,51 +1417,62 @@ include __DIR__ . '/includes/nav.php';
     });
   }
 
-  /* ══════ Journée avant/après · potentiel créatif · visibilité IA ══════ */
+  /* ══════ Transformations · potentiel créatif · visibilité IA ══════ */
   (function renderMiloSections(){
     function esc(s){ return String(s == null ? '' : s).replace(/[<>&]/g, function(c){ return {'<':'&lt;','>':'&gt;','&':'&amp;'}[c]; }); }
     var sector = decodeEntities(result.sector_label || result.sector || 'votre activité');
 
-    /* ── 1. La journée ── */
-    var before = Array.isArray(result.day_before) ? result.day_before : [];
-    var after  = Array.isArray(result.day_after)  ? result.day_after  : [];
-    if (before.length && after.length) {
-      var sec = document.getElementById('day-section');
-      var bl  = document.getElementById('day-before-list');
-      var al  = document.getElementById('day-after-list');
-      function fill(host, items){
-        host.innerHTML = '';
-        items.forEach(function(it){
-          var d = document.createElement('div');
-          d.className = 'day-item';
-          d.innerHTML = '<span class="day-time">' + esc(decodeEntities(it.time || '')) + '</span>' +
-                        '<span class="day-text">' + esc(decodeEntities(it.text || '')) + '</span>';
-          host.appendChild(d);
-        });
-      }
-      fill(bl, before); fill(al, after);
-      sec.style.display = 'block';
+    var ICONS = {
+      creation:'<path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/>',
+      visibilite:'<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>',
+      offre:'<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/>',
+      contenu:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>',
+      video:'<polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>',
+      relation:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/>',
+      organisation:'<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>',
+      expertise:'<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>'
+    };
+    function iconSvg(key){
+      var body = ICONS[String(key || '').toLowerCase()] || ICONS.creation;
+      return '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">' + body + '</svg>';
+    }
 
-      var vd = decodeEntities(result.day_verdict || '');
-      if (vd) {
-        var vEl = document.getElementById('day-verdict');
-        vEl.textContent = vd;
-        vEl.style.display = 'block';
-      }
+    /* ── 1. Transformations (tâche par tâche, factuel) ── */
+    var trs = Array.isArray(result.transformations) ? result.transformations : [];
+    if (trs.length) {
+      var host = document.getElementById('tr-list');
+      host.innerHTML = '';
+      trs.slice(0, 5).forEach(function(t){
+        var task = esc(decodeEntities(t.task || ''));
+        var hint = t.time_hint ? '<span class="tr-hint">' + esc(decodeEntities(t.time_hint)) + '</span>' : '';
+        var row = document.createElement('div');
+        row.className = 'tr-row';
+        row.innerHTML =
+          '<div class="tr-cell tr-today">' +
+            '<div class="tr-task">Aujourd\'hui : ' + task + '</div>' +
+            '<div class="tr-txt">' + esc(decodeEntities(t.today || '')) + '</div>' +
+          '</div>' +
+          '<div class="tr-mid" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>' +
+          '<div class="tr-cell tr-ai">' +
+            '<div class="tr-task">Avec l\'IA' + hint + '</div>' +
+            '<div class="tr-txt">' + esc(decodeEntities(t.with_ai || '')) + '</div>' +
+          '</div>';
+        host.appendChild(row);
+      });
+      var trSec = document.getElementById('tr-section');
+      trSec.style.display = 'block';
 
-      /* Apparition ligne à ligne, avant puis après, pour que la comparaison se lise */
-      var io = new IntersectionObserver(function(entries){
-        entries.forEach(function(en){
-          if (!en.isIntersecting) return;
-          var rows = sec.querySelectorAll('.day-item');
-          var bRows = bl.querySelectorAll('.day-item');
-          var aRows = al.querySelectorAll('.day-item');
-          bRows.forEach(function(r,i){ setTimeout(function(){ r.classList.add('in'); }, i * 130); });
-          aRows.forEach(function(r,i){ setTimeout(function(){ r.classList.add('in'); }, 420 + i * 130); });
-          io.unobserve(en.target);
+      var vd = decodeEntities(result.transformations_verdict || '');
+      if (vd) { var vEl = document.getElementById('tr-verdict'); vEl.textContent = vd; vEl.style.display = 'block'; }
+
+      var io = new IntersectionObserver(function(en){
+        en.forEach(function(e){
+          if (!e.isIntersecting) return;
+          host.querySelectorAll('.tr-row').forEach(function(r,i){ setTimeout(function(){ r.classList.add('in'); }, i * 150); });
+          io.unobserve(e.target);
         });
-      }, { threshold: .2 });
-      io.observe(sec);
+      }, { threshold: .15 });
+      io.observe(trSec);
     }
 
     /* ── 2. Potentiel créatif ── */
@@ -1451,7 +1483,7 @@ include __DIR__ . '/includes/nav.php';
       crea.slice(0, 3).forEach(function(c){
         var d = document.createElement('div');
         d.className = 'crea-card';
-        d.innerHTML = (c.emoji ? '<span class="em">' + esc(c.emoji) + '</span>' : '') +
+        d.innerHTML = '<span class="em">' + iconSvg(c.icon) + '</span>' +
                       '<h4>' + esc(decodeEntities(c.title || '')) + '</h4>' +
                       '<p>' + esc(decodeEntities(c.text || '')) + '</p>';
         cg.appendChild(d);
@@ -1459,18 +1491,14 @@ include __DIR__ . '/includes/nav.php';
       document.getElementById('crea-section').style.display = 'block';
     }
 
-    /* ── 3. Visibilité IA ── */
+    /* ── 3. Visibilité IA (conversation animée) ── */
     var vis = result.ai_visibility || null;
     if (vis && (vis.pitch || (vis.actions && vis.actions.length))) {
       document.getElementById('visia-pitch').textContent = decodeEntities(vis.pitch || '');
-      document.getElementById('visia-question').textContent =
-        '« Tu peux me recommander un bon professionnel en ' + sector.toLowerCase() + ' près de chez moi ? »';
 
+      var question = 'Tu peux me recommander un bon professionnel en ' + sector.toLowerCase() + ' près de chez moi ?';
+      var qEl = document.getElementById('visia-question');
       var missed = parseInt(vis.missed_clients_month, 10);
-      var vEl2 = document.getElementById('visia-verdict');
-      vEl2.innerHTML = (missed > 0)
-        ? 'Aujourd\'hui, l\'IA cite vos concurrents. Pas vous. C\'est environ <b>' + missed + ' clients potentiels par mois</b> qui ne vous voient jamais.'
-        : 'Aujourd\'hui, l\'IA cite vos concurrents. Pas vous. <b>Ces clients ne vous voient jamais.</b>';
 
       var acts = Array.isArray(vis.actions) ? vis.actions : [];
       var ag = document.getElementById('visia-actions');
@@ -1481,8 +1509,89 @@ include __DIR__ . '/includes/nav.php';
         d.innerHTML = '<span class="n">' + (i + 1) + '</span><span>' + esc(decodeEntities(a)) + '</span>';
         ag.appendChild(d);
       });
-      document.getElementById('visia-section').style.display = 'block';
+      var visSec = document.getElementById('visia-section');
+      visSec.style.display = 'block';
+
+      /* Séquence animée : frappe de la question, réflexion, réponse, verdict */
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var answerEl = visSec.querySelector('.visia-answer');
+      var typingEl = visSec.querySelector('.visia-typing');
+      var aiMsg    = visSec.querySelector('.visia-msg-ai');
+      var verdictEl = document.getElementById('visia-verdict');
+      var verdictHtml = (missed > 0)
+        ? 'L\'IA cite vos concurrents. Pas vous. C\'est environ <b>' + missed + ' clients potentiels par mois</b> qui ne vous voient jamais.'
+        : 'L\'IA cite vos concurrents. Pas vous. <b>Ces clients ne vous voient jamais.</b>';
+      verdictEl.innerHTML = verdictHtml;
+
+      var RIVALS = ['Un concurrent à 3 km', 'Une entreprise que vous connaissez', 'Un autre professionnel du secteur'];
+      function rivalsHtml(){
+        return RIVALS.map(function(r, i){
+          return '<span class="visia-rival" style="transition-delay:' + (i * 160) + 'ms"><span class="visia-rank">' + (i+1) + '</span>' + r + '</span>';
+        }).join('');
+      }
+
+      function play(){
+        qEl.textContent = '';
+        aiMsg.classList.remove('done');
+        typingEl.style.display = 'inline-flex';
+        answerEl.innerHTML = '';
+        verdictEl.classList.remove('in');
+
+        if (reduce) {
+          qEl.textContent = '« ' + question + ' »';
+          typingEl.style.display = 'none';
+          answerEl.innerHTML = 'Voici les professionnels que je recommande :<div class="visia-rivals in">' + rivalsHtml() + '</div>';
+          verdictEl.classList.add('in');
+          return;
+        }
+
+        var i = 0;
+        qEl.textContent = '« ';
+        var typer = setInterval(function(){
+          qEl.textContent = '« ' + question.slice(0, ++i);
+          if (i >= question.length) {
+            clearInterval(typer);
+            qEl.textContent = '« ' + question + ' »';
+            setTimeout(function(){
+              typingEl.style.display = 'none';
+              answerEl.innerHTML = 'Voici les professionnels que je recommande :<div class="visia-rivals">' + rivalsHtml() + '</div>';
+              setTimeout(function(){ visSec.querySelector('.visia-rivals').classList.add('in'); }, 40);
+              setTimeout(function(){ verdictEl.classList.add('in'); }, 900);
+            }, 1400);
+          }
+        }, 32);
+      }
+
+      var vio = new IntersectionObserver(function(en){
+        en.forEach(function(e){ if (e.isIntersecting) { play(); vio.unobserve(e.target); } });
+      }, { threshold: .35 });
+      vio.observe(visSec);
     }
+  })();
+
+  /* ══════ Barre d'offre collante : visible dès la lecture des opportunités ══════ */
+  (function stickyOffer(){
+    var bar = document.getElementById('sticky-offer');
+    if (!bar) return;
+    var closed = false;
+    document.getElementById('sticky-close').addEventListener('click', function(){
+      closed = true; bar.classList.remove('on'); document.body.classList.remove('has-sticky');
+    });
+    var trigger = document.getElementById('opps-grid');
+    var stop    = document.querySelector('.offers-section');
+    function update(){
+      if (closed) return;
+      var t = trigger ? trigger.getBoundingClientRect() : null;
+      var s2 = stop ? stop.getBoundingClientRect() : null;
+      var started = t ? (t.top < window.innerHeight * 0.55) : false;
+      var ended   = s2 ? (s2.top < window.innerHeight * 0.9) : false;
+      var show = started && !ended;
+      bar.classList.toggle('on', show);
+      document.body.classList.toggle('has-sticky', show);
+    }
+    window.addEventListener('scroll', update, { passive:true });
+    window.addEventListener('resize', update);
+    setTimeout(update, 600);
   })();
 
   /* ── Vignette récapitulative (tous les outils identifiés) ── */
