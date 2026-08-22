@@ -38,7 +38,21 @@ function milo_trace(PDO $db, array $payload): void {
 }
 
 if (isset($_GET['ping'])) {
-    exit(json_encode(['version' => 'v5', 'ts' => date('c')]));
+    exit(json_encode(['version' => 'v6', 'ts' => date('c')]));
+}
+
+if (isset($_GET['diag'])) {
+    $out = ['version' => 'v6', 'ts' => date('c')];
+    try { $out['verrou_milo_agent'] = $db->query("SELECT IS_USED_LOCK('milo_agent')")->fetchColumn(); } catch (Throwable $e) { $out['verrou_err'] = $e->getMessage(); }
+    try {
+        $pl = $db->query("SELECT ID, TIME, STATE, LEFT(INFO, 120) AS REQUETE FROM information_schema.PROCESSLIST WHERE COMMAND <> 'Sleep' ORDER BY TIME DESC LIMIT 10")->fetchAll(PDO::FETCH_ASSOC);
+        $out['requetes_en_cours'] = $pl;
+    } catch (Throwable $e) { $out['processlist_err'] = $e->getMessage(); }
+    $t0 = microtime(true);
+    try { $out['leads_total'] = (int) $db->query("SELECT COUNT(*) FROM leads")->fetchColumn(); }
+    catch (Throwable $e) { $out['leads_err'] = $e->getMessage(); }
+    $out['leads_ms'] = round((microtime(true) - $t0) * 1000);
+    exit(json_encode($out, JSON_UNESCAPED_UNICODE));
 }
 
 if (isset($_GET['peek'])) {
@@ -47,11 +61,35 @@ if (isset($_GET['peek'])) {
 
 // ── Interrupteur général ────────────────────────────────────────────────────
 if (($settings['milo_agent_enabled'] ?? '1') !== '1') {
+    milo_trace($db, ['skipped' => 'agent desactive', 'ts' => date('c')]);
     exit(json_encode(['skipped' => 'agent desactive (settings.milo_agent_enabled)']));
 }
 
 $api_key = decrypt_value($settings['claude_key'] ?? '') ?: '';
-if (!$api_key) { exit(json_encode(['skipped' => 'cle IA manquante'])); }
+if (!$api_key) { milo_trace($db, ['skipped' => 'cle IA manquante', 'ts' => date('c')]); exit(json_encode(['skipped' => 'cle IA manquante'])); }
+
+// ── Verrou : un seul cycle à la fois ────────────────────────────────────────
+$lock = 'milo_agent';
+if (!(int) $db->query("SELECT GET_LOCK(" . $db->quote($lock) . ", 0)")->fetchColumn()) {
+    milo_trace($db, ['skipped' => 'cycle deja en cours', 'ts' => date('c')]);
+    exit(json_encode(['skipped' => 'cycle deja en cours']));
+}
+
+// ── Cadence : un cycle de décision par heure au maximum ─────────────────────
+$last    = $settings['milo_agent_last_run'] ?? '';
+$min_gap = (int) ($settings['milo_agent_min_gap_min'] ?? 60);
+if ($last && (time() - strtotime($last)) < $min_gap * 60 && !$dry) {
+    $db->query("SELECT RELEASE_LOCK(" . $db->quote($lock) . ")");
+    milo_trace($db, ['skipped' => 'cycle recent', 'dernier' => $last, 'ts' => date('c')]);
+    exit(json_encode(['skipped' => 'cycle recent', 'dernier' => $last]));
+}
+
+if (!$dry) {
+    $db->prepare("INSERT INTO settings (`key`, value) VALUES ('milo_agent_last_run', ?) ON DUPLICATE KEY UPDATE value = VALUES(value)")
+       ->execute([date('Y-m-d H:i:s')]);
+}
+
+milo_trace($db, ['stage' => 'avant_migration', 'dry' => $dry, 'ts' => date('c')]);
 
 // ── Migration : une seule fois dans la vie de l'agent ───────────────────────
 if (($settings['milo_agent_schema'] ?? '') !== '2') {
@@ -74,25 +112,6 @@ if (($settings['milo_agent_schema'] ?? '') !== '2') {
             ADD COLUMN IF NOT EXISTS prenom VARCHAR(100) NULL");
     } catch (Throwable $e) { /* deja en place */ }
     $db->prepare("INSERT INTO settings (`key`, value) VALUES ('milo_agent_schema', '2') ON DUPLICATE KEY UPDATE value = VALUES(value)")->execute();
-}
-
-// ── Verrou : un seul cycle à la fois ────────────────────────────────────────
-$lock = 'milo_agent';
-if (!(int) $db->query("SELECT GET_LOCK(" . $db->quote($lock) . ", 0)")->fetchColumn()) {
-    exit(json_encode(['skipped' => 'cycle deja en cours']));
-}
-
-// ── Cadence : un cycle de décision par heure au maximum ─────────────────────
-$last    = $settings['milo_agent_last_run'] ?? '';
-$min_gap = (int) ($settings['milo_agent_min_gap_min'] ?? 60);
-if ($last && (time() - strtotime($last)) < $min_gap * 60 && !$dry) {
-    $db->query("SELECT RELEASE_LOCK(" . $db->quote($lock) . ")");
-    exit(json_encode(['skipped' => 'cycle recent', 'dernier' => $last]));
-}
-
-if (!$dry) {
-    $db->prepare("INSERT INTO settings (`key`, value) VALUES ('milo_agent_last_run', ?) ON DUPLICATE KEY UPDATE value = VALUES(value)")
-       ->execute([date('Y-m-d H:i:s')]);
 }
 
 milo_trace($db, ['stage' => 'demarrage', 'dry' => $dry, 'ts' => date('c')]);
