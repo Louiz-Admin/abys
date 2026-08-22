@@ -38,11 +38,11 @@ function milo_trace(PDO $db, array $payload): void {
 }
 
 if (isset($_GET['ping'])) {
-    exit(json_encode(['version' => 'v6', 'ts' => date('c')]));
+    exit(json_encode(['version' => 'v7', 'ts' => date('c')]));
 }
 
 if (isset($_GET['diag'])) {
-    $out = ['version' => 'v6', 'ts' => date('c')];
+    $out = ['version' => 'v7', 'ts' => date('c')];
     try { $out['verrou_milo_agent'] = $db->query("SELECT IS_USED_LOCK('milo_agent')")->fetchColumn(); } catch (Throwable $e) { $out['verrou_err'] = $e->getMessage(); }
     try {
         $pl = $db->query("SELECT ID, TIME, STATE, LEFT(INFO, 120) AS REQUETE FROM information_schema.PROCESSLIST WHERE COMMAND <> 'Sleep' ORDER BY TIME DESC LIMIT 10")->fetchAll(PDO::FETCH_ASSOC);
@@ -52,6 +52,18 @@ if (isset($_GET['diag'])) {
     try { $out['leads_total'] = (int) $db->query("SELECT COUNT(*) FROM leads")->fetchColumn(); }
     catch (Throwable $e) { $out['leads_err'] = $e->getMessage(); }
     $out['leads_ms'] = round((microtime(true) - $t0) * 1000);
+
+    // La table settings sait-elle vraiment encaisser une trace ?
+    try { $out['colonnes_settings'] = $db->query("SHOW COLUMNS FROM settings")->fetchAll(PDO::FETCH_ASSOC); }
+    catch (Throwable $e) { $out['colonnes_err'] = $e->getMessage(); }
+    try { $out['lignes_last_result'] = (int) $db->query("SELECT COUNT(*) FROM settings WHERE `key` = 'milo_agent_last_result'")->fetchColumn(); }
+    catch (Throwable $e) { $out['lignes_err'] = $e->getMessage(); }
+    try {
+        $db->prepare("INSERT INTO settings (`key`, value) VALUES ('milo_agent_test', ?) ON DUPLICATE KEY UPDATE value = VALUES(value)")
+           ->execute([json_encode(['essai' => date('c')])]);
+        $out['ecriture_test'] = $db->query("SELECT value FROM settings WHERE `key` = 'milo_agent_test' ORDER BY 1 DESC LIMIT 1")->fetchColumn();
+    } catch (Throwable $e) { $out['ecriture_err'] = $e->getMessage(); }
+
     exit(json_encode($out, JSON_UNESCAPED_UNICODE));
 }
 
