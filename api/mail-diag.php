@@ -29,6 +29,36 @@ $out = [
 
 // Envoi d'un message temoin vers la boite lue juste apres : c'est le seul moyen
 // de constater les en-tetes reellement poses par le relais.
+// Essai direct du canal personnel, avec l'erreur SMTP exacte s'il echoue
+if (isset($_GET['perso'])) {
+    require_once __DIR__ . '/email.php';
+    $cfg = [];
+    foreach ($db->query("SELECT `key`, value FROM settings WHERE `key` IN
+        ('imap_user','imap_pass','perso_smtp_host','perso_smtp_port','perso_smtp_user','perso_smtp_pass')")->fetchAll() as $r) {
+        $cfg[$r['key']] = $r['value'];
+    }
+    $host = $cfg['perso_smtp_host'] ?? 'smtp.ionos.fr';
+    $port = (int) ($cfg['perso_smtp_port'] ?? 587);
+    $user = $cfg['perso_smtp_user'] ?? ($cfg['imap_user'] ?? '');
+    $brut = $cfg['perso_smtp_pass'] ?? ($cfg['imap_pass'] ?? '');
+    $pass = $brut ? (decrypt_value($brut) ?: '') : '';
+
+    $out['perso'] = ['host' => $host, 'port' => $port, 'user' => $user,
+                     'mot_de_passe' => $pass ? 'present (' . strlen($pass) . ' car.)' : 'ABSENT'];
+
+    if ($pass) {
+        $b = uniqid('t_', true);
+        $mime = "--{$b}\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\nTemoin canal personnel.\r\n--{$b}--";
+        $GLOBALS['abys_smtp_erreur'] = null;
+        $ok = smtp_send($host, $port, $user, $pass, MILO_FROM,
+                        $cfg['imap_user'] ?? 'contact@abys.ai',
+                        'Temoin en-tetes PERSO ' . date('H:i:s'), $b, $mime);
+        $out['perso']['envoi'] = $ok;
+        $out['perso']['erreur'] = $GLOBALS['abys_smtp_erreur'] ?? null;
+    }
+    exit(json_encode($out, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+}
+
 if (isset($_GET['envoi'])) {
     require_once __DIR__ . '/email.php';
     $dest = $settings['imap_user'] ?? 'contact@abys.ai';

@@ -235,6 +235,7 @@ function smtp_send(
 
     } catch (Exception $e) {
         error_log("[ABYS SMTP] " . $e->getMessage());
+        $GLOBALS['abys_smtp_erreur'] = $host . ':' . $port . ' · ' . $e->getMessage();
         if (isset($socket) && is_resource($socket)) fclose($socket);
         return false;
     }
