@@ -38,11 +38,11 @@ function milo_trace(PDO $db, array $payload): void {
 }
 
 if (isset($_GET['ping'])) {
-    exit(json_encode(['version' => 'v7', 'ts' => date('c')]));
+    exit(json_encode(['version' => 'v8', 'ts' => date('c')]));
 }
 
 if (isset($_GET['diag'])) {
-    $out = ['version' => 'v7', 'ts' => date('c')];
+    $out = ['version' => 'v8', 'ts' => date('c')];
     try { $out['verrou_milo_agent'] = $db->query("SELECT IS_USED_LOCK('milo_agent')")->fetchColumn(); } catch (Throwable $e) { $out['verrou_err'] = $e->getMessage(); }
     try {
         $pl = $db->query("SELECT ID, TIME, STATE, LEFT(INFO, 120) AS REQUETE FROM information_schema.PROCESSLIST WHERE COMMAND <> 'Sleep' ORDER BY TIME DESC LIMIT 10")->fetchAll(PDO::FETCH_ASSOC);
@@ -226,7 +226,7 @@ Pour CHAQUE dossier, choisis UNE action :
 - "relancer" : tu écris un email personnalisé. Réserve ça aux dossiers où tu as vraiment quelque chose d'utile à dire.
 - "attendre" : c'est trop tôt ou le moment est mal choisi. Explique pourquoi.
 - "escalader" : cette personne mérite l'attention directe de Thomas (gros potentiel, situation particulière). Explique pourquoi.
-- "abandonner" : dossier sans suite (email douteux, 3 relances sans réaction, hors cible). Tu ne le rouvriras plus.
+- "abandonner" : dossier sans suite (email douteux, doublon, 3 relances sans réaction, hors cible). Tu ne le rouvriras plus. Regle ferme : si le dossier a moins de 2 relances envoyees et un email valide, ne choisis pas "abandonner", choisis "escalader" et laisse Thomas trancher.
 
 RÈGLES DE JUGEMENT :
 - Tu ne peux envoyer que {$places} emails au maximum dans ce cycle. Choisis les dossiers qui le méritent le plus, mets les autres en "attendre".
@@ -315,6 +315,25 @@ PROMPT;
         $objet   = trim($dec['objet'] ?? '');
         $message = milo_sanitize_agent(trim($dec['message'] ?? ''));
         $sent    = 0;
+
+        // Un dossier ne se ferme jamais sur une impression : sans 2 relances sans reponse
+        // et avec un email valide, la decision remonte a Thomas au lieu d'etre definitive.
+        if ($action === 'abandonner'
+            && (int) $lead['relances_faites'] < 2
+            && filter_var($lead['email'], FILTER_VALIDATE_EMAIL)) {
+            $action = 'escalader';
+            $raison = 'Milo voulait clore ce dossier : ' . $raison . '. Sans 2 relances sans reponse, je vous le remonte au lieu de le fermer.';
+        }
+
+        // Jamais deux relances rapprochees, quoi qu'en dise le plan
+        if ($action === 'relancer' && $lead['derniere_relance']
+            && (time() - strtotime($lead['derniere_relance'])) < 48 * 3600) {
+            $log['attentes']++;
+            $journal[] = ['lead' => $lead['url'] ?: $lead['email'], 'action' => 'attendre',
+                          'raison' => 'Relance trop rapprochee (moins de 48 h), je laisse respirer.',
+                          'objet' => '', 'message' => '', 'envoye' => false];
+            continue;
+        }
 
         if ($action === 'relancer') {
             if ($envoyes_auj >= $cap)                      { $log['attentes']++; continue; }

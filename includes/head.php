@@ -60,6 +60,25 @@ $page_canonical = $page_canonical ?? (SITE_URL . $_SERVER['REQUEST_URI']);
           @curl_close($chm);
       }
   } catch (Throwable $e) { /* jamais bloquant */ }
+
+  // ── Declencheur Milo chef d'orchestre (au plus 1 reveil / 30 min) ────────
+  // Milo ouvre les dossiers, decide, agit et rend compte. Sa propre cadence
+  // interne (1 cycle / heure) fait autorite : ici on se contente de le reveiller.
+  try {
+      $lockA = sys_get_temp_dir() . '/abys_miloagent.lock';
+      if (!is_file($lockA) || (time() - filemtime($lockA)) > 1800) {
+          @touch($lockA);
+          $ck2 = $tracking['imap_cron_key'] ?? 'abys_cron_2026_x7k9p';
+          $cha = curl_init('https://abys.ai/api/milo-agent.php?key=' . rawurlencode($ck2));
+          curl_setopt_array($cha, [
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_TIMEOUT_MS     => 500,   // fire-and-forget
+              CURLOPT_NOSIGNAL       => 1,
+          ]);
+          @curl_exec($cha);
+          @curl_close($cha);
+      }
+  } catch (Throwable $e) { /* jamais bloquant */ }
   $ga4_id    = $tracking['ga4_id']    ?? '';
   $gads_id   = $tracking['gads_id']   ?? '';  // AW-XXXXXXXXX
   ?>
