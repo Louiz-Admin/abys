@@ -207,8 +207,7 @@ if (!function_exists('milo_avatar')) {
 
     <div class="milo-body">
       <div class="milo-eyebrow">Qui vous parle</div>
-      <h2 id="milo-fiche-titre">Je connais votre métier, et je sais où vous perdez du temps</h2>
-      <p>Je m'appelle Milo, l'intelligence artificielle qui fait tourner ABYS. Vous me donnez deux minutes, je vous rends un plan chiffré sur votre activité.</p>
+      <h2 id="milo-fiche-titre">Je sais où vous perdez du temps, et ce que ça vous coûte</h2>
 
       <div class="milo-chiffres">
         <div><b>10 à 20 h</b><span>rendues chaque semaine</span></div>
@@ -217,24 +216,9 @@ if (!function_exists('milo_avatar')) {
       </div>
       <p class="milo-note">Les ordres de grandeur que je trouve le plus souvent. Les vôtres, je les calcule sur votre activité.</p>
 
-      <div class="milo-steps">
-        <div class="milo-step">
-          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.3l3.4 2"/></svg></span>
-          <div><b>Je vous rends vos soirées</b><span>Devis, relances, plannings : je vous les enlève des mains.</span></div>
-        </div>
-        <div class="milo-step">
-          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h11"/><path d="M4 14h9"/><path d="M19 5.5A7.4 7.4 0 0 0 14 4c-4.3 0-7.5 3.6-7.5 8s3.2 8 7.5 8a7.4 7.4 0 0 0 5-1.5"/></svg></span>
-          <div><b>Je les transforme en euros</b><span>Chaque heure gagnée, chiffrée au prix de votre activité.</span></div>
-        </div>
-        <div class="milo-step">
-          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.8-7 10-7 10 7 10 7-3.8 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></span>
-          <div><b>Je vous rends visible</b><span>Quand une IA recommande votre métier, que ce soit vous.</span></div>
-        </div>
-      </div>
-
       <div class="milo-forge">
-        <b>D'où vient ce que je sais</b>
-        <p>Thomas Capiten n'a pas branché un modèle grand public. Il a construit ma connaissance métier par métier, qualifié plus de 300 outils un par un, et défini une méthode qui raisonne sur votre activité au lieu de réciter des généralités.</p>
+        <b>Ce qui tourne derrière</b>
+        <p>Mon créateur, Thomas Capiten, n'a pas branché un modèle grand public. Architecture multi-modèles : un modèle rapide pour la lecture et la qualification sectorielle, un modèle de raisonnement pour l'arbitrage et la rédaction. Sortie contrainte par schéma strict avec réparation des réponses tronquées, corpus d'outils segmenté par secteur et par usage, pondération des gains selon la taille et le volume d'affaires, et une boucle de décision autonome qui ouvre les dossiers, juge, agit et rend compte.</p>
       </div>
 
       <div class="milo-foot">
