@@ -400,7 +400,7 @@ h1.hero-title strong {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
-.sector-card { flex: 0 0 200px; height: 240px; border-radius: 16px; overflow: hidden; position: relative; cursor: pointer; box-shadow: var(--shadow-md); transition: transform 200ms var(--ease), box-shadow 200ms var(--ease); }
+.sector-card { display:block; text-decoration:none; color:inherit; flex: 0 0 200px; height: 240px; border-radius: 16px; overflow: hidden; position: relative; cursor: pointer; box-shadow: var(--shadow-md); transition: transform 200ms var(--ease), box-shadow 200ms var(--ease); }
 .sector-card:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 16px 40px rgba(0,0,0,0.18); }
 .sector-card img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 400ms var(--ease); }
 .sector-card:hover img { transform: scale(1.06); }
@@ -1040,25 +1040,25 @@ body:not(.nav-solid) .nav-links a:hover{ color:#6EE7B7; }
       <div class="sector-track">
         <?php
         $sectors = [
-          ['Artisan & BTP',      'https://images.pexels.com/photos/1216589/pexels-photo-1216589.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&dpr=1'],
-          ['Commerce',           'https://images.pexels.com/photos/1005638/pexels-photo-1005638.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&dpr=1'],
-          ['Restauration',       'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&dpr=1'],
-          ['Santé',              'https://images.pexels.com/photos/40568/medical-appointment-doctor-healthcare-40568.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&dpr=1'],
-          ['Services & Conseil', 'https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&dpr=1'],
-          ['Immobilier',         'https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&dpr=1'],
-          ['Transport',          'https://images.pexels.com/photos/1427541/pexels-photo-1427541.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&dpr=1'],
-          ['Beauté',             'https://images.pexels.com/photos/3993449/pexels-photo-3993449.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&dpr=1'],
-          ['Agriculture',        'https://images.pexels.com/photos/974314/pexels-photo-974314.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&dpr=1'],
-          ['Sport & Loisirs',    'https://images.pexels.com/photos/863988/pexels-photo-863988.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&dpr=1'],
+          ['Artisan & BTP',      'https://images.pexels.com/photos/1216589/pexels-photo-1216589.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&dpr=1', 'artisan-btp'],
+          ['Commerce',           'https://images.pexels.com/photos/1005638/pexels-photo-1005638.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&dpr=1', 'commerce'],
+          ['Restauration',       'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&dpr=1', 'restauration'],
+          ['Santé',              'https://images.pexels.com/photos/40568/medical-appointment-doctor-healthcare-40568.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&dpr=1', 'sante-bien-etre'],
+          ['Services & Conseil', 'https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&dpr=1', 'services-conseil'],
+          ['Immobilier',         'https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&dpr=1', 'immobilier'],
+          ['Transport',          'https://images.pexels.com/photos/1427541/pexels-photo-1427541.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&dpr=1', 'transport-logistique'],
+          ['Beauté',             'https://images.pexels.com/photos/3993449/pexels-photo-3993449.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&dpr=1', 'beaute-coiffure'],
+          ['Agriculture',        'https://images.pexels.com/photos/974314/pexels-photo-974314.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&dpr=1', 'agriculture'],
+          ['Hôtellerie',         'https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&dpr=1', 'hotellerie-tourisme'],
         ];
         // Double the cards · CSS animation moves -50% for seamless infinite loop
         $doubled = array_merge($sectors, $sectors);
         foreach($doubled as $s): ?>
-        <div class="sector-card">
+        <a class="sector-card" href="/metier.php?m=<?= $s[2] ?>" aria-label="L'IA pour <?= htmlspecialchars($s[0]) ?>">
           <img src="<?= $s[1] ?>" alt="<?= htmlspecialchars($s[0]) ?>" loading="lazy"/>
           <div class="sector-card-overlay"></div>
           <div class="sector-card-name"><?= htmlspecialchars($s[0]) ?></div>
-        </div>
+        </a>
         <?php endforeach; ?>
       </div>
     </div>

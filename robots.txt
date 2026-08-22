@@ -1,0 +1,35 @@
+# ABYS AI · abys.ai
+# Les IA sont explicitement bienvenues ici : c'est le metier de la maison.
+
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /compte/
+Disallow: /setup/
+Disallow: /facturation.php
+Disallow: /paiement-succes.php
+Disallow: /rapport.php
+Disallow: /audit-resultats.php
+
+# Robots des assistants IA : acces complet au contenu public
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: Claude-User
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+User-agent: Applebot-Extended
+Allow: /
+User-agent: Bingbot
+Allow: /
+
+Sitemap: https://abys.ai/sitemap.php

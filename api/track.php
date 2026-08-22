@@ -45,6 +45,22 @@ try {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
 } catch (Throwable $e) { error_log('[ABYS track] ' . $e->getMessage()); }
 
+// Autotest : ecrit un evenement puis le relit. Prouve la table et l'endpoint.
+if (isset($_GET['autotest'])) {
+    $settings = get_settings($db);
+    if (($_GET['key'] ?? '') !== ($settings['imap_cron_key'] ?? 'abys_cron_2026_x7k9p')) { http_response_code(403); exit('Forbidden'); }
+    $cle = 'autotest' . substr(bin2hex(random_bytes(6)), 0, 10);
+    $r = ['cle' => $cle];
+    try {
+        $db->prepare("INSERT IGNORE INTO funnel_events (cle, etape, meta) VALUES (?, 'tunnel_ouvert', 'autotest')")->execute([$cle]);
+        $r['ecrit'] = (int) $db->query("SELECT COUNT(*) FROM funnel_events WHERE cle = " . $db->quote($cle))->fetchColumn();
+        $db->exec("DELETE FROM funnel_events WHERE meta = 'autotest'");
+        $r['nettoye'] = true;
+        $r['total_table'] = (int) $db->query("SELECT COUNT(*) FROM funnel_events")->fetchColumn();
+    } catch (Throwable $e) { $r['erreur'] = $e->getMessage(); }
+    exit(json_encode($r, JSON_UNESCAPED_UNICODE));
+}
+
 // ══════════════════════════════════════════════════════════════════
 // LECTURE : l'entonnoir, en clair
 // ══════════════════════════════════════════════════════════════════

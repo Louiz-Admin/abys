@@ -68,10 +68,12 @@ const ABYS = {
         lead_id: this.get('lead_id') || 0,
         meta: meta || null,
       });
+      var envoye = false;
       if (navigator.sendBeacon) {
-        navigator.sendBeacon('/api/track.php', new Blob([body], { type: 'application/json' }));
-      } else {
-        fetch('/api/track.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: body, keepalive: true });
+        try { envoye = navigator.sendBeacon('/api/track.php', new Blob([body], { type: 'application/json' })); } catch (e) { envoye = false; }
+      }
+      if (!envoye) {
+        fetch('/api/track.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: body, keepalive: true }).catch(function () {});
       }
     } catch (e) { /* la mesure ne casse jamais la page */ }
   },

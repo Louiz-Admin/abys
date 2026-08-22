@@ -1,6 +1,7 @@
 <?php
 // Fichier: abys-ai/includes/footer.php
 ?>
+
 <footer style="background:#0A1F1A;color:rgba(255,255,255,0.7);padding:56px 0 32px;margin-top:80px">
   <div class="container">
     <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px">
@@ -57,6 +58,20 @@
       </div>
 
     </div>
+<div style="border-top:1px solid rgba(255,255,255,.10);padding-top:26px;margin-bottom:34px">
+  <div style="font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px">L'IA par métier</div>
+  <div style="display:flex;flex-wrap:wrap;gap:8px">
+    <?php foreach ([
+      'artisan-btp' => 'Artisanat et BTP', 'restauration' => 'Restauration',
+      'commerce' => 'Commerce', 'services-conseil' => 'Services et conseil',
+      'sante-bien-etre' => 'Santé et bien-être', 'hotellerie-tourisme' => 'Hôtellerie',
+      'transport-logistique' => 'Transport', 'immobilier' => 'Immobilier',
+      'agriculture' => 'Agriculture', 'beaute-coiffure' => 'Beauté et coiffure',
+    ] as $_ms => $_mn): ?>
+      <a href="/metier.php?m=<?= $_ms ?>" style="font-size:12.5px;text-decoration:none;color:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.14);border-radius:18px;padding:6px 12px"><?= $_mn ?></a>
+    <?php endforeach; ?>
+  </div>
+</div>
 
     <!-- Bas de footer -->
     <div style="border-top:1px solid rgba(255,255,255,0.07);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
