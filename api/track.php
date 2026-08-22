@@ -31,6 +31,20 @@ const ETAPES = [
     'offre_cliquee',      // un bouton d'offre est cliqué
 ];
 
+try {
+    $db->exec("CREATE TABLE IF NOT EXISTS funnel_events (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        cle VARCHAR(32) NOT NULL,
+        etape VARCHAR(40) NOT NULL,
+        lead_id INT DEFAULT NULL,
+        meta VARCHAR(190) DEFAULT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE KEY uniq_passage (cle, etape),
+        INDEX idx_etape (etape),
+        INDEX idx_created (created_at)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+} catch (Throwable $e) { error_log('[ABYS track] ' . $e->getMessage()); }
+
 // ══════════════════════════════════════════════════════════════════
 // LECTURE : l'entonnoir, en clair
 // ══════════════════════════════════════════════════════════════════
@@ -87,17 +101,6 @@ if (!in_array($etape, ETAPES, true) || $cle === '') {
 }
 
 try {
-    $db->exec("CREATE TABLE IF NOT EXISTS funnel_events (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        cle VARCHAR(32) NOT NULL,
-        etape VARCHAR(40) NOT NULL,
-        lead_id INT DEFAULT NULL,
-        meta VARCHAR(190) DEFAULT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        UNIQUE KEY uniq_passage (cle, etape),
-        INDEX idx_etape (etape),
-        INDEX idx_created (created_at)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
 
     // Une étape n'est comptée qu'une fois par session : on mesure des parcours,
     // pas des rafraîchissements de page.
