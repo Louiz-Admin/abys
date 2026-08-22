@@ -360,6 +360,7 @@ async function runAudit() {
     const lead = await ABYS.api('leads.php', { action: 'create', url: cleanUrl, source: 'url' });
     ABYS.store('lead_id',   lead.lead_id);
     ABYS.store('audit_url', cleanUrl);
+    ABYS.track('audit_lance');
 
     log('Lecture de votre site…');
     let scrapeData = null;

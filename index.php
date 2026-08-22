@@ -1178,6 +1178,7 @@ function startAudit(url) {
   var clean = ABYS.cleanUrl(url);
   if (!clean) { ABYS.toast('Entrez votre adresse de site web', 'warn'); return; }
   ABYS.store('audit_url', clean);
+  ABYS.track('accueil_url');
   window.location.href = '/audit.php?url=' + encodeURIComponent(clean);
 }
 

@@ -50,6 +50,32 @@ const ABYS = {
     try { const v = sessionStorage.getItem('abys:' + key); return v ? JSON.parse(v) : null; } catch { return null; }
   },
 
+  // Mesure du parcours · aucune donnée personnelle, une étape comptée une fois
+  trackKey() {
+    let k = null;
+    try { k = sessionStorage.getItem('abys:trk'); } catch {}
+    if (!k) {
+      k = (Date.now().toString(36) + Math.random().toString(36).slice(2, 10)).replace(/[^a-z0-9]/g, '');
+      try { sessionStorage.setItem('abys:trk', k); } catch {}
+    }
+    return k;
+  },
+
+  track(etape, meta) {
+    try {
+      const body = JSON.stringify({
+        etape: etape, cle: this.trackKey(),
+        lead_id: this.get('lead_id') || 0,
+        meta: meta || null,
+      });
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon('/api/track.php', new Blob([body], { type: 'application/json' }));
+      } else {
+        fetch('/api/track.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: body, keepalive: true });
+      }
+    } catch (e) { /* la mesure ne casse jamais la page */ }
+  },
+
   // Afficher une notification toast
   toast(message, type = 'success') {
     const el = document.createElement('div');
