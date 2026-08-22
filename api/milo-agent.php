@@ -37,6 +37,10 @@ function milo_trace(PDO $db, array $payload): void {
     } catch (Throwable $e) { /* jamais bloquant */ }
 }
 
+if (isset($_GET['ping'])) {
+    exit(json_encode(['version' => 'v3', 'ts' => date('c')]));
+}
+
 if (isset($_GET['peek'])) {
     exit($settings['milo_agent_last_result'] ?? json_encode(['info' => 'aucun cycle enregistre']));
 }
@@ -116,6 +120,8 @@ try {
         LIMIT 12
     ")->fetchAll(PDO::FETCH_ASSOC);
 
+    milo_trace($db, ['stage' => 'dossiers', 'n' => count($dossiers), 'ts' => date('c')]);
+
     $panorama = $db->query("
         SELECT
             COUNT(*) AS audits_45j,
@@ -128,6 +134,7 @@ try {
         SELECT COUNT(*) FROM reports WHERE paid_at IS NOT NULL AND paid_at >= DATE_SUB(NOW(), INTERVAL 45 DAY)
     ")->fetchColumn();
     $log['panorama'] = $panorama;
+    milo_trace($db, ['stage' => 'panorama', 'panorama' => $panorama, 'ts' => date('c')]);
 
     if (!$dossiers) {
         $db->query("SELECT RELEASE_LOCK(" . $db->quote($lock) . ")");
@@ -228,12 +235,14 @@ PROMPT;
         'max_tokens' => 6000,
         'messages'   => [['role' => 'user', 'content' => $prompt]],
     ]);
+    milo_trace($db, ['stage' => 'appel_ia', 'prompt_len' => strlen($prompt), 'ts' => date('c')]);
     $raw = http_post_ai('https://api.anthropic.com/v1/messages', $body, [
         'x-api-key: ' . $api_key,
         'anthropic-version: 2023-06-01',
         'content-type: application/json',
     ], 180);
 
+    milo_trace($db, ['stage' => 'reponse_ia', 'len' => strlen($raw), 'extrait' => mb_substr($raw, 0, 400), 'ts' => date('c')]);
     $data = json_decode($raw, true);
     if (isset($data['type']) && $data['type'] === 'error') {
         throw new Exception('API : ' . ($data['error']['message'] ?? 'inconnue'));
