@@ -28,6 +28,19 @@ if (($_GET['key'] ?? '') !== $cron_key) { http_response_code(403); exit('Forbidd
 
 $dry = isset($_GET['dry']);   // mode observation : Milo décide mais n'envoie rien
 
+// Trace du dernier cycle : lisible a tout moment via ?peek=1 (le cycle dure ~90 s,
+// bien plus que le timeout d'un navigateur ou d'un curl).
+function milo_trace(PDO $db, array $payload): void {
+    try {
+        $db->prepare("INSERT INTO settings (`key`, value) VALUES ('milo_agent_last_result', ?) ON DUPLICATE KEY UPDATE value = VALUES(value)")
+           ->execute([json_encode($payload, JSON_UNESCAPED_UNICODE)]);
+    } catch (Throwable $e) { /* jamais bloquant */ }
+}
+
+if (isset($_GET['peek'])) {
+    exit($settings['milo_agent_last_result'] ?? json_encode(['info' => 'aucun cycle enregistre']));
+}
+
 // ── Interrupteur général ────────────────────────────────────────────────────
 if (($settings['milo_agent_enabled'] ?? '1') !== '1') {
     exit(json_encode(['skipped' => 'agent desactive (settings.milo_agent_enabled)']));
@@ -105,7 +118,9 @@ try {
 
     if (!$dossiers) {
         $db->query("SELECT RELEASE_LOCK(" . $db->quote($lock) . ")");
-        exit(json_encode(array_merge($log, ['info' => 'aucun dossier a traiter', 'ts' => date('c')])));
+        $vide = array_merge($log, ['info' => 'aucun dossier a traiter', 'dry' => $dry, 'ts' => date('c')]);
+        milo_trace($db, $vide);
+        exit(json_encode($vide));
     }
 
     $cap         = (int) ($settings['milo_agent_daily_cap'] ?? 15);
@@ -315,17 +330,21 @@ PROMPT;
     }
 
     $db->query("SELECT RELEASE_LOCK(" . $db->quote($lock) . ")");
-    echo json_encode(array_merge($log, [
+    $sortie = array_merge($log, [
         'dry'            => $dry,
+        'dossiers_ouverts' => count($dossiers),
         'bilan'          => $plan['bilan'] ?? '',
         'recommandation' => $plan['recommandation'] ?? '',
         'journal'        => $journal,
         'ts'             => date('c'),
-    ]), JSON_UNESCAPED_UNICODE);
+    ]);
+    milo_trace($db, $sortie);
+    echo json_encode($sortie, JSON_UNESCAPED_UNICODE);
 
 } catch (Exception $e) {
     $db->query("SELECT RELEASE_LOCK(" . $db->quote($lock) . ")");
     error_log('[ABYS milo-agent] ' . $e->getMessage());
+    milo_trace($db, ['error' => $e->getMessage(), 'dry' => $dry, 'ts' => date('c')]);
     http_response_code(500);
     echo json_encode(['error' => $e->getMessage()]);
 }
