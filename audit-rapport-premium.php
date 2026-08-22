@@ -23,12 +23,12 @@ include __DIR__ . '/includes/nav.php';
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:48px;text-align:left">
     <?php
     $included = [
-      ['✅','Toutes les opportunités IA (7+)','avec gains calculés précisément pour votre secteur'],
-      ['✅','Tutoriels pas-à-pas personnalisés','un guide pour chaque outil, adapté à votre métier'],
-      ['✅','Plan d\'action sur 12 mois','priorisé : quoi faire en premier pour un impact maximal'],
-      ['✅','Simulation interactive','ajustez selon votre réalité et voyez vos gains en temps réel'],
-      ['✅','Outils vérifiés avec liens directs','les meilleures offres du marché, négociées pour vous'],
-      ['✅','Analyse concurrentielle','où en sont vos concurrents, comment les dépasser'],
+      ['<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9.5 17 4 11.5"/></svg>','Toutes les opportunités IA (7+)','avec gains calculés précisément pour votre secteur'],
+      ['<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9.5 17 4 11.5"/></svg>','Tutoriels pas-à-pas personnalisés','un guide pour chaque outil, adapté à votre métier'],
+      ['<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9.5 17 4 11.5"/></svg>','Plan d\'action sur 12 mois','priorisé : quoi faire en premier pour un impact maximal'],
+      ['<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9.5 17 4 11.5"/></svg>','Simulation interactive','ajustez selon votre réalité et voyez vos gains en temps réel'],
+      ['<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9.5 17 4 11.5"/></svg>','Outils vérifiés avec liens directs','les meilleures offres du marché, négociées pour vous'],
+      ['<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9.5 17 4 11.5"/></svg>','Analyse concurrentielle','où en sont vos concurrents, comment les dépasser'],
     ];
     foreach($included as $item): ?>
     <div style="display:flex;gap:12px;padding:16px;background:var(--white);border:1px solid var(--border);border-radius:var(--r-md)">
@@ -52,7 +52,7 @@ include __DIR__ . '/includes/nav.php';
     <a href="/facturation.php?plan=report" class="btn btn-primary btn-lg" style="font-size:16px;display:inline-block">
       Obtenir mon rapport · 99€ →
     </a>
-    <p style="color:rgba(255,255,255,0.4);font-size:12px;margin-top:12px">🔒 Paiement sécurisé Stripe · Accès immédiat après paiement · <a href="/cgv.php" style="color:rgba(255,255,255,0.5)">CGV</a></p>
+    <p style="color:rgba(255,255,255,0.4);font-size:12px;margin-top:12px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10.5" width="16" height="10.5" rx="2.5"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg> Paiement sécurisé Stripe · Accès immédiat après paiement · <a href="/cgv.php" style="color:rgba(255,255,255,0.5)">CGV</a></p>
   </div>
 </div>
 

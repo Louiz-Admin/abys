@@ -128,8 +128,10 @@ include __DIR__ . '/includes/nav.php';
 }
 .prem-includes li:last-child { border-bottom: none; }
 .prem-includes li::before {
-  content: '✓'; color: #10B981; font-weight: 700;
-  flex-shrink: 0; width: 16px;
+  content: ''; flex-shrink: 0; width: 16px; height: 16px; margin-top: 2px;
+  background: #10B981;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9.5 17 4 11.5'/%3E%3C/svg%3E") center/14px no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9.5 17 4 11.5'/%3E%3C/svg%3E") center/14px no-repeat;
 }
 .prem-email-label {
   font-size: 13px; color: rgba(255,255,255,0.6);
@@ -211,7 +213,7 @@ body { background: #060D14; }
 
 <!-- Hero -->
 <div class="prem-hero">
-  <div class="prem-badge">⭐ ABYS Premium</div>
+  <div class="prem-badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L12 16.8 6.4 20l1.4-6.2L3 9.5l6.4-.6z"/></svg> ABYS Premium</div>
   <h1>L'accompagnement IA<br><strong>de A à Z</strong></h1>
   <p>Rapport complet + tutoriels vidéo pas-à-pas + déploiement assisté + chat expert dédié et suivi 30 jours.</p>
 </div>
@@ -221,7 +223,7 @@ body { background: #060D14; }
   <div class="prem-features">
 
     <div class="prem-feat">
-      <div class="prem-feat-icon">📊</div>
+      <div class="prem-feat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><rect x="7" y="12" width="3" height="6" rx="1"/><rect x="13" y="8" width="3" height="10" rx="1"/></svg></div>
       <div>
         <div class="prem-feat-title">Rapport IA complet &amp; détaillé</div>
         <div class="prem-feat-desc">Toutes les opportunités identifiées avec gains calculés précisément, comparatif outils, simulation ROI et plan 12 mois.</div>
@@ -229,7 +231,7 @@ body { background: #060D14; }
     </div>
 
     <div class="prem-feat">
-      <div class="prem-feat-icon">🎬</div>
+      <div class="prem-feat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="19" height="16" rx="2.5"/><path d="M8 4v16"/><path d="M16 4v16"/><path d="M2.5 12h19"/></svg></div>
       <div>
         <div class="prem-feat-title">Tutoriels vidéo pas-à-pas</div>
         <div class="prem-feat-desc">Pour chaque outil recommandé, une vidéo de mise en place personnalisée selon votre secteur et votre usage.</div>
@@ -237,7 +239,7 @@ body { background: #060D14; }
     </div>
 
     <div class="prem-feat">
-      <div class="prem-feat-icon">🚀</div>
+      <div class="prem-feat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.3-2 5-2 5s3.7-.5 5-2a2.2 2.2 0 0 0-3-3z"/><path d="m12 15-3-3a22 22 0 0 1 2-4A12.9 12.9 0 0 1 22 2c0 2.7-.8 7.5-6 11a22 22 0 0 1-4 2z"/></svg></div>
       <div>
         <div class="prem-feat-title">Accompagnement au déploiement</div>
         <div class="prem-feat-desc">On vous guide de l'installation à la première automatisation opérationnelle · sans laisser de côté.</div>
@@ -245,7 +247,7 @@ body { background: #060D14; }
     </div>
 
     <div class="prem-feat">
-      <div class="prem-feat-icon">💬</div>
+      <div class="prem-feat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 14.5a2.5 2.5 0 0 1-2.5 2.5H8l-5 4V5.5A2.5 2.5 0 0 1 5.5 3h13A2.5 2.5 0 0 1 21 5.5z"/></svg></div>
       <div>
         <div class="prem-feat-title">Espace client ABYS + chat expert</div>
         <div class="prem-feat-desc">Accès à votre espace personnel avec toutes vos ressources et un expert disponible sous 4h pour toutes vos questions.</div>
@@ -253,7 +255,7 @@ body { background: #060D14; }
     </div>
 
     <div class="prem-feat">
-      <div class="prem-feat-icon">📅</div>
+      <div class="prem-feat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="17" rx="2.5"/><path d="M16 2.5v4"/><path d="M8 2.5v4"/><path d="M3 10h18"/></svg></div>
       <div>
         <div class="prem-feat-title">Suivi personnalisé 30 jours</div>
         <div class="prem-feat-desc">Un point de suivi à J+7, J+15 et J+30 pour s'assurer que vous avancez et débloquer les éventuels obstacles.</div>
@@ -261,7 +263,7 @@ body { background: #060D14; }
     </div>
 
     <div class="prem-feat">
-      <div class="prem-feat-icon">🏆</div>
+      <div class="prem-feat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4v1a3 3 0 0 0 3 3"/><path d="M17 6h3v1a3 3 0 0 1-3 3"/><path d="M10 14h4v3h-4z"/><path d="M8 20h8"/><path d="M12 17v3"/></svg></div>
       <div>
         <div class="prem-feat-title">Analyse concurrentielle</div>
         <div class="prem-feat-desc">Où en sont vos concurrents dans l'adoption de l'IA, et comment prendre une longueur d'avance sur eux.</div>
@@ -297,7 +299,7 @@ body { background: #060D14; }
       </button>
 
       <p class="prem-trust">
-        🔒 Paiement sécurisé Stripe · Accès immédiat après paiement<br>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10.5" width="16" height="10.5" rx="2.5"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg> Paiement sécurisé Stripe · Accès immédiat après paiement<br>
         <a href="/cgv.php">CGV</a> · <a href="/confidentialite.php">Confidentialité</a>
       </p>
     </div>
