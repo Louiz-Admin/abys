@@ -14,7 +14,7 @@
  * Le prenom n'est utilise que s'il ressemble vraiment a un prenom.
  */
 /** Expediteur des messages personnels de Milo. Un noreply ne peut pas ecrire a quelqu'un. */
-const MILO_FROM = 'Milo · ABYS <contact@abys.ai>';
+const MILO_FROM = 'Milo <contact@abys.ai>';
 
 function milo_saluer(string $texte, string $prenom = ''): string {
     $texte = ltrim($texte);
@@ -140,6 +140,14 @@ function smtp_send(
     // Parse adresse expéditeur
     preg_match('/<([^>]+)>/', $from_header, $m);
     $from_addr = $m[1] ?? $from_header;
+
+    // Un caractere accentue non encode dans l'en-tete From fait rejeter l'envoi
+    // par certains serveurs (IONOS repond 554 Unauthorized sender address).
+    if ($m && preg_match('/[^\x20-\x7E]/', $from_header)) {
+        $nom = trim(str_replace('<' . $from_addr . '>', '', $from_header));
+        $nom = trim($nom, " \t\"");
+        $from_header = ($nom !== '' ? '=?UTF-8?B?' . base64_encode($nom) . '?= ' : '') . '<' . $from_addr . '>';
+    }
 
     try {
         // 1. Connexion TCP
