@@ -46,15 +46,30 @@ if (isset($_GET['perso'])) {
     $out['perso'] = ['host' => $host, 'port' => $port, 'user' => $user,
                      'mot_de_passe' => $pass ? 'present (' . strlen($pass) . ' car.)' : 'ABSENT'];
 
+    $out['imap_host'] = $settings['imap_host'] ?? '(defaut imap.ionos.fr)';
+    $out['imap_port'] = $settings['imap_port'] ?? '(defaut 993)';
+
     if ($pass) {
-        $b = uniqid('t_', true);
-        $mime = "--{$b}\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\nTemoin canal personnel.\r\n--{$b}--";
-        $GLOBALS['abys_smtp_erreur'] = null;
-        $ok = smtp_send($host, $port, $user, $pass, MILO_FROM,
-                        $cfg['imap_user'] ?? 'contact@abys.ai',
-                        'Temoin en-tetes PERSO ' . date('H:i:s'), $b, $mime);
-        $out['perso']['envoi'] = $ok;
-        $out['perso']['erreur'] = $GLOBALS['abys_smtp_erreur'] ?? null;
+        // On cherche quelle adresse d'expedition l'hebergeur accepte reellement
+        $candidats = isset($_GET['exp'])
+            ? [ (string) $_GET['exp'] ]
+            : [ $user, 'tom@abys.ai', 'thomas@abys.ai', 'noreply@abys.ai', 'milo@abys.ai' ];
+
+        $out['perso']['essais'] = [];
+        foreach (array_unique(array_filter($candidats)) as $exp) {
+            $b = uniqid('t_', true);
+            $mime = "--{$b}\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\nTemoin canal personnel.\r\n--{$b}--";
+            $GLOBALS['abys_smtp_erreur'] = null;
+            $ok = smtp_send($host, $port, $user, $pass, 'Milo ABYS <' . $exp . '>',
+                            $cfg['imap_user'] ?? 'contact@abys.ai',
+                            'Temoin PERSO ' . $exp . ' ' . date('H:i:s'), $b, $mime);
+            $out['perso']['essais'][] = [
+                'expediteur' => $exp,
+                'accepte'    => $ok,
+                'erreur'     => $ok ? null : mb_substr((string) ($GLOBALS['abys_smtp_erreur'] ?? ''), 0, 200),
+            ];
+            if ($ok) break;
+        }
     }
     exit(json_encode($out, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
 }
