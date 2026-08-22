@@ -6,7 +6,7 @@
 //
 // Cycle (déclenché par le trafic du site, au plus une fois par heure) :
 //   1. Il constitue son tableau de bord (audits récents, relances déjà faites)
-//   2. Il DÉCIDE dossier par dossier (relancer, attendre, escalader, abandonner)
+//   2. Il DÉCIDE dossier par dossier (relancer, attendre, abandonner)
 //   3. Il exécute ses décisions (emails écrits par lui, personnalisés)
 //   4. Il journalise tout et rend compte à Thomas
 //
@@ -38,11 +38,11 @@ function milo_trace(PDO $db, array $payload): void {
 }
 
 if (isset($_GET['ping'])) {
-    exit(json_encode(['version' => 'v8', 'ts' => date('c')]));
+    exit(json_encode(['version' => 'v9', 'ts' => date('c')]));
 }
 
 if (isset($_GET['diag'])) {
-    $out = ['version' => 'v8', 'ts' => date('c')];
+    $out = ['version' => 'v9', 'ts' => date('c')];
     try { $out['verrou_milo_agent'] = $db->query("SELECT IS_USED_LOCK('milo_agent')")->fetchColumn(); } catch (Throwable $e) { $out['verrou_err'] = $e->getMessage(); }
     try {
         $pl = $db->query("SELECT ID, TIME, STATE, LEFT(INFO, 120) AS REQUETE FROM information_schema.PROCESSLIST WHERE COMMAND <> 'Sleep' ORDER BY TIME DESC LIMIT 10")->fetchAll(PDO::FETCH_ASSOC);
@@ -128,7 +128,7 @@ if (($settings['milo_agent_schema'] ?? '') !== '2') {
 
 milo_trace($db, ['stage' => 'demarrage', 'dry' => $dry, 'ts' => date('c')]);
 
-$log = ['analyses' => 0, 'relances' => 0, 'attentes' => 0, 'escalades' => 0, 'abandons' => 0, 'erreurs' => 0];
+$log = ['analyses' => 0, 'relances' => 0, 'attentes' => 0, 'abandons' => 0, 'erreurs' => 0];
 
 try {
     // ════════════════════════════════════════════════════════════════
@@ -141,7 +141,7 @@ try {
             a.score, a.recommendations,
             (SELECT COUNT(*) FROM milo_actions m WHERE m.lead_id = l.id AND m.action = 'relancer' AND m.sent = 1) AS relances_faites,
             (SELECT MAX(m.created_at) FROM milo_actions m WHERE m.lead_id = l.id AND m.sent = 1) AS derniere_relance,
-            (SELECT COUNT(*) FROM milo_actions m WHERE m.lead_id = l.id AND m.action IN ('abandonner','escalader')) AS clos,
+            (SELECT COUNT(*) FROM milo_actions m WHERE m.lead_id = l.id AND m.action = 'abandonner') AS clos,
             (SELECT COUNT(*) FROM reports r WHERE r.lead_id = l.id AND r.paid_at IS NOT NULL) AS a_paye,
             (SELECT COUNT(*) FROM email_inbound_log e WHERE e.from_email = l.email) AS a_ecrit
         FROM leads l
@@ -225,8 +225,9 @@ Voici les dossiers qui attendent une décision de ta part. Ce sont des gens qui 
 Pour CHAQUE dossier, choisis UNE action :
 - "relancer" : tu écris un email personnalisé. Réserve ça aux dossiers où tu as vraiment quelque chose d'utile à dire.
 - "attendre" : c'est trop tôt ou le moment est mal choisi. Explique pourquoi.
-- "escalader" : cette personne mérite l'attention directe de Thomas (gros potentiel, situation particulière). Explique pourquoi.
-- "abandonner" : dossier sans suite (email douteux, doublon, 3 relances sans réaction, hors cible). Tu ne le rouvriras plus. Regle ferme : si le dossier a moins de 2 relances envoyees et un email valide, ne choisis pas "abandonner", choisis "escalader" et laisse Thomas trancher.
+- "abandonner" : dossier sans suite (email douteux, doublon, 3 relances sans réaction, hors cible). Tu ne le rouvriras plus. Regle ferme : si le dossier a moins de 2 relances envoyees et un email valide, ne choisis pas "abandonner", choisis "attendre".
+
+RÈGLE ABSOLUE : tu ne renvoies JAMAIS un dossier vers Thomas. Aucune situation ne remonte a un humain. Tu tranches, tu agis, tu assumes. Si tu hesites, tu choisis "attendre" et tu reprends le dossier au cycle suivant.
 
 RÈGLES DE JUGEMENT :
 - Tu ne peux envoyer que {$places} emails au maximum dans ce cycle. Choisis les dossiers qui le méritent le plus, mets les autres en "attendre".
@@ -254,7 +255,7 @@ Réponds UNIQUEMENT avec ce JSON, sans texte autour :
   "decisions": [
     {
       "lead_id": 0,
-      "action": "relancer|attendre|escalader|abandonner",
+      "action": "relancer|attendre|abandonner",
       "raison": "Ta raison en une phrase, pour Thomas",
       "objet": "Objet de l'email, uniquement si action = relancer",
       "message": "Le corps de l'email, uniquement si action = relancer"
@@ -300,7 +301,7 @@ PROMPT;
         $lid    = (int) ($dec['lead_id'] ?? 0);
         $action = $dec['action'] ?? '';
         $raison = trim($dec['raison'] ?? '');
-        if (!isset($par_id[$lid]) || !in_array($action, ['relancer','attendre','escalader','abandonner'], true)) continue;
+        if (!isset($par_id[$lid]) || !in_array($action, ['relancer','attendre','abandonner'], true)) continue;
 
         $lead = $par_id[$lid];
         $log['analyses']++;
@@ -321,8 +322,11 @@ PROMPT;
         if ($action === 'abandonner'
             && (int) $lead['relances_faites'] < 2
             && filter_var($lead['email'], FILTER_VALIDATE_EMAIL)) {
-            $action = 'escalader';
-            $raison = 'Milo voulait clore ce dossier : ' . $raison . '. Sans 2 relances sans reponse, je vous le remonte au lieu de le fermer.';
+            $log['attentes']++;
+            $journal[] = ['lead' => $lead['url'] ?: $lead['email'], 'action' => 'attendre',
+                          'raison' => 'Je voulais clore : ' . $raison . '. Sans 2 relances sans reponse, je garde le dossier ouvert.',
+                          'objet' => '', 'message' => '', 'envoye' => false];
+            continue;
         }
 
         // Jamais deux relances rapprochees, quoi qu'en dise le plan
@@ -344,8 +348,6 @@ PROMPT;
                 if ($sent) $envoyes_auj++;
             }
             $log['relances']++;
-        } elseif ($action === 'escalader') {
-            $log['escalades']++;
         } else {
             $log['abandons']++;
         }
@@ -373,13 +375,11 @@ PROMPT;
         foreach ($journal as $j) {
             $badge = match($j['action']) {
                 'relancer'   => $j['envoye'] ? 'Relance envoyee' : 'Relance echouee',
-                'escalader'  => 'POUR VOUS',
                 'abandonner' => 'Dossier clos',
                 default      => 'En attente',
             };
             $couleur = match($j['action']) {
                 'relancer'   => '#059669',
-                'escalader'  => '#B45309',
                 'abandonner' => '#9CA3AF',
                 default      => '#6B7280',
             };
@@ -401,10 +401,10 @@ PROMPT;
             . htmlspecialchars($plan['recommandation'] ?? '') . '</div>'
             . '<table style="width:100%;border-collapse:collapse;margin-top:8px">' . $lignes . '</table>'
             . '<p style="font-size:13px;color:#6B7280;margin-top:16px">'
-            . $log['relances'] . ' relance(s), ' . $log['escalades'] . ' dossier(s) pour vous, '
-            . $log['abandons'] . ' clos, ' . $log['attentes'] . ' en attente.<br>Milo</p>';
+            . $log['relances'] . ' relance(s), ' . $log['abandons'] . ' dossier(s) clos, '
+            . $log['attentes'] . ' en attente.<br>Milo</p>';
 
-        notify_admin('Milo · ' . $log['relances'] . ' relance(s), ' . $log['escalades'] . ' pour vous', $brief);
+        notify_admin('Milo · ' . $log['relances'] . ' relance(s), ' . $log['abandons'] . ' dossier(s) clos', $brief);
     }
 
     $db->query("SELECT RELEASE_LOCK(" . $db->quote($lock) . ")");

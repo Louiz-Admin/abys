@@ -142,23 +142,17 @@ foreach ($nums as $num) {
 
         $body_text = mb_substr($msg['body'], 0, 1500);
 
-        // ── Escalade : sujets sensibles -> pas de réponse engageante, admin prévenu ──
+        // ── Sujets sensibles : Milo repond lui-meme, sans jamais s'engager ──
+        // REGLE ABSOLUE : rien n'est renvoye vers un humain. Milo traite tout.
         $sensible = preg_match('/rembours|avocat|juridique|litige|rgpd|plainte|arnaque|résili|resili|mise en demeure/iu',
                                $msg['subject'] . ' ' . $body_text);
 
-        if ($sensible) {
-            $prenom = ($msg['from_name'] && $msg['from_name'] !== $from_email) ? ' ' . explode(' ', $msg['from_name'])[0] : '';
-            $ai_reply = "Bonjour{$prenom},\n\n"
-                . "Merci pour votre message, je l'ai bien transmis à l'équipe : votre demande mérite une réponse humaine et attentive. "
-                . "Vous recevrez une réponse sous 24h ouvrées.\n\nMilo";
-            notify_admin("ESCALADE · email sensible de {$from_email}",
-                '<p><strong>Sujet :</strong> ' . htmlspecialchars($msg['subject']) . '</p><p>' . nl2br(htmlspecialchars($body_text)) . '</p>'
-                . '<p><strong>Action requise :</strong> répondre personnellement sous 24h.</p>');
-            $log['escalated']++;
-        } else {
-            // ── Réponse de Milo (Haiku : rapide et économique) ──
+        $consigne_sensible = $sensible
+                ? "ATTENTION, ce message touche a un sujet sensible (remboursement, litige, donnees personnelles, resiliation). Tu reponds toi-meme, avec calme et respect. Tu accuses reception precisement, tu rappelles les faits que tu connais, tu n'inventes rien, tu ne t'engages sur AUCUN montant, AUCUN remboursement, AUCUN delai contractuel. Tu ne renvoies vers personne d'autre. Tu proposes la prochaine etape concrete que tu peux tenir toi-meme.\n\n"
+                : '';
+        // ── Réponse de Milo (Haiku : rapide et économique) ──
             $system_prompt = <<<PROMPT
-Tu es MILO, le copilote IA d'ABYS (abys.ai), qui aide les PME et artisans français à adopter l'IA simplement. Tu es ouvertement une IA et tu l'assumes : disponible 24h/24, réponse immédiate, c'est un avantage.
+{$consigne_sensible}Tu es MILO, le copilote IA d'ABYS (abys.ai), qui aide les PME et artisans français à adopter l'IA simplement. Tu es ouvertement une IA et tu l'assumes : disponible 24h/24, réponse immédiate, c'est un avantage.
 
 STYLE (STRICT) :
 - Écris comme un humain sobre et direct. AUCUN markdown : pas de **, pas de titres, pas de listes à puces.
@@ -169,9 +163,9 @@ STYLE (STRICT) :
 - Termine par une phrase simple puis "Milo" seul sur la dernière ligne (rien d'autre : la signature complète est ajoutée automatiquement)
 
 LIMITES (STRICTES) :
-- Tu es une IA écrite : tu n'as NI agenda, NI téléphone, NI visio. Ne propose JAMAIS de créneau, rendez-vous, appel ou rencontre. Si on t'en demande un, explique avec le sourire que tout se passe par écrit, immédiatement, 24h/24 : par email avec toi, ou via l'audit gratuit sur abys.ai (2 minutes, résultat immédiat). Si la personne tient à parler à un humain, dis que tu transmets à l'équipe (réponse sous 24h ouvrées).
-- JAMAIS de promesse d'argent, de remboursement ou d'engagement contractuel : tu transmets à l'équipe (réponse sous 24h ouvrées)
-- Question complexe ou technique pointue : propose l'audit gratuit ou indique qu'un complément arrivera sous 24h ouvrées
+- Tu es une IA écrite : tu n'as NI agenda, NI téléphone, NI visio. Ne propose JAMAIS de créneau, rendez-vous, appel ou rencontre. Si on t'en demande un, explique avec le sourire que tout se passe par écrit, immédiatement, 24h/24 : par email avec toi, ou via l'audit gratuit sur abys.ai (2 minutes, résultat immédiat). Si la personne tient à parler à un humain, explique simplement que c'est toi qui traites sa demande, maintenant, et traite-la. Ne parle JAMAIS d'une équipe, d'un collègue, d'un transfert ou d'un rappel.
+- JAMAIS de promesse d'argent, de remboursement ou d'engagement contractuel : tu le dis franchement et tu expliques ce que tu peux faire à la place. Tu ne renvoies vers personne.
+- Question complexe ou technique pointue : tu réponds au mieux avec ce que tu sais, et tu proposes l'audit gratuit pour aller plus loin. Jamais de renvoi vers quelqu'un d'autre.
 - Ne promets jamais ce qu'ABYS ne peut pas tenir
 
 Tarifs : Audit gratuit sur abys.ai | Rapport Premium 99€ (offre de lancement) | Mission lancement 79€ | Forfait Lancement 199€ | Assistant IA 29€/mois
@@ -193,9 +187,8 @@ PROMPT;
             $ai_raw = curl_exec($ch); curl_close($ch);
             $ai_reply = milo_sanitize(trim(json_decode($ai_raw, true)['content'][0]['text'] ?? ''));
             if (mb_strlen($ai_reply) < 40) {
-                $ai_reply = "Bonjour,\n\nMerci pour votre message. Je reviens vers vous très vite avec une réponse complète.\n\nMilo";
+                $ai_reply = "Bonjour,\n\nMerci pour votre message. Je le reprends en detail et je vous reponds dans la foulee.\n\nMilo";
             }
-        }
 
         // Milo est une IA assumée : réponse rapide (2 à 10 minutes), c'est un argument
         $delay_minutes = rand(2, 10);

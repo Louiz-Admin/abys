@@ -104,15 +104,6 @@ if (!function_exists('milo_avatar')) {
   .milo-portrait::after { content:''; position:absolute; inset:0;
     background:linear-gradient(to right, transparent 55%, #041712),
                linear-gradient(to top, rgba(4,23,18,.85), transparent 45%); }
-  .milo-rays { position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:2; }
-  .milo-rays span { position:absolute; top:-30%; left:var(--l); width:90px; height:180%;
-    transform-origin:top center; transform:rotate(var(--a));
-    background:linear-gradient(to bottom, rgba(52,211,153,.22), transparent 70%);
-    -webkit-mask-image:linear-gradient(to right, transparent, #000 45%, transparent);
-            mask-image:linear-gradient(to right, transparent, #000 45%, transparent);
-    filter:blur(8px); mix-blend-mode:screen;
-    animation:milo-ray var(--d) ease-in-out var(--dl,0s) infinite alternate; }
-  @keyframes milo-ray { from { transform:rotate(calc(var(--a) - 5deg)); } to { transform:rotate(calc(var(--a) + 5deg)); } }
   .milo-sign { position:absolute; left:24px; bottom:22px; z-index:3; }
   .milo-sign b { display:block; font-size:21px; font-weight:700; letter-spacing:-.02em; }
   .milo-sign span { display:block; font-size:12px; color:#8CA79E; margin-top:3px; }
@@ -197,19 +188,14 @@ if (!function_exists('milo_avatar')) {
 
     <div class="milo-portrait">
       <img src="/assets/img/milo.jpg" alt="Milo, le copilote IA d'ABYS">
-      <div class="milo-rays" aria-hidden="true">
-        <span style="--a:-14deg;--l:18%;--d:9s;--dl:-2s"></span>
-        <span style="--a:6deg;--l:44%;--d:11s;--dl:-5s"></span>
-        <span style="--a:22deg;--l:70%;--d:8s;--dl:-1s"></span>
-      </div>
       <div class="milo-sign"><b>Milo</b><span>Copilote IA, ABYS</span></div>
     </div>
 
     <div class="milo-body">
       <div class="milo-eyebrow">Qui vous parle</div>
-      <h2 id="milo-fiche-titre">Bonjour, moi c'est Milo</h2>
-      <p>Je suis l'intelligence artificielle qui fait tourner ABYS. C'est moi qui lis votre site, qui pose les questions, qui calcule vos gains et qui écris votre plan. C'est moi aussi qui réponds quand vous écrivez à ABYS.</p>
-      <p>Derrière moi il n'y a pas une équipe qui fait semblant. Il y a Thomas Capiten, mon créateur, qui fixe le cap. Et moi, qui exécute. Ce portrait est une image de synthèse, autant vous le dire tout de suite.</p>
+      <h2 id="milo-fiche-titre">Bonjour. Je suis Milo.</h2>
+      <p>Je suis l'agent alimenté par une intelligence artificielle qui fait fonctionner entièrement ABYS. C'est moi qui parcours votre site, qui pose les questions, qui calcule vos gains et qui écris votre plan. C'est moi aussi qui réponds quand vous écrivez à ABYS.</p>
+      <p>Derrière moi, il y a Thomas Capiten, mon créateur, qui fixe le cap. Et moi, qui exécute. Ce portrait est une image de synthèse, autant vous le dire tout de suite.</p>
 
       <div class="milo-forge">
         <b>Ce qui tourne derrière</b>
@@ -221,7 +207,7 @@ if (!function_exists('milo_avatar')) {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4.5" width="20" height="15" rx="2.5"/><path d="m3 7 8.2 5.6a1.5 1.5 0 0 0 1.6 0L21 7"/></svg>
           Écrivez-moi
         </a>
-        <em>Ni agenda ni téléphone, aucune promesse que je ne sais pas chiffrer. Ce qui demande un arbitrage humain remonte à Thomas.</em>
+        <em>Ni agenda ni téléphone, et aucune promesse que je ne sais pas chiffrer. Tout ce que vous m'écrivez, c'est moi qui le traite.</em>
       </div>
     </div>
   </div>
