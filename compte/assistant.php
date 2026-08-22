@@ -203,7 +203,7 @@ body{margin:0;height:100vh;display:flex;flex-direction:column;overflow:hidden}
 
       <?php foreach($history as $msg): ?>
       <div class="msg <?= $msg['role'] ?>">
-        <div class="msg-avatar"><?= $msg['role'] === 'assistant' ? '<img src="/assets/img/milo-avatar.jpg" alt="Milo">' : '👤' ?></div>
+        <div class="msg-avatar"><?= $msg['role'] === 'assistant' ? '<img src="/assets/img/milo-avatar.jpg" alt="Milo">' : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' ?></div>
         <div>
           <div class="msg-bubble" data-raw="<?= htmlspecialchars($msg['content']) ?>"><?= nl2br(htmlspecialchars($msg['content'])) ?></div>
           <div class="msg-time"><?= date('H:i', strtotime($msg['created_at'])) ?></div>
@@ -278,7 +278,7 @@ function sendSuggestion(text) {
 function appendMessage(role, html) {
   const div = document.createElement('div');
   div.className = `msg ${role}`;
-  const avatar = role === 'assistant' ? '<img src="/assets/img/milo-avatar.jpg" alt="Milo">' : '👤';
+  const avatar = role === 'assistant' ? '<img src="/assets/img/milo-avatar.jpg" alt="Milo">' : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
   div.innerHTML = `
     <div class="msg-avatar">${avatar}</div>
     <div><div class="msg-bubble">${html}</div></div>

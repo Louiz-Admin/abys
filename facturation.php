@@ -157,7 +157,7 @@ include __DIR__ . '/includes/nav.php';
           Continuer vers le paiement sécurisé →
         </button>
         <p style="font-size: 12px; color: var(--ink-4); text-align: center; margin-top: 12px">
-          🔒 Paiement sécurisé Stripe · Vos données ne sont jamais revendues
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:5px"><rect x="4" y="10.5" width="16" height="10.5" rx="2.5"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg>Paiement sécurisé Stripe · Vos données ne sont jamais revendues
         </p>
         <p style="font-size: 11.5px; color: var(--ink-4); text-align: center; margin-top: 6px; line-height: 1.5">
           En payant, vous autorisez ABYS à conserver votre carte de façon sécurisée (Stripe) pour vos
@@ -192,7 +192,7 @@ include __DIR__ . '/includes/nav.php';
       </div>
       <?php if ($plan === 'report' || $plan === 'pack'): ?>
       <div style="background: rgba(16,185,129,.06); border: 1px solid rgba(16,185,129,.15); border-radius: var(--r-md); padding: 12px; margin-bottom: 16px; font-size: 12px; color: var(--green-deep); line-height: 1.5">
-        <?= $plan === 'report' ? '✅ Garantie satisfait ou remboursé 14 jours · sans justification' : '💡 Éligible aux aides à la transition numérique (OPCO, France Num) · on vous guide' ?>
+        <?= $plan === 'report' ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:5px"><path d="M20 6 9.5 17 4 11.5"/></svg>Garantie satisfait ou remboursé 14 jours · sans justification' : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:5px"><path d="M9 18h6"/><path d="M10 21.5h4"/><path d="M12 2a6.5 6.5 0 0 0-4 11.6c.6.5 1 1.2 1 2h6c0-.8.4-1.5 1-2A6.5 6.5 0 0 0 12 2z"/></svg>Éligible aux aides à la transition numérique (OPCO, France Num) · on vous guide' ?>
       </div>
       <?php endif; ?>
       <div class="order-secure">

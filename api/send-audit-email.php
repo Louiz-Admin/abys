@@ -141,7 +141,7 @@ $opps_section = $opps_html
     : '';
 
 $body = "
-<h2>Bonjour {$display_name} 👋</h2>
+<h2>Bonjour {$display_name}</h2>
 <p>Voici le récapitulatif de votre analyse IA pour <strong>{$display_url}</strong>. Nous avons identifié plusieurs opportunités concrètes pour automatiser vos tâches et gagner du temps dès maintenant.</p>
 
 {$score_html}

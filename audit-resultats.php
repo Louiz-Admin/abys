@@ -749,7 +749,7 @@ include __DIR__ . '/includes/nav.php';
     <div class="header-right">
 
       <div class="sector-badge" id="sector-badge">
-        <span>✦</span>
+        <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 1.9 5.8L19.7 11l-5.8 1.9L12 18.7l-1.9-5.8L4.3 11l5.8-2.2z"/></svg></span>
         <span id="sector-label">Votre secteur</span>
       </div>
 
@@ -1082,7 +1082,7 @@ include __DIR__ . '/includes/nav.php';
         <p class="offer-reassurance">Paiement sécurisé · Satisfait ou remboursé 14 jours</p>
         <!-- Aides financement -->
         <div style="margin-top:16px;padding:12px 14px;background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.18);border-radius:10px">
-          <div style="font-size:12px;font-weight:700;color:#065F46;margin-bottom:6px">💡 Financement possible</div>
+          <div style="font-size:12px;font-weight:700;color:#065F46;margin-bottom:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:5px"><path d="M9 18h6"/><path d="M10 21.5h4"/><path d="M12 2a6.5 6.5 0 0 0-4 11.6c.6.5 1 1.2 1 2h6c0-.8.4-1.5 1-2A6.5 6.5 0 0 0 12 2z"/></svg>Financement possible</div>
           <div style="font-size:12px;color:var(--ink-3);line-height:1.6">Ce rapport peut être <strong>pris en charge partiellement</strong> par votre OPCO ou via <strong>France Num</strong> (aide transition numérique). Mentionnez-le à la commande · notre équipe vous guide.</div>
         </div>
       </div>
@@ -1133,7 +1133,7 @@ include __DIR__ . '/includes/nav.php';
         <p class="offer-reassurance">Paiement sécurisé · Satisfait ou remboursé 14 jours</p>
         <!-- Aides financement premium -->
         <div style="margin-top:16px;padding:12px 14px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:10px">
-          <div style="font-size:12px;font-weight:700;color:#10B981;margin-bottom:6px">💡 Jusqu'à 50% finançable</div>
+          <div style="font-size:12px;font-weight:700;color:#10B981;margin-bottom:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:5px"><path d="M9 18h6"/><path d="M10 21.5h4"/><path d="M12 2a6.5 6.5 0 0 0-4 11.6c.6.5 1 1.2 1 2h6c0-.8.4-1.5 1-2A6.5 6.5 0 0 0 12 2z"/></svg>Jusqu'à 50% finançable</div>
           <div style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.6">L'accompagnement ABYS Premium est éligible aux aides <strong style="color:#fff">BPI France</strong>, <strong style="color:#fff">OPCO</strong> (formation) et <strong style="color:#fff">France Num</strong>. Certaines entreprises ne paient que 200–250€. Notre équipe vous aide à monter le dossier.</div>
         </div>
       </div>

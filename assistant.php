@@ -53,7 +53,7 @@ include __DIR__ . '/includes/nav.php';
       S'abonner maintenant →
     </a>
     <p style="color:rgba(255,255,255,0.4);font-size:12px;margin-top:12px">
-      🔒 Paiement sécurisé Stripe · Résiliable à tout moment · Accès immédiat à votre espace
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:5px"><rect x="4" y="10.5" width="16" height="10.5" rx="2.5"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg>Paiement sécurisé Stripe · Résiliable à tout moment · Accès immédiat à votre espace
     </p>
   </div>
 

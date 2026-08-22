@@ -949,7 +949,7 @@ include __DIR__ . '/includes/head.php';
 
   /* ─── Render simulator ───────────────────────────── */
   var CERTAINTY_META = {
-    eligible: { symbol: '✓', cssClass: 'eligible', label: 'Éligible'  },
+    eligible: { symbol: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9.5 17 4 11.5"/></svg>', cssClass: 'eligible', label: 'Éligible'  },
     probable: { symbol: '~', cssClass: 'probable', label: 'Probable'  },
     variable: { symbol: '?', cssClass: 'variable', label: 'Variable'  }
   };
@@ -1006,7 +1006,7 @@ include __DIR__ . '/includes/head.php';
     totalEl.textContent  = 'Jusqu\'à ' + euros(totalSavings) + ' d\'aides mobilisables';
     if (result.netPrice === 0) {
       netAmtEl.textContent  = '0 €';
-      netNoteEl.textContent = 'Prise en charge totale possible 🎉';
+      netNoteEl.textContent = 'Prise en charge totale possible';
     } else {
       netAmtEl.textContent  = '≈ ' + euros(result.netPrice);
       netNoteEl.textContent = 'Après application des principales aides';

@@ -382,7 +382,7 @@ async function runAudit() {
     });
 
     if (analysis && analysis.audit) {
-      log('✅ Redirection vers les résultats…');
+      log('Redirection vers les résultats.');
       ABYS.store('audit_result', analysis.audit);
       ABYS.store('audit_id',    analysis.audit_id || 0);
       if (scrapeData) {
@@ -397,7 +397,7 @@ async function runAudit() {
 
   } catch (err) {
     clearInterval(msgInterval);
-    log('❌ ' + err.message);
+    log(err.message);
     const loading = document.getElementById('phase-loading');
     const error   = document.getElementById('phase-error');
     if (loading) loading.style.display = 'none';
