@@ -32,8 +32,13 @@ $out = [
 if (isset($_GET['envoi'])) {
     require_once __DIR__ . '/email.php';
     $dest = $settings['imap_user'] ?? 'contact@abys.ai';
-    $ok = send_email($dest, 'Temoin en-tetes ' . date('H:i:s'),
-        '<p>Message temoin envoye par le diagnostic. Aucune action requise.</p>', MILO_FROM);
+    $perso = !isset($_GET['relais']);
+    $ok = $perso
+        ? send_email_perso($dest, 'Temoin en-tetes ' . date('H:i:s'),
+            '<p>Message temoin envoye par le diagnostic. Aucune action requise.</p>')
+        : send_email($dest, 'Temoin en-tetes ' . date('H:i:s'),
+            '<p>Message temoin envoye par le diagnostic. Aucune action requise.</p>', MILO_FROM);
+    $out['canal'] = $perso ? 'personnel' : 'relais';
     $out['temoin_envoye'] = $ok;
     $out['temoin_vers']   = $dest;
     exit(json_encode($out, JSON_UNESCAPED_UNICODE));

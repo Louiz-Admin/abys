@@ -93,7 +93,7 @@ foreach ($pending as $row) {
     if ($sent_today >= $daily_cap) { $log['skipped']++; continue; }
     try {
         $reply_subject = preg_match('/^Re\s*:/i', $row['subject']) ? $row['subject'] : 'Re : ' . $row['subject'];
-        $sent = send_email($row['from_email'], $reply_subject, milo_reply_html($row['ai_reply']), MILO_FROM);
+        $sent = send_email_perso($row['from_email'], $reply_subject, milo_reply_html($row['ai_reply']));
         $db->prepare("UPDATE email_inbound_log SET replied=1, replied_at=NOW() WHERE id=?")->execute([$row['id']]);
         $sent_today++;
 

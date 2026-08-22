@@ -83,6 +83,51 @@ function send_email(string $to, string $subject, string $html, string $from = ''
 }
 
 /**
+ * ENVOI PERSONNEL DE MILO.
+ *
+ * Les messages que Milo adresse a une personne partent de la vraie boite
+ * contact@abys.ai, chez l'hebergeur du domaine, et non par le relais marketing.
+ * Raison prouvee : le relais ajoute List-Unsubscribe, Feedback-ID et un
+ * Return-Path de campagne, ce qui fait afficher a Gmail « message lie a une
+ * liste de distribution ». Un email personnel ne doit porter aucun de ces marqueurs.
+ *
+ * En cas d'echec, on retombe sur l'envoi standard : mieux vaut un email marque
+ * qu'un email perdu.
+ */
+function send_email_perso(string $to, string $subject, string $html): bool {
+    try {
+        $db = get_db();
+        $st = $db->query("SELECT `key`, value FROM settings WHERE `key` IN
+            ('imap_user','imap_pass','perso_smtp_host','perso_smtp_port','perso_smtp_user','perso_smtp_pass')")->fetchAll();
+        $cfg = [];
+        foreach ($st as $r) $cfg[$r['key']] = $r['value'];
+    } catch (Throwable $e) { $cfg = []; }
+
+    $host = $cfg['perso_smtp_host'] ?? 'smtp.ionos.fr';
+    $port = (int) ($cfg['perso_smtp_port'] ?? 587);
+    $user = $cfg['perso_smtp_user'] ?? ($cfg['imap_user'] ?? '');
+    $brut = $cfg['perso_smtp_pass'] ?? ($cfg['imap_pass'] ?? '');
+    $pass = $brut ? (decrypt_value($brut) ?: '') : '';
+
+    if ($host && $user && $pass) {
+        $boundary = uniqid('abys_', true);
+        $plain    = strip_tags(preg_replace('/<br\s*\/?>/i', "\n", $html));
+        $mime = "--{$boundary}\r\n"
+              . "Content-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n"
+              . chunk_split(base64_encode($plain)) . "\r\n"
+              . "--{$boundary}\r\n"
+              . "Content-Type: text/html; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n"
+              . chunk_split(base64_encode(email_wrap($html))) . "\r\n"
+              . "--{$boundary}--";
+
+        if (smtp_send($host, $port, $user, $pass, MILO_FROM, $to, $subject, $boundary, $mime)) return true;
+        error_log("[ABYS email] envoi personnel echoue vers {$to}, repli sur le relais");
+    }
+
+    return send_email($to, $subject, $html, MILO_FROM);
+}
+
+/**
  * Envoie via SMTP STARTTLS (port 587).
  * Retourne true si succès, false sinon.
  */
