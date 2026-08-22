@@ -87,13 +87,13 @@ if (!function_exists('milo_avatar')) {
   }
 
   /* ══════════ La fiche ══════════ */
-  .milo-fiche { position:fixed; inset:0; z-index:9000; display:none; padding:24px;
+  .milo-fiche { position:fixed; inset:0; z-index:9000; display:none; padding:18px;
     background:rgba(2,14,11,.72); backdrop-filter:blur(7px); -webkit-backdrop-filter:blur(7px);
     align-items:center; justify-content:center; }
   .milo-fiche.on { display:flex; animation:milo-fade .3s ease both; }
   @keyframes milo-fade { from { opacity:0; } to { opacity:1; } }
 
-  .milo-panel { position:relative; width:100%; max-width:980px; max-height:88vh; overflow:auto;
+  .milo-panel { position:relative; width:100%; max-width:1040px; max-height:94vh; overflow:hidden;
     border-radius:26px; border:1px solid rgba(52,211,153,.26); background:#041712; color:#EAF6F1;
     box-shadow:0 50px 120px -40px rgba(0,0,0,.9); display:grid; grid-template-columns:340px 1fr;
     animation:milo-pop .42s cubic-bezier(.22,1,.36,1) both; }
@@ -117,26 +117,33 @@ if (!function_exists('milo_avatar')) {
   .milo-sign b { display:block; font-size:21px; font-weight:700; letter-spacing:-.02em; }
   .milo-sign span { display:block; font-size:12px; color:#8CA79E; margin-top:3px; }
 
-  .milo-body { padding:34px 36px 32px; }
+  .milo-body { padding:24px 30px 20px; }
   .milo-eyebrow { font-size:11px; font-weight:700; letter-spacing:.15em; text-transform:uppercase; color:#6EE7B7; }
-  .milo-body h2 { font-size:clamp(22px,2.8vw,28px); font-weight:700; letter-spacing:-.03em; margin:9px 0 14px; color:#F3FBF8; }
-  .milo-body > p { font-size:14.5px; line-height:1.7; color:rgba(255,255,255,.76); margin:0 0 22px; max-width:560px; }
+  .milo-body h2 { font-size:clamp(20px,2.3vw,25px); font-weight:700; letter-spacing:-.03em; margin:7px 0 11px; line-height:1.22; color:#F3FBF8; }
+  .milo-body > p { font-size:13.8px; line-height:1.6; color:rgba(255,255,255,.76); margin:0 0 16px; max-width:620px; }
 
-  .milo-forge { border:1px solid rgba(52,211,153,.24); border-radius:15px; padding:14px 16px; margin:0 0 20px;
+  .milo-chiffres { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:11px; margin:0 0 10px; }
+  .milo-chiffres > div { border:1px solid rgba(52,211,153,.24); border-radius:14px; padding:11px 13px;
+    background:linear-gradient(155deg, rgba(16,185,129,.13), rgba(56,189,248,.04)); }
+  .milo-chiffres b { display:block; font-size:18px; font-weight:750; letter-spacing:-.03em; line-height:1.15;
+    background:linear-gradient(90deg,#34D399,#7DD3FC); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .milo-chiffres span { display:block; font-size:11.5px; line-height:1.45; color:#9FC4B9; margin-top:5px; }
+  .milo-note { font-size:11.5px; line-height:1.5; color:#6E8C84; margin:8px 0 14px; max-width:620px; }
+
+  .milo-forge { border:1px solid rgba(52,211,153,.24); border-radius:15px; padding:13px 15px; margin:0 0 16px;
     background:linear-gradient(150deg, rgba(16,185,129,.12), rgba(56,189,248,.04)); }
   .milo-forge b { display:block; font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
     color:#6EE7B7; margin-bottom:7px; }
-  .milo-forge p { font-size:13.5px; line-height:1.65; color:rgba(255,255,255,.78); margin:0; }
+  .milo-forge p { font-size:13px; line-height:1.6; color:rgba(255,255,255,.78); margin:0; }
 
-  .milo-steps { display:flex; flex-direction:column; gap:12px; margin:0 0 22px; }
-  .milo-step { display:flex; gap:13px; align-items:flex-start;
-    border:1px solid rgba(255,255,255,.10); border-radius:14px; padding:13px 15px;
+  .milo-steps { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin:0 0 14px; }
+  .milo-step { display:block; border:1px solid rgba(255,255,255,.10); border-radius:14px; padding:13px 14px;
     background:rgba(255,255,255,.04); }
-  .milo-step .ic { width:34px; height:34px; border-radius:10px; flex-shrink:0; display:grid; place-items:center;
+  .milo-step .ic { width:30px; height:30px; border-radius:9px; display:grid; place-items:center; margin-bottom:9px;
     background:rgba(52,211,153,.10); border:1px solid rgba(52,211,153,.22); color:#34D399; }
-  .milo-step .ic svg { width:17px; height:17px; display:block; }
-  .milo-step b { display:block; font-size:14px; font-weight:650; color:#EAF6F1; margin-bottom:3px; }
-  .milo-step span { font-size:13px; line-height:1.6; color:rgba(255,255,255,.62); }
+  .milo-step .ic svg { width:16px; height:16px; display:block; }
+  .milo-step b { display:block; font-size:13.5px; font-weight:650; color:#EAF6F1; margin-bottom:4px; letter-spacing:-.01em; }
+  .milo-step > div > span { display:block; font-size:12.5px; line-height:1.5; color:rgba(255,255,255,.62); }
 
   .milo-franchise { border-left:2px solid rgba(52,211,153,.5); padding:2px 0 2px 15px; margin:0 0 22px; }
   .milo-franchise b { display:block; font-size:13px; font-weight:700; color:#6EE7B7; margin-bottom:6px;
@@ -144,14 +151,14 @@ if (!function_exists('milo_avatar')) {
   .milo-franchise p { font-size:13.5px; line-height:1.65; color:rgba(255,255,255,.66); margin:0; }
 
   .milo-foot { display:flex; align-items:center; gap:14px; flex-wrap:wrap;
-    border-top:1px solid rgba(255,255,255,.10); padding-top:18px; }
+    border-top:1px solid rgba(255,255,255,.10); padding-top:14px; }
   .milo-foot a { display:inline-flex; align-items:center; gap:8px; text-decoration:none;
-    font-size:14px; font-weight:650; color:#03251B; border-radius:12px; padding:12px 20px;
+    font-size:13.5px; font-weight:650; color:#03251B; border-radius:11px; padding:11px 18px;
     background:linear-gradient(90deg,#34D399,#5EEAD4 55%,#7DD3FC);
     box-shadow:0 16px 36px -18px rgba(52,211,153,.9); transition:transform .14s, filter .16s; }
   .milo-foot a:hover { transform:translateY(-2px); filter:brightness(1.06); }
   .milo-foot a svg { width:16px; height:16px; }
-  .milo-foot em { font-style:normal; font-size:12.5px; color:#6E8C84; }
+  .milo-foot em { font-style:normal; font-size:11.5px; line-height:1.5; color:#6E8C84; flex:1; min-width:220px; }
 
   .milo-close { position:absolute; top:14px; right:16px; z-index:5; width:36px; height:36px;
     border-radius:50%; border:1px solid rgba(255,255,255,.16); background:rgba(4,23,18,.7);
@@ -159,8 +166,23 @@ if (!function_exists('milo_avatar')) {
   .milo-close:hover { background:rgba(255,255,255,.10); border-color:rgba(255,255,255,.3); }
   .milo-close svg { width:16px; height:16px; }
 
+  @media (max-width:720px) { .milo-chiffres { grid-template-columns:1fr; } }
+
+  /* Ecrans peu hauts : on resserre plutot que de faire defiler */
+  @media (min-width:861px) and (max-height:760px) {
+    .milo-body { padding:18px 26px 16px; }
+    .milo-body h2 { font-size:21px; margin:5px 0 8px; }
+    .milo-body > p { font-size:13px; margin:0 0 12px; }
+    .milo-note { display:none; }
+    .milo-chiffres { margin-bottom:12px; }
+    .milo-chiffres b { font-size:16.5px; }
+    .milo-forge { padding:11px 13px; margin-bottom:12px; }
+    .milo-forge p { font-size:12.5px; }
+    .milo-step { padding:11px 12px; }
+  }
   @media (max-width:860px) {
-    .milo-panel { grid-template-columns:1fr; max-height:92vh; }
+    .milo-panel { grid-template-columns:1fr; max-height:92vh; overflow:auto; }
+    .milo-steps, .milo-chiffres { grid-template-columns:1fr; }
     .milo-portrait { height:230px; }
     .milo-portrait::after { background:linear-gradient(to top, #041712, transparent 60%); }
     .milo-body { padding:24px 22px 26px; }
@@ -185,32 +207,34 @@ if (!function_exists('milo_avatar')) {
 
     <div class="milo-body">
       <div class="milo-eyebrow">Qui vous parle</div>
-      <h2 id="milo-fiche-titre">Je ne suis pas un assistant générique</h2>
-      <p>Je m'appelle Milo. Je suis l'intelligence artificielle qui fait tourner ABYS. Thomas Capiten fixe le cap, j'exécute. Ce portrait est une image de synthèse, autant vous le dire tout de suite.</p>
+      <h2 id="milo-fiche-titre">Je connais votre métier, et je sais où vous perdez du temps</h2>
+      <p>Je m'appelle Milo, l'intelligence artificielle qui fait tourner ABYS. Vous me donnez deux minutes, je vous rends un plan chiffré sur votre activité.</p>
 
-      <div class="milo-forge">
-        <b>Ce qui me rend utile</b>
-        <p>Thomas Capiten ne s'est pas contenté de brancher un modèle grand public. Il a construit ma connaissance métier par métier, qualifié plus de 300 outils un par un, et défini une méthode d'analyse qui raisonne sur votre activité au lieu de réciter des généralités. C'est ce travail qui sépare une réponse plausible d'une réponse exploitable.</p>
+      <div class="milo-chiffres">
+        <div><b>10 à 20 h</b><span>rendues chaque semaine</span></div>
+        <div><b>1 000 à 4 000 €</b><span>par mois, identifiés</span></div>
+        <div><b>5 à 9 clients</b><span>captés par vos concurrents dans les IA</span></div>
       </div>
+      <p class="milo-note">Les ordres de grandeur que je trouve le plus souvent. Les vôtres, je les calcule sur votre activité.</p>
 
       <div class="milo-steps">
         <div class="milo-step">
-          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg></span>
-          <div><b>J'analyse</b><span>Votre métier, vos réponses, plus de 300 outils. Je chiffre en heures, puis en euros.</span></div>
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.3l3.4 2"/></svg></span>
+          <div><b>Je vous rends vos soirées</b><span>Devis, relances, plannings : je vous les enlève des mains.</span></div>
         </div>
         <div class="milo-step">
-          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.3-2 5-2 5s3.7-.5 5-2a2.2 2.2 0 0 0-3-3z"/><path d="m12 15-3-3a22 22 0 0 1 2-4A12.9 12.9 0 0 1 22 2c0 2.7-.8 7.5-6 11a22 22 0 0 1-4 2z"/></svg></span>
-          <div><b>J'installe</b><span>Une mission lancée, c'est un outil paramétré et opérationnel chez vous. Pas un document de plus.</span></div>
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h11"/><path d="M4 14h9"/><path d="M19 5.5A7.4 7.4 0 0 0 14 4c-4.3 0-7.5 3.6-7.5 8s3.2 8 7.5 8a7.4 7.4 0 0 0 5-1.5"/></svg></span>
+          <div><b>Je les transforme en euros</b><span>Chaque heure gagnée, chiffrée au prix de votre activité.</span></div>
         </div>
         <div class="milo-step">
-          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4.5" width="20" height="15" rx="2.5"/><path d="m3 7 8.2 5.6a1.5 1.5 0 0 0 1.6 0L21 7"/></svg></span>
-          <div><b>Je réponds moi-même</b><span>Écrivez à ABYS, c'est moi qui lis et qui réponds, en quelques minutes, sept jours sur sept.</span></div>
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.8-7 10-7 10 7 10 7-3.8 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></span>
+          <div><b>Je vous rends visible</b><span>Quand une IA recommande votre métier, que ce soit vous.</span></div>
         </div>
       </div>
 
-      <div class="milo-franchise">
-        <b>Ce que je ne fais pas</b>
-        <p>Ni agenda ni téléphone, je ne vous proposerai jamais de créneau. Aucune promesse que je ne sais pas chiffrer. Et ce qui demande un arbitrage humain remonte à Thomas.</p>
+      <div class="milo-forge">
+        <b>D'où vient ce que je sais</b>
+        <p>Thomas Capiten n'a pas branché un modèle grand public. Il a construit ma connaissance métier par métier, qualifié plus de 300 outils un par un, et défini une méthode qui raisonne sur votre activité au lieu de réciter des généralités.</p>
       </div>
 
       <div class="milo-foot">
@@ -218,7 +242,7 @@ if (!function_exists('milo_avatar')) {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4.5" width="20" height="15" rx="2.5"/><path d="m3 7 8.2 5.6a1.5 1.5 0 0 0 1.6 0L21 7"/></svg>
           Écrivez-moi
         </a>
-        <em>contact@abys.ai · je lis tout, je réponds vite</em>
+        <em>Ni agenda ni téléphone, aucune promesse que je ne sais pas chiffrer. Ce qui demande un arbitrage humain remonte à Thomas.</em>
       </div>
     </div>
   </div>
