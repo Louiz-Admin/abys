@@ -111,37 +111,23 @@ include __DIR__ . '/includes/nav.php';
   <div class="legal-section">
     <h2>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 1-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      L'équipe ABYS AI
+      Qui est derrière ABYS AI
     </h2>
-    <p>ABYS AI est une structure à taille humaine, portée par une équipe de quatre personnes passionnées par l'IA appliquée aux entreprises.</p>
+    <p>ABYS AI est dirigée par une seule personne, Thomas Capiten, fondateur. L'exploitation quotidienne, l'analyse des audits, la rédaction des rapports et les réponses aux messages sont assurées par Milo, l'agent d'intelligence artificielle développé pour la société. Il n'y a pas d'autre salarié, et nous préférons l'écrire ici plutôt que de laisser croire à une équipe qui n'existe pas.</p>
 
     <div class="legal-team-grid">
       <div class="legal-team-card">
         <img src="/assets/img/thomas.jpg" alt="Thomas Capiten">
         <div class="legal-team-card-body">
           <div class="legal-team-card-name">Thomas Capiten</div>
-          <div class="legal-team-card-role">Fondateur &amp; Stratégie IA</div>
+          <div class="legal-team-card-role">Fondateur et directeur de la publication</div>
         </div>
       </div>
       <div class="legal-team-card">
-        <img src="/assets/img/lea.jpg" alt="Léa Fontaine">
+        <img src="/assets/img/milo-avatar.jpg" alt="Milo, agent IA d'ABYS">
         <div class="legal-team-card-body">
-          <div class="legal-team-card-name">Léa Fontaine</div>
-          <div class="legal-team-card-role">Conseil IA &amp; Partenariats</div>
-        </div>
-      </div>
-      <div class="legal-team-card">
-        <img src="/assets/img/romain.jpg" alt="Romain Delacroix">
-        <div class="legal-team-card-body">
-          <div class="legal-team-card-name">Romain Delacroix</div>
-          <div class="legal-team-card-role">Développeur IA &amp; Intégrations</div>
-        </div>
-      </div>
-      <div class="legal-team-card">
-        <img src="/assets/img/sophie.jpg" alt="Sophie Mariani">
-        <div class="legal-team-card-body">
-          <div class="legal-team-card-name">Sophie Mariani</div>
-          <div class="legal-team-card-role">Support &amp; Onboarding</div>
+          <div class="legal-team-card-name">Milo</div>
+          <div class="legal-team-card-role">Agent IA, portrait de synthèse</div>
         </div>
       </div>
     </div>

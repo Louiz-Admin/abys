@@ -1,6 +1,8 @@
 <?php
 // Fichier: abys-ai/setup/install.php
-// ATTENTION : supprimer ce fichier après l'installation !
+// INSTALLATEUR · ligne de commande uniquement.
+// Ce fichier cree et modifie des tables : accessible par le web, c'est une porte ouverte.
+if (PHP_SAPI !== 'cli') { http_response_code(404); exit; }
 
 require_once __DIR__ . '/../api/db.php';
 
