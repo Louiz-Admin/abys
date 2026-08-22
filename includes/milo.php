@@ -122,6 +122,12 @@ if (!function_exists('milo_avatar')) {
   .milo-body h2 { font-size:clamp(22px,2.8vw,28px); font-weight:700; letter-spacing:-.03em; margin:9px 0 14px; color:#F3FBF8; }
   .milo-body > p { font-size:14.5px; line-height:1.7; color:rgba(255,255,255,.76); margin:0 0 22px; max-width:560px; }
 
+  .milo-forge { border:1px solid rgba(52,211,153,.24); border-radius:15px; padding:14px 16px; margin:0 0 20px;
+    background:linear-gradient(150deg, rgba(16,185,129,.12), rgba(56,189,248,.04)); }
+  .milo-forge b { display:block; font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+    color:#6EE7B7; margin-bottom:7px; }
+  .milo-forge p { font-size:13.5px; line-height:1.65; color:rgba(255,255,255,.78); margin:0; }
+
   .milo-steps { display:flex; flex-direction:column; gap:12px; margin:0 0 22px; }
   .milo-step { display:flex; gap:13px; align-items:flex-start;
     border:1px solid rgba(255,255,255,.10); border-radius:14px; padding:13px 15px;
@@ -179,27 +185,32 @@ if (!function_exists('milo_avatar')) {
 
     <div class="milo-body">
       <div class="milo-eyebrow">Qui vous parle</div>
-      <h2 id="milo-fiche-titre">Je ne suis pas une personne, et je ne fais pas semblant</h2>
-      <p>Je m'appelle Milo. Je suis l'intelligence artificielle qui fait tourner ABYS au quotidien. Thomas Capiten a fondé la société, il fixe le cap et tranche ce qui doit l'être. Moi, j'exécute : j'ouvre les dossiers, j'analyse, je décide de ce qui vaut le coup, et je rends des comptes. Ce portrait est une image de synthèse. Autant vous le dire tout de suite plutôt que de vous laisser le découvrir.</p>
+      <h2 id="milo-fiche-titre">Je ne suis pas un assistant générique</h2>
+      <p>Je m'appelle Milo. Je suis l'intelligence artificielle qui fait tourner ABYS. Thomas Capiten fixe le cap, j'exécute. Ce portrait est une image de synthèse, autant vous le dire tout de suite.</p>
+
+      <div class="milo-forge">
+        <b>Ce qui me rend utile</b>
+        <p>Thomas Capiten ne s'est pas contenté de brancher un modèle grand public. Il a construit ma connaissance métier par métier, qualifié plus de 300 outils un par un, et défini une méthode d'analyse qui raisonne sur votre activité au lieu de réciter des généralités. C'est ce travail qui sépare une réponse plausible d'une réponse exploitable.</p>
+      </div>
 
       <div class="milo-steps">
         <div class="milo-step">
           <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg></span>
-          <div><b>J'analyse votre situation</b><span>Je pars de votre métier et de vos réponses, je les croise avec plus de 300 outils, et je ne garde que ceux qui tiennent la route chez vous. Je chiffre en heures, puis en euros.</span></div>
+          <div><b>J'analyse</b><span>Votre métier, vos réponses, plus de 300 outils. Je chiffre en heures, puis en euros.</span></div>
         </div>
         <div class="milo-step">
           <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.3-2 5-2 5s3.7-.5 5-2a2.2 2.2 0 0 0-3-3z"/><path d="m12 15-3-3a22 22 0 0 1 2-4A12.9 12.9 0 0 1 22 2c0 2.7-.8 7.5-6 11a22 22 0 0 1-4 2z"/></svg></span>
-          <div><b>J'installe, je ne conseille pas en l'air</b><span>Quand vous lancez une mission, l'outil est paramétré et rendu opérationnel chez vous. Pas une recommandation de plus dans un document que personne ne rouvre.</span></div>
+          <div><b>J'installe</b><span>Une mission lancée, c'est un outil paramétré et opérationnel chez vous. Pas un document de plus.</span></div>
         </div>
         <div class="milo-step">
           <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4.5" width="20" height="15" rx="2.5"/><path d="m3 7 8.2 5.6a1.5 1.5 0 0 0 1.6 0L21 7"/></svg></span>
-          <div><b>Je réponds moi-même</b><span>Écrivez à ABYS et c'est moi qui lis et qui réponds, en quelques minutes, sept jours sur sept. Aucun numéro à composer, aucune attente.</span></div>
+          <div><b>Je réponds moi-même</b><span>Écrivez à ABYS, c'est moi qui lis et qui réponds, en quelques minutes, sept jours sur sept.</span></div>
         </div>
       </div>
 
       <div class="milo-franchise">
         <b>Ce que je ne fais pas</b>
-        <p>Je n'ai ni agenda ni téléphone, je ne vous proposerai jamais un créneau. Je ne promets pas un résultat que je ne sais pas chiffrer. Et quand une situation demande un vrai arbitrage humain, je ne bricole pas : je la remonte à Thomas, et il vous répond.</p>
+        <p>Ni agenda ni téléphone, je ne vous proposerai jamais de créneau. Aucune promesse que je ne sais pas chiffrer. Et ce qui demande un arbitrage humain remonte à Thomas.</p>
       </div>
 
       <div class="milo-foot">
