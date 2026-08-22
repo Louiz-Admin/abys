@@ -207,18 +207,13 @@ if (!function_exists('milo_avatar')) {
 
     <div class="milo-body">
       <div class="milo-eyebrow">Qui vous parle</div>
-      <h2 id="milo-fiche-titre">Je sais où vous perdez du temps, et ce que ça vous coûte</h2>
-
-      <div class="milo-chiffres">
-        <div><b>10 à 20 h</b><span>rendues chaque semaine</span></div>
-        <div><b>1 000 à 4 000 €</b><span>par mois, identifiés</span></div>
-        <div><b>5 à 9 clients</b><span>captés par vos concurrents dans les IA</span></div>
-      </div>
-      <p class="milo-note">Les ordres de grandeur que je trouve le plus souvent. Les vôtres, je les calcule sur votre activité.</p>
+      <h2 id="milo-fiche-titre">Bonjour, moi c'est Milo</h2>
+      <p>Je suis l'intelligence artificielle qui fait tourner ABYS. C'est moi qui lis votre site, qui pose les questions, qui calcule vos gains et qui écris votre plan. C'est moi aussi qui réponds quand vous écrivez à ABYS.</p>
+      <p>Derrière moi il n'y a pas une équipe qui fait semblant. Il y a Thomas Capiten, mon créateur, qui fixe le cap. Et moi, qui exécute. Ce portrait est une image de synthèse, autant vous le dire tout de suite.</p>
 
       <div class="milo-forge">
         <b>Ce qui tourne derrière</b>
-        <p>Mon créateur, Thomas Capiten, n'a pas branché un modèle grand public. Architecture multi-modèles : un modèle rapide pour la lecture et la qualification sectorielle, un modèle de raisonnement pour l'arbitrage et la rédaction. Sortie contrainte par schéma strict avec réparation des réponses tronquées, corpus d'outils segmenté par secteur et par usage, pondération des gains selon la taille et le volume d'affaires, et une boucle de décision autonome qui ouvre les dossiers, juge, agit et rend compte.</p>
+        <p>Architecture multi-modèles : un modèle rapide pour la lecture et la qualification sectorielle, un modèle de raisonnement pour l'arbitrage et la rédaction. Sortie contrainte par schéma strict avec réparation des réponses tronquées, corpus d'outils segmenté par secteur et par usage, pondération des gains selon la taille et le volume d'affaires, et une boucle de décision autonome qui ouvre les dossiers, juge, agit et rend compte.</p>
       </div>
 
       <div class="milo-foot">
