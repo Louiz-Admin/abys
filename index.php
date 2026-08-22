@@ -65,14 +65,18 @@ $abys_audits_fmt = number_format($abys_audits, 0, ',', ' ');
 
 /* Title */
 h1.hero-title {
-  font-size: clamp(44px, 5.5vw, 72px);
+  font-size: clamp(34px, 5.2vw, 68px);
   font-weight: 700;
   line-height: 1.07;
   letter-spacing: -0.04em;
   color: var(--ink);
   margin: 0 0 18px;
   transition: opacity 380ms ease;
-  max-width: 720px;
+  max-width: 760px;
+  /* Deux lignes, toujours : la hauteur est reservee et rien ne peut deborder */
+  height: calc(2 * 1.07em);
+  overflow: hidden;
+  text-wrap: balance;
 }
 h1.hero-title strong {
   font-weight: 700;
@@ -597,7 +601,7 @@ h1.hero-title strong {
 
 @media (max-width: 768px) {
   .hero-v2 { padding: 48px 20px 0; overflow-x: hidden; }
-  h1.hero-title { font-size: 42px; }
+  h1.hero-title { font-size: 32px; }
   .hero-audit-box { border-radius: 18px; padding: 20px 18px; }
   .hero-audit-caption { font-size: 9px; }
   .hero-audit-input { font-size: 15px; padding: 18px 0; }
@@ -711,18 +715,6 @@ body:not(.nav-solid) .nav-links a:hover{ color:#6EE7B7; }
 
   <!-- Zone de contenu centrée -->
   <div class="hero-content">
-
-    <!-- Badge live · compteur réel d'audits avec légende à tiroir -->
-    <details class="hero-badge-wrap" style="position:relative;display:inline-block;text-align:left">
-      <summary class="hero-badge" style="list-style:none;cursor:pointer">
-        <span class="pulse-dot"></span>
-        <strong style="font-weight:700"><?= $abys_audits_fmt ?></strong>&nbsp;audits IA réalisés
-        <span style="opacity:.5;font-size:11px;margin-left:4px">ⓘ</span>
-      </summary>
-      <div style="position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);width:280px;background:#fff;border:1px solid var(--border,#E5E7EB);border-radius:12px;padding:12px 14px;font-size:12.5px;line-height:1.6;color:var(--ink-3,#4B5563);box-shadow:0 8px 30px rgba(0,0,0,.12);z-index:20">
-        Nombre réel d'audits générés par notre IA depuis le lancement d'ABYS, mis à jour en direct. Chaque audit gratuit lancé sur le site fait avancer ce compteur.
-      </div>
-    </details>
 
     <!-- Titre rotatif -->
     <h1 class="hero-title" id="hero-title">
@@ -1153,8 +1145,8 @@ new NeuralSphere('sphere', 'kw-layer', { radius: 190, nodeCount: 90 });
   var titles = [
     'Vos concurrents<br>utilisent déjà <strong>l\'IA.</strong>',
     'Votre entreprise<br>mérite <strong>l\'IA.</strong>',
-    'Arrêtez de perdre<br><strong>8 heures</strong> chaque semaine.',
-    'L\'IA n\'est pas<br>réservée aux <strong>grandes entreprises.</strong>',
+    'Arrêtez de perdre<br><strong>8 heures</strong> par semaine.',
+    'L\'IA n\'est plus<br>réservée aux <strong>grands.</strong>',
   ];
   var el = document.getElementById('hero-title');
   var idx = 0;
