@@ -1229,7 +1229,7 @@ include __DIR__ . '/includes/nav.php';
   }
 
   /* ── Lire les données depuis sessionStorage ────────────── */
-  ABYS.track('resultats_vus');
+  window.ABYS && ABYS.track && ABYS.track('resultats_vus');
   var result = ABYS.get('audit_result');
   if (!result) {
     window.location.href = '/';
@@ -1729,7 +1729,7 @@ include __DIR__ . '/includes/nav.php';
     ABYS.store('lead_email', email);
     ABYS.store('prenom', prenom);
     ABYS.store('audit_debloque', '1');
-    ABYS.track('porte_ouverte');
+    window.ABYS && ABYS.track && ABYS.track('porte_ouverte');
     ouvrir();
     form.querySelector('.gate-btn').style.display = 'none';
     ok.style.display = 'flex';
@@ -1757,7 +1757,7 @@ include __DIR__ . '/includes/nav.php';
     var vu = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
         if (!en.isIntersecting) return;
-        ABYS.track(en.target.id === 'gate' ? 'porte_vue' : 'offres_vues');
+        window.ABYS && ABYS.track && ABYS.track(en.target.id === 'gate' ? 'porte_vue' : 'offres_vues');
         vu.unobserve(en.target);
       });
     }, { threshold: .35 });
@@ -1767,7 +1767,7 @@ include __DIR__ . '/includes/nav.php';
     });
   }
   document.querySelectorAll('.offers-section a, .offers-section button').forEach(function (b) {
-    b.addEventListener('click', function () { ABYS.track('offre_cliquee'); });
+    b.addEventListener('click', function () { window.ABYS && ABYS.track && ABYS.track('offre_cliquee'); });
   });
 
   ['gate-prenom', 'gate-email'].forEach(function (id) {
