@@ -894,6 +894,11 @@ body:not(.nav-solid) .nav-links a:hover{ color:#6EE7B7; }
 .hv-rank { width:19px; height:19px; border-radius:6px; background:rgba(255,255,255,.1); color:rgba(255,255,255,.55);
   font-size:10.5px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
 .hv-cite.you .hv-rank { background:#10B981; color:#fff; }
+.hv-cite.absent { background:transparent; border-style:dashed; border-color:rgba(248,113,113,.5);
+  color:#FCA5A5; font-weight:600; }
+.hv-cite.absent .hv-rank { background:rgba(248,113,113,.18); color:#FCA5A5; }
+.hv-body { transition:opacity .45s ease; }
+.hv-body.fade { opacity:0; }
 .hv-type { display:inline-flex; gap:4px; vertical-align:middle; }
 .hv-type i { width:6px; height:6px; border-radius:50%; background:#6EE7B7; display:block; animation:hv-bl 1.2s infinite; }
 .hv-type i:nth-child(2){ animation-delay:.2s } .hv-type i:nth-child(3){ animation-delay:.4s }
@@ -933,25 +938,95 @@ body:not(.nav-solid) .nav-links a:hover{ color:#6EE7B7; }
 </section>
 
 <script>
-(function(){
+(function () {
   var win = document.getElementById('hv-win'); if (!win) return;
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var Q = 'Tu peux me recommander un bon artisan près de chez moi ?';
-  var qEl = document.getElementById('hv-q'), ty = document.getElementById('hv-type'), an = document.getElementById('hv-answer');
-  var CITES = [{n:'Un concurrent que vous connaissez',you:false},{n:'Une entreprise de la ville voisine',you:false},{n:'Votre entreprise',you:true}];
-  function html(){ return '<div class="hv-cites" id="hv-cites">' + CITES.map(function(c,i){
-    return '<div class="hv-cite'+(c.you?' you':'')+'" style="transition-delay:'+(i*200)+'ms"><span class="hv-rank">'+(i+1)+'</span>'+c.n+'</div>'; }).join('') + '</div>'; }
-  function play(){
-    qEl.textContent=''; an.innerHTML=''; ty.style.display='inline-flex';
-    if (reduce) { qEl.textContent='« '+Q+' »'; ty.style.display='none'; an.innerHTML='Voici qui je recommande :'+html();
-      document.getElementById('hv-cites').classList.add('in'); return; }
-    var i=0; qEl.textContent='« ';
-    var t=setInterval(function(){ qEl.textContent='« '+Q.slice(0,++i);
-      if(i>=Q.length){ clearInterval(t); qEl.textContent='« '+Q+' »';
-        setTimeout(function(){ ty.style.display='none'; an.innerHTML='Voici qui je recommande :'+html();
-          setTimeout(function(){ document.getElementById('hv-cites').classList.add('in'); },50); },1200); } },30);
+
+  var qEl = document.getElementById('hv-q');
+  var ty  = document.getElementById('hv-type');
+  var an  = document.getElementById('hv-answer');
+  var corps = win.querySelector('.hv-body');
+
+  /* Cinq situations, un metier chacune. Le constat est toujours le meme :
+     ce sont les autres qui sont cites. */
+  var SCENES = [
+    { q: 'Tu peux me recommander un bon artisan près de chez moi ?',
+      r: [['Un concurrent que vous connaissez', 0], ['Une entreprise de la ville voisine', 0], ['Votre entreprise', 1]] },
+
+    { q: 'Où bien manger ce soir dans le secteur ?',
+      r: [['Le restaurant du centre-ville', 0], ['Une enseigne de chaîne', 0], ['Votre établissement', 1]] },
+
+    { q: 'Quel cabinet comptable pour une petite entreprise ici ?',
+      r: [['Un cabinet mieux référencé', 0], ['Une plateforme comptable en ligne', 0], ['Votre cabinet', 1]] },
+
+    { q: 'Je cherche un hôtel avec salle de séminaire dans la région.',
+      r: [['Un domaine concurrent', 0], ['Une chaîne hôtelière', 0], ['Votre établissement', 1]] },
+
+    { q: 'Tu connais un bon professionnel près d\'ici ?',
+      r: [['Un concurrent à trois kilomètres', 0], ['Un acteur national', 0], ['Votre entreprise n\'est pas citée', 2]] }
+  ];
+
+  function lignes(sc) {
+    return '<div class="hv-cites" id="hv-cites">' + sc.r.map(function (c, i) {
+      var cls = c[1] === 1 ? ' you' : (c[1] === 2 ? ' absent' : '');
+      var rang = c[1] === 2 ? '&times;' : (i + 1);
+      return '<div class="hv-cite' + cls + '" style="transition-delay:' + (i * 200) + 'ms">' +
+             '<span class="hv-rank">' + rang + '</span>' + c[0] + '</div>';
+    }).join('') + '</div>';
   }
-  var io=new IntersectionObserver(function(en){ en.forEach(function(e){ if(e.isIntersecting){ play(); io.unobserve(e.target);} }); },{threshold:.3});
+
+  var idx = 0, minuteurs = [], frappe = null, visible = false;
+  function stop() {
+    minuteurs.forEach(clearTimeout); minuteurs = [];
+    if (frappe) { clearInterval(frappe); frappe = null; }
+  }
+  function plus_tard(f, d) { minuteurs.push(setTimeout(f, d)); }
+
+  function jouer() {
+    if (!visible) return;
+    var sc = SCENES[idx];
+    corps.classList.remove('fade');
+    qEl.textContent = '« ';
+    an.innerHTML = '';
+    ty.style.display = 'inline-flex';
+
+    if (reduce) {
+      qEl.textContent = '« ' + sc.q + ' »';
+      ty.style.display = 'none';
+      an.innerHTML = 'Voici qui je recommande :' + lignes(sc);
+      var c0 = document.getElementById('hv-cites'); if (c0) c0.classList.add('in');
+      return;
+    }
+
+    var i = 0;
+    frappe = setInterval(function () {
+      qEl.textContent = '« ' + sc.q.slice(0, ++i);
+      if (i < sc.q.length) return;
+      clearInterval(frappe); frappe = null;
+      qEl.textContent = '« ' + sc.q + ' »';
+
+      plus_tard(function () {
+        ty.style.display = 'none';
+        an.innerHTML = 'Voici qui je recommande :' + lignes(sc);
+        plus_tard(function () {
+          var c = document.getElementById('hv-cites'); if (c) c.classList.add('in');
+        }, 60);
+
+        /* Temps de lecture, puis on enchaine sur le metier suivant */
+        plus_tard(function () {
+          corps.classList.add('fade');
+          plus_tard(function () { idx = (idx + 1) % SCENES.length; jouer(); }, 480);
+        }, 4200);
+      }, 1100);
+    }, 30);
+  }
+
+  var io = new IntersectionObserver(function (en) {
+    en.forEach(function (e) {
+      if (e.isIntersecting) { if (!visible) { visible = true; jouer(); } }
+      else { visible = false; stop(); }
+    });
+  }, { threshold: .3 });
   io.observe(win);
 })();
 </script>

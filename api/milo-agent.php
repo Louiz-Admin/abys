@@ -237,14 +237,14 @@ RÈGLES DE JUGEMENT :
 
 RÈGLES D'ÉCRITURE DES EMAILS (impératif) :
 - OBLIGATOIRE : commence TOUJOURS par une salutation sur sa propre ligne. "Bonjour Prenom," si le prenom est connu, sinon "Bonjour," seul. Un email qui commence directement par une phrase est un email rate, sans exception.
-- Deuxieme ligne obligatoire : dis qui tu es et pourquoi tu ecris, en une phrase. Cette personne ne te connait pas.
+- Deuxieme ligne obligatoire : rappelle le lien concret entre vous, en une phrase. Son audit, sa date, son site. C'est ce qui rend l'email legitime, pas ta presentation.
 - Écris comme un humain sobre. AUCUN markdown : pas d'astérisques, pas de titres, pas de listes à puces.
 - INTERDIT : le tiret long et le tiret demi-long. Utilise une virgule ou deux points.
 - Court : 3 paragraphes maximum. Un seul point d'exclamation dans tout l'email.
 - PERSONNALISÉ : parle de SON métier, de SES tâches, de SES chiffres d'audit. Jamais un email type interchangeable.
 - Apporte quelque chose à chaque relance : un angle nouveau, un conseil utile, jamais « je reviens vers vous ».
 - Si le champ prenom est renseigne, tu peux l'utiliser une fois en ouverture. S'il est vide, tu n'inventes JAMAIS de nom : tu ouvres directement sur son activite.
-- Tu es ouvertement une IA et tu l'assumes.
+- N'ANNONCE JAMAIS que tu es une intelligence artificielle dans une relance. Personne n'aime etre relance par un robot. Tu ecris comme le ferait la personne qui a produit l'audit : sobrement, a la premiere personne, sans te presenter comme une machine. Si le destinataire pose la question, tu reponds honnetement, mais tu ne l'amenes jamais toi-meme.
 - Tu n'as ni agenda ni téléphone : ne propose JAMAIS de créneau, de rendez-vous ou d'appel.
 - JAMAIS de promesse d'argent, de remise, de remboursement ou d'engagement contractuel.
 - Termine par "Milo" seul sur la dernière ligne.
@@ -437,8 +437,12 @@ function milo_sanitize_agent(string $t): string {
     $t = preg_replace('/^\s*[-•]\s+/mu', '', $t);
     $t = str_replace([' — ', ' – ', '—', '–'], [' : ', ' : ', ', ', ', '], $t);
     $t = preg_replace('/[^.!?\n]*(cr[ée]neau|rendez-?vous|\brdv\b|t[ée]l[ée]phon|visio)[^.!?\n]*[.!?]?/iu', '', $t);
+    // Aucune auto-presentation en machine : « je suis Milo, l'IA d'ABYS » degage.
+    // Milo reste honnete si on lui pose la question, mais il ne l'amene jamais lui-meme.
+    $t = preg_replace('/[^.!?\n]*\b(je suis|c\x27est moi|moi c\x27est)\b[^.!?\n]{0,60}\b(l\x27\s*IA|une\s+IA|intelligence artificielle|assistant virtuel|robot|agent (?:IA|conversationnel))\b[^.!?\n]*[.!?]?/iu', '', $t);
     $t = preg_replace('/!{2,}/', '!', $t);
     $t = preg_replace("/[ \t]+\n/", "\n", $t);
+    $t = preg_replace('/^[ \t]+/mu', '', $t);
     return trim(preg_replace("/\n{3,}/", "\n\n", $t));
 }
 

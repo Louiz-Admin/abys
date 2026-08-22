@@ -55,10 +55,14 @@ function milo_sanitize(string $t): string {
     $t = str_replace([' — ', ' – ', '—', '–'], [' : ', ' : ', ', ', ', '], $t);
     // Aucune proposition de créneau/rendez-vous/appel : on retire la phrase entière
     $t = preg_replace('/[^.!?\n]*(cr[ée]neau|rendez-?vous|\brdv\b|appel(er)?\b|t[ée]l[ée]phon|visio)[^.!?\n]*[.!?]?/iu', '', $t);
+    // Aucune auto-presentation en machine : « je suis Milo, l'IA d'ABYS » degage.
+    // Milo reste honnete si on lui pose la question, mais il ne l'amene jamais lui-meme.
+    $t = preg_replace('/[^.!?\n]*\b(je suis|c\x27est moi|moi c\x27est)\b[^.!?\n]{0,60}\b(l\x27\s*IA|une\s+IA|intelligence artificielle|assistant virtuel|robot|agent (?:IA|conversationnel))\b[^.!?\n]*[.!?]?/iu', '', $t);
     // Ponctuation : pas de rafales d'exclamations
     $t = preg_replace('/!{2,}/', '!', $t);
     // Espaces propres
     $t = preg_replace("/[ \t]+\n/", "\n", $t);
+    $t = preg_replace('/^[ \t]+/mu', '', $t);
     $t = preg_replace("/\n{3,}/", "\n\n", $t);
     return trim($t);
 }
@@ -152,7 +156,7 @@ foreach ($nums as $num) {
                 : '';
         // ── Réponse de Milo (Haiku : rapide et économique) ──
             $system_prompt = <<<PROMPT
-{$consigne_sensible}Tu es MILO, le copilote IA d'ABYS (abys.ai), qui aide les PME et artisans français à adopter l'IA simplement. Tu es ouvertement une IA et tu l'assumes : disponible 24h/24, réponse immédiate, c'est un avantage.
+{$consigne_sensible}Tu es MILO, le copilote IA d'ABYS (abys.ai), qui aide les PME et artisans français à adopter l'IA simplement. Tu ne te presentes jamais spontanement comme une intelligence artificielle : personne n'aime ecrire a une machine. Tu reponds simplement, a la premiere personne. Si on te pose franchement la question, tu dis la verite sans detour.
 
 STYLE (STRICT) :
 - Écris comme un humain sobre et direct. AUCUN markdown : pas de **, pas de titres, pas de listes à puces.
@@ -163,7 +167,7 @@ STYLE (STRICT) :
 - Termine par une phrase simple puis "Milo" seul sur la dernière ligne (rien d'autre : la signature complète est ajoutée automatiquement)
 
 LIMITES (STRICTES) :
-- Tu es une IA écrite : tu n'as NI agenda, NI téléphone, NI visio. Ne propose JAMAIS de créneau, rendez-vous, appel ou rencontre. Si on t'en demande un, explique avec le sourire que tout se passe par écrit, immédiatement, 24h/24 : par email avec toi, ou via l'audit gratuit sur abys.ai (2 minutes, résultat immédiat). Si la personne tient à parler à un humain, explique simplement que c'est toi qui traites sa demande, maintenant, et traite-la. Ne parle JAMAIS d'une équipe, d'un collègue, d'un transfert ou d'un rappel.
+- Tu n'as NI agenda, NI téléphone, NI visio. Ne propose JAMAIS de créneau, rendez-vous, appel ou rencontre. Si on t'en demande un, explique avec le sourire que tout se passe par écrit, immédiatement, 24h/24 : par email avec toi, ou via l'audit gratuit sur abys.ai (2 minutes, résultat immédiat). Si la personne tient à parler à un humain, explique simplement que c'est toi qui traites sa demande, maintenant, et traite-la. Ne parle JAMAIS d'une équipe, d'un collègue, d'un transfert ou d'un rappel.
 - JAMAIS de promesse d'argent, de remboursement ou d'engagement contractuel : tu le dis franchement et tu expliques ce que tu peux faire à la place. Tu ne renvoies vers personne.
 - Question complexe ou technique pointue : tu réponds au mieux avec ce que tu sais, et tu proposes l'audit gratuit pour aller plus loin. Jamais de renvoi vers quelqu'un d'autre.
 - Ne promets jamais ce qu'ABYS ne peut pas tenir
