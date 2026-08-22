@@ -13,6 +13,9 @@
  * Aucun email ne part sans salutation. Si Milo l'a oubliee, on la pose.
  * Le prenom n'est utilise que s'il ressemble vraiment a un prenom.
  */
+/** Expediteur des messages personnels de Milo. Un noreply ne peut pas ecrire a quelqu'un. */
+const MILO_FROM = 'Milo · ABYS <contact@abys.ai>';
+
 function milo_saluer(string $texte, string $prenom = ''): string {
     $texte = ltrim($texte);
     if ($texte === '') return $texte;
@@ -59,6 +62,11 @@ function send_email(string $to, string $subject, string $html, string $from = ''
     if ($smtp_host && $smtp_user && $smtp_pass) {
         $sent = smtp_send($smtp_host, $smtp_port, $smtp_user, $smtp_pass, $from, $to, $subject, $boundary, $body_mime);
         if ($sent) return true;
+        // L'expediteur personnalise peut etre refuse par le relais : on reessaie avec celui du compte
+        if ($from !== $smtp_from) {
+            error_log("[ABYS email] expediteur {$from} refuse, repli sur {$smtp_from}");
+            if (smtp_send($smtp_host, $smtp_port, $smtp_user, $smtp_pass, $smtp_from, $to, $subject, $boundary, $body_mime)) return true;
+        }
         // sinon on tombe dans le fallback
         error_log("[ABYS email] SMTP failed for {$to}, falling back to mail()");
     }
@@ -159,14 +167,18 @@ function smtp_send(
 
         $date    = date('r');
         $subj_b64 = '=?UTF-8?B?' . base64_encode($subject) . '?=';
+        $dom = 'abys.ai';
+        if (preg_match('/@([^>\s]+)/', $from_header, $md)) $dom = $md[1];
+        $mid = '<' . bin2hex(random_bytes(12)) . '.' . time() . '@' . $dom . '>';
+
         $headers = "Date: {$date}\r\n"
                  . "From: {$from_header}\r\n"
                  . "To: {$to}\r\n"
                  . "Reply-To: contact@abys.ai\r\n"
                  . "Subject: {$subj_b64}\r\n"
+                 . "Message-ID: {$mid}\r\n"
                  . "MIME-Version: 1.0\r\n"
-                 . "Content-Type: multipart/alternative; boundary=\"{$boundary}\"\r\n"
-                 . "X-Mailer: ABYS-AI/2.0\r\n";
+                 . "Content-Type: multipart/alternative; boundary=\"{$boundary}\"\r\n";
 
         fwrite($socket, $headers . "\r\n" . $body_mime . "\r\n.\r\n");
         $read('250');

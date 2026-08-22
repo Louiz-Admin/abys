@@ -347,7 +347,7 @@ PROMPT;
             if ($objet === '' || mb_strlen($message) < 40)  { $log['erreurs']++;  continue; }
 
             if (!$dry) {
-                $sent = send_email($lead['email'], $objet, milo_agent_html($message)) ? 1 : 0;
+                $sent = send_email($lead['email'], $objet, milo_agent_html($message), MILO_FROM) ? 1 : 0;
                 if ($sent) $envoyes_auj++;
             }
             $log['relances']++;

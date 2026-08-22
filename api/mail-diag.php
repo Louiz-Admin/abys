@@ -27,6 +27,18 @@ $out = [
     'ts'           => date('c'),
 ];
 
+// Envoi d'un message temoin vers la boite lue juste apres : c'est le seul moyen
+// de constater les en-tetes reellement poses par le relais.
+if (isset($_GET['envoi'])) {
+    require_once __DIR__ . '/email.php';
+    $dest = $settings['imap_user'] ?? 'contact@abys.ai';
+    $ok = send_email($dest, 'Temoin en-tetes ' . date('H:i:s'),
+        '<p>Message temoin envoye par le diagnostic. Aucune action requise.</p>', MILO_FROM);
+    $out['temoin_envoye'] = $ok;
+    $out['temoin_vers']   = $dest;
+    exit(json_encode($out, JSON_UNESCAPED_UNICODE));
+}
+
 $imap_host = $settings['imap_host'] ?? 'imap.ionos.fr';
 $imap_port = (int) ($settings['imap_port'] ?? 993);
 $imap_user = $settings['imap_user'] ?? 'contact@abys.ai';
@@ -40,7 +52,8 @@ try {
 
     // Les copies admin des envois de Milo viennent de l'adresse d'expedition
     $ids = [];
-    foreach ($imap->cmd('SEARCH FROM "abys.ai"') as $l) {
+    $critere = isset($_GET['temoin']) ? 'SEARCH SUBJECT "Temoin en-tetes"' : 'SEARCH FROM "abys.ai"';
+    foreach ($imap->cmd($critere) as $l) {
         if (preg_match('/^\*\s+SEARCH\s*(.*)$/i', trim($l), $m)) {
             $ids = array_values(array_filter(array_map('intval', preg_split('/\s+/', trim($m[1])))));
         }
