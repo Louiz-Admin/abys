@@ -121,6 +121,11 @@ if (!function_exists('milo_avatar')) {
   .milo-chiffres span { display:block; font-size:11.5px; line-height:1.45; color:#9FC4B9; margin-top:5px; }
   .milo-note { font-size:11.5px; line-height:1.5; color:#6E8C84; margin:8px 0 14px; max-width:620px; }
 
+  .milo-role { border-left:2px solid #34D399; padding:2px 0 2px 15px; margin:0 0 16px; }
+  .milo-role b { display:block; font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+    color:#6EE7B7; margin-bottom:7px; }
+  .milo-role p { font-size:13.8px; line-height:1.65; color:rgba(255,255,255,.82); margin:0; max-width:620px; }
+
   .milo-forge { border:1px solid rgba(52,211,153,.24); border-radius:15px; padding:13px 15px; margin:0 0 16px;
     background:linear-gradient(150deg, rgba(16,185,129,.12), rgba(56,189,248,.04)); }
   .milo-forge b { display:block; font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
@@ -168,6 +173,8 @@ if (!function_exists('milo_avatar')) {
     .milo-chiffres { margin-bottom:12px; }
     .milo-chiffres b { font-size:16.5px; }
     .milo-forge { padding:11px 13px; margin-bottom:12px; }
+    .milo-role { margin-bottom:12px; }
+    .milo-role p { font-size:13px; }
     .milo-forge p { font-size:12.5px; }
     .milo-step { padding:11px 12px; }
   }
@@ -196,6 +203,11 @@ if (!function_exists('milo_avatar')) {
       <h2 id="milo-fiche-titre">Bonjour. Je suis Milo.</h2>
       <p>Je suis l'agent alimenté par une intelligence artificielle qui fait fonctionner entièrement ABYS. C'est moi qui parcours votre site, qui pose les questions, qui calcule vos gains et qui écris votre plan. C'est moi aussi qui réponds quand vous écrivez à ABYS.</p>
       <p>Derrière moi, il y a Thomas Capiten, mon créateur, qui fixe le cap. Et moi, qui exécute. Ce portrait est une image de synthèse, autant vous le dire tout de suite.</p>
+
+      <div class="milo-role">
+        <b>Ce que je fais pour vous</b>
+        <p>Je ne me contente pas d'analyser. Je vous guide, je reste avec vous, et je mets vos outils en place jusqu'à ce qu'ils tournent vraiment. Le but tient en trois mots : plus de temps, plus d'argent, et ne pas regarder passer le train de l'IA pendant que vos concurrents montent dedans.</p>
+      </div>
 
       <div class="milo-forge">
         <b>Ce qui tourne derrière</b>
