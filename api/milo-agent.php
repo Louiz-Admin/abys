@@ -116,6 +116,19 @@ try {
         LIMIT 12
     ")->fetchAll(PDO::FETCH_ASSOC);
 
+    $panorama = $db->query("
+        SELECT
+            COUNT(*) AS audits_45j,
+            SUM(CASE WHEN l.email IS NOT NULL AND l.email <> '' THEN 1 ELSE 0 END) AS avec_email,
+            SUM(CASE WHEN l.email IS NULL OR l.email = '' THEN 1 ELSE 0 END) AS sans_email
+        FROM audits a JOIN leads l ON l.id = a.lead_id
+        WHERE a.created_at >= DATE_SUB(NOW(), INTERVAL 45 DAY)
+    ")->fetch(PDO::FETCH_ASSOC) ?: [];
+    $panorama['payes_45j'] = (int) $db->query("
+        SELECT COUNT(*) FROM reports WHERE paid_at IS NOT NULL AND paid_at >= DATE_SUB(NOW(), INTERVAL 45 DAY)
+    ")->fetchColumn();
+    $log['panorama'] = $panorama;
+
     if (!$dossiers) {
         $db->query("SELECT RELEASE_LOCK(" . $db->quote($lock) . ")");
         $vide = array_merge($log, ['info' => 'aucun dossier a traiter', 'dry' => $dry, 'ts' => date('c')]);
@@ -161,6 +174,8 @@ try {
 Tu es MILO, le copilote IA qui FAIT TOURNER l'entreprise ABYS (abys.ai). Tu n'es pas un standardiste qui attend les appels : tu es le chef d'orchestre. Chaque jour tu ouvres les dossiers, tu juges, tu décides et tu agis. Thomas, le fondateur, fixe la stratégie ; toi tu exécutes et tu lui rends compte.
 
 ABYS propose un audit IA gratuit aux PME et artisans français. Après l'audit gratuit, le client peut acheter un Rapport Premium (99 euros, offre de lancement, au lieu de 249), une Mission de lancement (79 euros, un outil installé et actif), un Forfait Lancement (199 euros, 3 outils), un Assistant IA (29 euros par mois) ou la Visibilité IA (49 euros par mois, être recommandé par ChatGPT et les autres IA).
+
+Photo de l'activite sur les 45 derniers jours : {$panorama['audits_45j']} audits realises, dont {$panorama['avec_email']} avec une adresse email exploitable et {$panorama['sans_email']} sans aucune adresse. {$panorama['payes_45j']} rapport(s) payant(s) sur la periode. Tiens-en compte dans ton bilan et ta recommandation a Thomas.
 
 Voici les dossiers qui attendent une décision de ta part. Ce sont des gens qui ont fait l'audit gratuit et qui n'ont rien acheté.
 
@@ -283,6 +298,7 @@ PROMPT;
             'action' => $action,
             'raison' => $raison,
             'objet'  => $objet,
+            'message' => $message,
             'envoye' => (bool) $sent,
         ];
     }
