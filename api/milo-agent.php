@@ -38,7 +38,7 @@ function milo_trace(PDO $db, array $payload): void {
 }
 
 if (isset($_GET['ping'])) {
-    exit(json_encode(['version' => 'v3', 'ts' => date('c')]));
+    exit(json_encode(['version' => 'v5', 'ts' => date('c')]));
 }
 
 if (isset($_GET['peek'])) {
@@ -53,27 +53,28 @@ if (($settings['milo_agent_enabled'] ?? '1') !== '1') {
 $api_key = decrypt_value($settings['claude_key'] ?? '') ?: '';
 if (!$api_key) { exit(json_encode(['skipped' => 'cle IA manquante'])); }
 
-// ── Migration : journal des actions de Milo ─────────────────────────────────
-$db->exec("CREATE TABLE IF NOT EXISTS milo_actions (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    lead_id INT NOT NULL,
-    action VARCHAR(30) NOT NULL,
-    reason TEXT,
-    subject VARCHAR(255),
-    body TEXT,
-    sent TINYINT(1) DEFAULT 0,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    INDEX idx_lead (lead_id),
-    INDEX idx_created (created_at)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
-
-// Colonnes lues par Milo : on garantit leur presence (MariaDB supporte IF NOT EXISTS)
-try {
-    $db->exec("ALTER TABLE leads
-        ADD COLUMN IF NOT EXISTS company_name VARCHAR(190) NULL,
-        ADD COLUMN IF NOT EXISTS secteur VARCHAR(120) NULL,
-        ADD COLUMN IF NOT EXISTS prenom VARCHAR(100) NULL");
-} catch (Exception $e) { /* deja en place */ }
+// ── Migration : une seule fois dans la vie de l'agent ───────────────────────
+if (($settings['milo_agent_schema'] ?? '') !== '2') {
+    $db->exec("CREATE TABLE IF NOT EXISTS milo_actions (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        lead_id INT NOT NULL,
+        action VARCHAR(30) NOT NULL,
+        reason TEXT,
+        subject VARCHAR(255),
+        body TEXT,
+        sent TINYINT(1) DEFAULT 0,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        INDEX idx_lead (lead_id),
+        INDEX idx_created (created_at)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+    try {
+        $db->exec("ALTER TABLE leads
+            ADD COLUMN IF NOT EXISTS company_name VARCHAR(190) NULL,
+            ADD COLUMN IF NOT EXISTS secteur VARCHAR(120) NULL,
+            ADD COLUMN IF NOT EXISTS prenom VARCHAR(100) NULL");
+    } catch (Throwable $e) { /* deja en place */ }
+    $db->prepare("INSERT INTO settings (`key`, value) VALUES ('milo_agent_schema', '2') ON DUPLICATE KEY UPDATE value = VALUES(value)")->execute();
+}
 
 // ── Verrou : un seul cycle à la fois ────────────────────────────────────────
 $lock = 'milo_agent';
@@ -93,6 +94,8 @@ if (!$dry) {
     $db->prepare("INSERT INTO settings (`key`, value) VALUES ('milo_agent_last_run', ?) ON DUPLICATE KEY UPDATE value = VALUES(value)")
        ->execute([date('Y-m-d H:i:s')]);
 }
+
+milo_trace($db, ['stage' => 'demarrage', 'dry' => $dry, 'ts' => date('c')]);
 
 $log = ['analyses' => 0, 'relances' => 0, 'attentes' => 0, 'escalades' => 0, 'abandons' => 0, 'erreurs' => 0];
 
