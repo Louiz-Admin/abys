@@ -1,0 +1,83 @@
+<?php
+// Fichier: abys-ai/api/mail-diag.php
+// DIAGNOSTIC DES EN-TÊTES D'ENVOI.
+// Lit dans la boîte contact@abys.ai la dernière copie d'un email parti d'ABYS
+// et renvoie ses en-têtes bruts. C'est le seul moyen de savoir ce que le relais
+// ajoute réellement (List-Unsubscribe, Precedence, etc.) au lieu de le supposer.
+//
+// URL : https://abys.ai/api/mail-diag.php?key=<imap_cron_key>[&n=1]
+
+require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/ai-helpers.php';
+require_once __DIR__ . '/imap-lite.php';
+
+header('Content-Type: application/json; charset=utf-8');
+
+$db       = get_db();
+$settings = get_settings($db);
+
+$cle = $settings['imap_cron_key'] ?? 'abys_cron_2026_x7k9p';
+if (($_GET['key'] ?? '') !== $cle) { http_response_code(403); exit('Forbidden'); }
+
+$out = [
+    'smtp_from'    => $settings['smtp_from']    ?? '(non defini)',
+    'smtp_host'    => $settings['smtp_host']    ?? '(non defini)',
+    'smtp_user'    => $settings['smtp_user']    ?? '(non defini)',
+    'contact_email'=> $settings['contact_email'] ?? '(non defini)',
+    'ts'           => date('c'),
+];
+
+$imap_host = $settings['imap_host'] ?? 'imap.ionos.fr';
+$imap_port = (int) ($settings['imap_port'] ?? 993);
+$imap_user = $settings['imap_user'] ?? 'contact@abys.ai';
+$imap_pass = !empty($settings['imap_pass']) ? (decrypt_value($settings['imap_pass']) ?: '') : '';
+
+if (!$imap_pass) { exit(json_encode(array_merge($out, ['erreur' => 'mot de passe IMAP absent']), JSON_UNESCAPED_UNICODE)); }
+
+try {
+    $imap = new ImapLite($imap_host, $imap_port, $imap_user, $imap_pass);
+    $imap->selectInbox();
+
+    // Les copies admin des envois de Milo viennent de l'adresse d'expedition
+    $ids = [];
+    foreach ($imap->cmd('SEARCH FROM "abys.ai"') as $l) {
+        if (preg_match('/^\*\s+SEARCH\s*(.*)$/i', trim($l), $m)) {
+            $ids = array_values(array_filter(array_map('intval', preg_split('/\s+/', trim($m[1])))));
+        }
+    }
+    $out['messages_trouves'] = count($ids);
+    if (!$ids) { $imap->close(); exit(json_encode($out, JSON_UNESCAPED_UNICODE)); }
+
+    $combien = max(1, min(3, (int) ($_GET['n'] ?? 1)));
+    $derniers = array_slice($ids, -$combien);
+
+    $out['entetes'] = [];
+    foreach ($derniers as $num) {
+        $raw = $imap->fetchRaw($num, 24576);
+        $tete = explode("\r\n\r\n", $raw, 2)[0];
+        $tete = explode("\n\n", $tete, 2)[0];
+
+        $lignes = preg_split('/\r?\n(?![ \t])/', $tete);
+        $garde  = [];
+        foreach ($lignes as $ligne) {
+            if (preg_match('/^(From|To|Reply-To|Subject|Date|Return-Path|Sender|List-[A-Za-z-]+|Precedence|X-[A-Za-z0-9-]+|Message-ID|Feedback-ID|Auto-Submitted|DKIM-Signature|Authentication-Results)\s*:/i', $ligne)) {
+                $garde[] = mb_substr(preg_replace('/\s+/', ' ', trim($ligne)), 0, 240);
+            }
+        }
+        $out['entetes'][] = $garde;
+    }
+
+    // Verdict lisible
+    $tout = strtolower(json_encode($out['entetes']));
+    $out['verdict'] = [
+        'list_unsubscribe' => strpos($tout, 'list-unsubscribe') !== false,
+        'precedence_bulk'  => strpos($tout, 'precedence') !== false,
+        'feedback_id'      => strpos($tout, 'feedback-id') !== false,
+    ];
+
+    $imap->close();
+} catch (Throwable $e) {
+    $out['erreur'] = $e->getMessage();
+}
+
+echo json_encode($out, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);

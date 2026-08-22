@@ -38,11 +38,11 @@ function milo_trace(PDO $db, array $payload): void {
 }
 
 if (isset($_GET['ping'])) {
-    exit(json_encode(['version' => 'v9', 'ts' => date('c')]));
+    exit(json_encode(['version' => 'v10', 'ts' => date('c')]));
 }
 
 if (isset($_GET['diag'])) {
-    $out = ['version' => 'v9', 'ts' => date('c')];
+    $out = ['version' => 'v10', 'ts' => date('c')];
     try { $out['verrou_milo_agent'] = $db->query("SELECT IS_USED_LOCK('milo_agent')")->fetchColumn(); } catch (Throwable $e) { $out['verrou_err'] = $e->getMessage(); }
     try {
         $pl = $db->query("SELECT ID, TIME, STATE, LEFT(INFO, 120) AS REQUETE FROM information_schema.PROCESSLIST WHERE COMMAND <> 'Sleep' ORDER BY TIME DESC LIMIT 10")->fetchAll(PDO::FETCH_ASSOC);
@@ -236,6 +236,8 @@ RÈGLES DE JUGEMENT :
 - Si la personne t'a déjà écrit, elle est chaude : traite-la en priorité et sois plus direct.
 
 RÈGLES D'ÉCRITURE DES EMAILS (impératif) :
+- OBLIGATOIRE : commence TOUJOURS par une salutation sur sa propre ligne. "Bonjour Prenom," si le prenom est connu, sinon "Bonjour," seul. Un email qui commence directement par une phrase est un email rate, sans exception.
+- Deuxieme ligne obligatoire : dis qui tu es et pourquoi tu ecris, en une phrase. Cette personne ne te connait pas.
 - Écris comme un humain sobre. AUCUN markdown : pas d'astérisques, pas de titres, pas de listes à puces.
 - INTERDIT : le tiret long et le tiret demi-long. Utilise une virgule ou deux points.
 - Court : 3 paragraphes maximum. Un seul point d'exclamation dans tout l'email.
@@ -315,6 +317,7 @@ PROMPT;
 
         $objet   = trim($dec['objet'] ?? '');
         $message = milo_sanitize_agent(trim($dec['message'] ?? ''));
+        $message = milo_saluer($message, $lead['prenom'] ?? '');
         $sent    = 0;
 
         // Un dossier ne se ferme jamais sur une impression : sans 2 relances sans reponse

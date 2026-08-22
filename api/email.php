@@ -9,6 +9,24 @@
  * Utilise les identifiants stockés dans la table settings (smtp_host, smtp_port, smtp_user, smtp_pass).
  * Fallback sur mail() si SMTP non configuré ou échec.
  */
+/**
+ * Aucun email ne part sans salutation. Si Milo l'a oubliee, on la pose.
+ * Le prenom n'est utilise que s'il ressemble vraiment a un prenom.
+ */
+function milo_saluer(string $texte, string $prenom = ''): string {
+    $texte = ltrim($texte);
+    if ($texte === '') return $texte;
+    if (preg_match('/^(bonjour|bonsoir|madame|monsieur|cher|chere|chère)\b/iu', $texte)) return $texte;
+
+    $p = trim(preg_replace('/\s+/', ' ', $prenom));
+    $ok = $p !== '' && mb_strlen($p) >= 2 && mb_strlen($p) <= 20
+          && preg_match('/^[\p{L}][\p{L}\-\x27 ]+$/u', $p)
+          && !preg_match('/@|www|http|\d/i', $p);
+
+    $salut = $ok ? 'Bonjour ' . mb_convert_case(mb_strtolower($p), MB_CASE_TITLE, 'UTF-8') . ',' : 'Bonjour,';
+    return $salut . "\n\n" . $texte;
+}
+
 function send_email(string $to, string $subject, string $html, string $from = ''): bool {
     // Récupère config SMTP
     try {

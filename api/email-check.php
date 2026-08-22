@@ -186,6 +186,10 @@ PROMPT;
             ]);
             $ai_raw = curl_exec($ch); curl_close($ch);
             $ai_reply = milo_sanitize(trim(json_decode($ai_raw, true)['content'][0]['text'] ?? ''));
+            // Aucune reponse ne part sans salutation, quoi qu'ait produit le modele
+            $prenom_exp = ($msg['from_name'] && $msg['from_name'] !== $from_email)
+                ? explode(' ', trim($msg['from_name']))[0] : '';
+            $ai_reply = milo_saluer($ai_reply, $prenom_exp);
             if (mb_strlen($ai_reply) < 40) {
                 $ai_reply = "Bonjour,\n\nMerci pour votre message. Je le reprends en detail et je vous reponds dans la foulee.\n\nMilo";
             }
