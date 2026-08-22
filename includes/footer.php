@@ -76,3 +76,5 @@
   <script src="<?= htmlspecialchars($js) ?>"></script>
   <?php endforeach; ?>
 <?php endif; ?>
+
+<?php /* La fiche de Milo, une seule fois par page */ echo function_exists('milo_fiche') ? milo_fiche() : ''; ?>

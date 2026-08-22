@@ -412,3 +412,5 @@ if (url) {
   window.location.href = '/';
 }
 </script>
+
+<?php echo function_exists('milo_fiche') ? milo_fiche() : ''; ?>

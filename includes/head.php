@@ -7,6 +7,7 @@ if (!defined('SITE_URL')) {
 if (!function_exists('get_db')) {
     require_once __DIR__ . '/../api/db.php';
 }
+require_once __DIR__ . '/milo.php';
 $page_title = $page_title ?? 'ABYS AI · Découvrez l\'IA pour votre entreprise';
 $page_description = $page_description ?? 'Audit IA gratuit pour PME/TPE. Découvrez comment l\'intelligence artificielle peut vous faire gagner du temps et de l\'argent.';
 $page_canonical = $page_canonical ?? (SITE_URL . $_SERVER['REQUEST_URI']);

@@ -649,3 +649,5 @@ async function submitTunnel() {
 ABYS.track('tunnel_ouvert');
 render(0);
 </script>
+
+<?php echo function_exists('milo_fiche') ? milo_fiche() : ''; ?>

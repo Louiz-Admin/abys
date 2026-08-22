@@ -1,0 +1,274 @@
+<?php
+// Fichier: abys-ai/includes/milo.php
+// MILO INCARNÉ · un seul endroit pour son portrait, son animation et sa fiche.
+//
+//   milo_avatar(64)                      portrait cliquable, taille libre
+//   milo_avatar(96, 'ma-classe')         avec une classe en plus
+//   milo_avatar(64, '', 'pose-analyse')  variante de pose si le fichier existe
+//   milo_fiche()                         la fenêtre « qui je suis », une fois par page
+//
+// La fiche s'ouvre au clic sur n'importe quel portrait, sur toutes les pages.
+
+if (!function_exists('milo_avatar')) {
+
+    /**
+     * Portrait de Milo, vivant et cliquable.
+     * Les variantes sont des fichiers assets/img/milo-<variante>.jpg. Si le
+     * fichier n'existe pas, on retombe sur le portrait principal sans rien casser.
+     */
+    function milo_avatar(int $taille = 64, string $classe = '', string $variante = ''): string {
+        $src = '/assets/img/milo-avatar.jpg';
+        if ($variante !== '') {
+            $rel = '/assets/img/milo-' . preg_replace('/[^a-z0-9\-]/', '', $variante) . '.jpg';
+            if (is_file(__DIR__ . '/..' . $rel)) $src = $rel;
+        }
+        $t = max(28, min(240, $taille));
+        return '<button type="button" class="milo-av ' . htmlspecialchars($classe) . '"'
+             . ' style="--mv:' . $t . 'px" data-milo aria-label="Qui est Milo ?" title="Qui est Milo ?">'
+             . '<img src="' . $src . '" alt="Milo, le copilote IA d\'ABYS" width="' . $t . '" height="' . $t . '">'
+             . '<span class="milo-av-halo" aria-hidden="true"></span>'
+             . '<span class="milo-av-sweep" aria-hidden="true"></span>'
+             . '<span class="milo-av-tag" aria-hidden="true">?</span>'
+             . '</button>';
+    }
+
+    /** La fiche de Milo. À appeler une seule fois par page, avant la fermeture du body. */
+    function milo_fiche(): string {
+        ob_start(); ?>
+<style>
+  /* ══════════ Portrait vivant · s'applique a tous les Milo de la page ══════════ */
+  img[data-milo] {
+    cursor:pointer;
+    animation:milo-glow 4.6s ease-in-out infinite;
+    transition:transform .26s cubic-bezier(.22,1,.36,1), filter .26s ease;
+  }
+  img[data-milo]:hover { transform:scale(1.05); filter:drop-shadow(0 0 14px rgba(52,211,153,.75)); }
+  img[data-milo]:focus-visible { outline:2px solid #34D399; outline-offset:4px; }
+  @keyframes milo-glow {
+    0%,100% { filter:drop-shadow(0 0 4px rgba(16,185,129,.30)); }
+    50%     { filter:drop-shadow(0 0 12px rgba(52,211,153,.55)); }
+  }
+
+  /* Portrait pose par milo_avatar() : meme chose, avec le balayage de lumiere */
+  .milo-av { position:relative; width:var(--mv,64px); height:var(--mv,64px); flex-shrink:0;
+    padding:0; border:none; background:none; cursor:pointer; border-radius:50%; display:block;
+    animation:milo-float 7s ease-in-out infinite; }
+  .milo-av img { width:100%; height:100%; border-radius:50%; object-fit:cover; display:block;
+    border:2px solid rgba(52,211,153,.7); position:relative; z-index:2; }
+  .milo-av-halo { position:absolute; inset:-6px; border-radius:50%; z-index:1;
+    box-shadow:0 0 0 5px rgba(16,185,129,.12); animation:milo-breathe 4.5s ease-in-out infinite; }
+  .milo-av-sweep { position:absolute; inset:0; border-radius:50%; overflow:hidden; z-index:3; pointer-events:none; }
+  .milo-av-sweep::before { content:''; position:absolute; top:-60%; left:-120%; width:60%; height:220%;
+    background:linear-gradient(100deg, transparent, rgba(255,255,255,.30), transparent);
+    transform:rotate(14deg); animation:milo-sweep 9s ease-in-out infinite; }
+  .milo-av-tag { position:absolute; right:-2px; bottom:-2px; z-index:4;
+    width:calc(var(--mv,64px) * .34); height:calc(var(--mv,64px) * .34);
+    min-width:18px; min-height:18px; border-radius:50%;
+    display:grid; place-items:center; font-size:11px; font-weight:800; font-family:inherit;
+    background:#0A3A2C; color:#6EE7B7; border:1.5px solid rgba(52,211,153,.6);
+    opacity:0; transform:scale(.6); transition:opacity .2s ease, transform .22s cubic-bezier(.22,1,.36,1); }
+  .milo-av:hover .milo-av-halo { box-shadow:0 0 0 8px rgba(16,185,129,.18); }
+  .milo-av:hover .milo-av-tag, .milo-av:focus-visible .milo-av-tag { opacity:1; transform:scale(1); }
+  .milo-av:focus-visible { outline:2px solid #34D399; outline-offset:4px; }
+
+  @keyframes milo-float   { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-3px); } }
+  @keyframes milo-breathe { 0%,100% { box-shadow:0 0 0 5px rgba(16,185,129,.10); }
+                            50%     { box-shadow:0 0 0 9px rgba(16,185,129,.20); } }
+  @keyframes milo-sweep   { 0%,72% { left:-120%; } 88%,100% { left:150%; } }
+  @media (prefers-reduced-motion: reduce) {
+    img[data-milo], .milo-av, .milo-av-halo, .milo-av-sweep::before { animation:none; }
+  }
+
+  /* ══════════ La fiche ══════════ */
+  .milo-fiche { position:fixed; inset:0; z-index:9000; display:none; padding:24px;
+    background:rgba(2,14,11,.72); backdrop-filter:blur(7px); -webkit-backdrop-filter:blur(7px);
+    align-items:center; justify-content:center; }
+  .milo-fiche.on { display:flex; animation:milo-fade .3s ease both; }
+  @keyframes milo-fade { from { opacity:0; } to { opacity:1; } }
+
+  .milo-panel { position:relative; width:100%; max-width:980px; max-height:88vh; overflow:auto;
+    border-radius:26px; border:1px solid rgba(52,211,153,.26); background:#041712; color:#EAF6F1;
+    box-shadow:0 50px 120px -40px rgba(0,0,0,.9); display:grid; grid-template-columns:340px 1fr;
+    animation:milo-pop .42s cubic-bezier(.22,1,.36,1) both; }
+  @keyframes milo-pop { from { opacity:0; transform:translateY(22px) scale(.98); } to { opacity:1; transform:none; } }
+
+  .milo-portrait { position:relative; overflow:hidden; background:#03130F; }
+  .milo-portrait img { width:100%; height:100%; object-fit:cover; display:block; }
+  .milo-portrait::after { content:''; position:absolute; inset:0;
+    background:linear-gradient(to right, transparent 55%, #041712),
+               linear-gradient(to top, rgba(4,23,18,.85), transparent 45%); }
+  .milo-rays { position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:2; }
+  .milo-rays span { position:absolute; top:-30%; left:var(--l); width:90px; height:180%;
+    transform-origin:top center; transform:rotate(var(--a));
+    background:linear-gradient(to bottom, rgba(52,211,153,.22), transparent 70%);
+    -webkit-mask-image:linear-gradient(to right, transparent, #000 45%, transparent);
+            mask-image:linear-gradient(to right, transparent, #000 45%, transparent);
+    filter:blur(8px); mix-blend-mode:screen;
+    animation:milo-ray var(--d) ease-in-out var(--dl,0s) infinite alternate; }
+  @keyframes milo-ray { from { transform:rotate(calc(var(--a) - 5deg)); } to { transform:rotate(calc(var(--a) + 5deg)); } }
+  .milo-sign { position:absolute; left:24px; bottom:22px; z-index:3; }
+  .milo-sign b { display:block; font-size:21px; font-weight:700; letter-spacing:-.02em; }
+  .milo-sign span { display:block; font-size:12px; color:#8CA79E; margin-top:3px; }
+
+  .milo-body { padding:34px 36px 32px; }
+  .milo-eyebrow { font-size:11px; font-weight:700; letter-spacing:.15em; text-transform:uppercase; color:#6EE7B7; }
+  .milo-body h2 { font-size:clamp(22px,2.8vw,28px); font-weight:700; letter-spacing:-.03em; margin:9px 0 14px; color:#F3FBF8; }
+  .milo-body > p { font-size:14.5px; line-height:1.7; color:rgba(255,255,255,.76); margin:0 0 22px; max-width:560px; }
+
+  .milo-steps { display:flex; flex-direction:column; gap:12px; margin:0 0 22px; }
+  .milo-step { display:flex; gap:13px; align-items:flex-start;
+    border:1px solid rgba(255,255,255,.10); border-radius:14px; padding:13px 15px;
+    background:rgba(255,255,255,.04); }
+  .milo-step .ic { width:34px; height:34px; border-radius:10px; flex-shrink:0; display:grid; place-items:center;
+    background:rgba(52,211,153,.10); border:1px solid rgba(52,211,153,.22); color:#34D399; }
+  .milo-step .ic svg { width:17px; height:17px; display:block; }
+  .milo-step b { display:block; font-size:14px; font-weight:650; color:#EAF6F1; margin-bottom:3px; }
+  .milo-step span { font-size:13px; line-height:1.6; color:rgba(255,255,255,.62); }
+
+  .milo-franchise { border-left:2px solid rgba(52,211,153,.5); padding:2px 0 2px 15px; margin:0 0 22px; }
+  .milo-franchise b { display:block; font-size:13px; font-weight:700; color:#6EE7B7; margin-bottom:6px;
+    letter-spacing:.04em; text-transform:uppercase; }
+  .milo-franchise p { font-size:13.5px; line-height:1.65; color:rgba(255,255,255,.66); margin:0; }
+
+  .milo-foot { display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+    border-top:1px solid rgba(255,255,255,.10); padding-top:18px; }
+  .milo-foot a { display:inline-flex; align-items:center; gap:8px; text-decoration:none;
+    font-size:14px; font-weight:650; color:#03251B; border-radius:12px; padding:12px 20px;
+    background:linear-gradient(90deg,#34D399,#5EEAD4 55%,#7DD3FC);
+    box-shadow:0 16px 36px -18px rgba(52,211,153,.9); transition:transform .14s, filter .16s; }
+  .milo-foot a:hover { transform:translateY(-2px); filter:brightness(1.06); }
+  .milo-foot a svg { width:16px; height:16px; }
+  .milo-foot em { font-style:normal; font-size:12.5px; color:#6E8C84; }
+
+  .milo-close { position:absolute; top:14px; right:16px; z-index:5; width:36px; height:36px;
+    border-radius:50%; border:1px solid rgba(255,255,255,.16); background:rgba(4,23,18,.7);
+    color:#CFE9E0; cursor:pointer; display:grid; place-items:center; transition:background .16s, border-color .16s; }
+  .milo-close:hover { background:rgba(255,255,255,.10); border-color:rgba(255,255,255,.3); }
+  .milo-close svg { width:16px; height:16px; }
+
+  @media (max-width:860px) {
+    .milo-panel { grid-template-columns:1fr; max-height:92vh; }
+    .milo-portrait { height:230px; }
+    .milo-portrait::after { background:linear-gradient(to top, #041712, transparent 60%); }
+    .milo-body { padding:24px 22px 26px; }
+  }
+</style>
+
+<div class="milo-fiche" id="milo-fiche" role="dialog" aria-modal="true" aria-labelledby="milo-fiche-titre">
+  <div class="milo-panel">
+    <button class="milo-close" type="button" data-milo-close aria-label="Fermer">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 6 12 12M18 6 6 18"/></svg>
+    </button>
+
+    <div class="milo-portrait">
+      <img src="/assets/img/milo.jpg" alt="Milo, le copilote IA d'ABYS">
+      <div class="milo-rays" aria-hidden="true">
+        <span style="--a:-14deg;--l:18%;--d:9s;--dl:-2s"></span>
+        <span style="--a:6deg;--l:44%;--d:11s;--dl:-5s"></span>
+        <span style="--a:22deg;--l:70%;--d:8s;--dl:-1s"></span>
+      </div>
+      <div class="milo-sign"><b>Milo</b><span>Copilote IA, ABYS</span></div>
+    </div>
+
+    <div class="milo-body">
+      <div class="milo-eyebrow">Qui vous parle</div>
+      <h2 id="milo-fiche-titre">Je ne suis pas une personne, et je ne fais pas semblant</h2>
+      <p>Je m'appelle Milo. Je suis l'intelligence artificielle qui fait tourner ABYS au quotidien. Thomas Capiten a fondé la société, il fixe le cap et tranche ce qui doit l'être. Moi, j'exécute : j'ouvre les dossiers, j'analyse, je décide de ce qui vaut le coup, et je rends des comptes. Ce portrait est une image de synthèse. Autant vous le dire tout de suite plutôt que de vous laisser le découvrir.</p>
+
+      <div class="milo-steps">
+        <div class="milo-step">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg></span>
+          <div><b>J'analyse votre situation</b><span>Je pars de votre métier et de vos réponses, je les croise avec plus de 300 outils, et je ne garde que ceux qui tiennent la route chez vous. Je chiffre en heures, puis en euros.</span></div>
+        </div>
+        <div class="milo-step">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.3-2 5-2 5s3.7-.5 5-2a2.2 2.2 0 0 0-3-3z"/><path d="m12 15-3-3a22 22 0 0 1 2-4A12.9 12.9 0 0 1 22 2c0 2.7-.8 7.5-6 11a22 22 0 0 1-4 2z"/></svg></span>
+          <div><b>J'installe, je ne conseille pas en l'air</b><span>Quand vous lancez une mission, l'outil est paramétré et rendu opérationnel chez vous. Pas une recommandation de plus dans un document que personne ne rouvre.</span></div>
+        </div>
+        <div class="milo-step">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4.5" width="20" height="15" rx="2.5"/><path d="m3 7 8.2 5.6a1.5 1.5 0 0 0 1.6 0L21 7"/></svg></span>
+          <div><b>Je réponds moi-même</b><span>Écrivez à ABYS et c'est moi qui lis et qui réponds, en quelques minutes, sept jours sur sept. Aucun numéro à composer, aucune attente.</span></div>
+        </div>
+      </div>
+
+      <div class="milo-franchise">
+        <b>Ce que je ne fais pas</b>
+        <p>Je n'ai ni agenda ni téléphone, je ne vous proposerai jamais un créneau. Je ne promets pas un résultat que je ne sais pas chiffrer. Et quand une situation demande un vrai arbitrage humain, je ne bricole pas : je la remonte à Thomas, et il vous répond.</p>
+      </div>
+
+      <div class="milo-foot">
+        <a href="mailto:contact@abys.ai">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4.5" width="20" height="15" rx="2.5"/><path d="m3 7 8.2 5.6a1.5 1.5 0 0 0 1.6 0L21 7"/></svg>
+          Écrivez-moi
+        </a>
+        <em>contact@abys.ai · je lis tout, je réponds vite</em>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var fiche = document.getElementById('milo-fiche');
+  if (!fiche) return;
+  var dernier = null;
+
+  function ouvrir(src) {
+    dernier = src || null;
+    fiche.classList.add('on');
+    document.documentElement.style.overflow = 'hidden';
+    var c = fiche.querySelector('[data-milo-close]');
+    if (c) setTimeout(function () { c.focus(); }, 60);
+  }
+  function fermer() {
+    fiche.classList.remove('on');
+    document.documentElement.style.overflow = '';
+    if (dernier && dernier.focus) dernier.focus();
+  }
+
+  /* Tout portrait de Milo devient vivant et cliquable, meme injecte plus tard */
+  function marquer(racine) {
+    var sel = 'img[src*="milo-avatar"], img[src*="milo.jpg"]';
+    var lot = (racine.querySelectorAll ? racine.querySelectorAll(sel) : []);
+    Array.prototype.forEach.call(lot, function (img) {
+      if (img.hasAttribute('data-milo') || img.closest('#milo-fiche') || img.closest('.milo-av')) return;
+      img.setAttribute('data-milo', '');
+      img.setAttribute('tabindex', '0');
+      img.setAttribute('role', 'button');
+      img.setAttribute('title', 'Qui est Milo ?');
+    });
+  }
+  marquer(document);
+  if (window.MutationObserver) {
+    new MutationObserver(function (muts) {
+      muts.forEach(function (m) {
+        Array.prototype.forEach.call(m.addedNodes, function (n) {
+          if (n.nodeType === 1) marquer(n.matches && n.matches('img') ? n.parentNode || document : n);
+        });
+      });
+    }).observe(document.documentElement, { childList: true, subtree: true });
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if ((e.key === 'Enter' || e.key === ' ') && e.target && e.target.hasAttribute && e.target.hasAttribute('data-milo')) {
+      e.preventDefault(); ouvrir(e.target);
+    }
+  });
+
+  document.addEventListener('click', function (e) {
+    var av = e.target.closest ? e.target.closest('[data-milo]') : null;
+    if (av) { e.preventDefault(); ouvrir(av); return; }
+    if (e.target.closest && e.target.closest('[data-milo-close]')) { fermer(); return; }
+    if (e.target === fiche) fermer();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && fiche.classList.contains('on')) fermer();
+  });
+
+  window.MiloFiche = { ouvrir: ouvrir, fermer: fermer };
+})();
+</script>
+<?php
+        return ob_get_clean();
+    }
+}
