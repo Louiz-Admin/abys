@@ -946,6 +946,66 @@ include __DIR__ . '/includes/nav.php';
   </div>
 
   <!-- ══════ CONCRÈTEMENT, CE QUI CHANGE ══════ -->
+  <!-- ── Porte : la suite de l'analyse s'ouvre contre un email ───────── -->
+  <style>
+    .gate { position:relative; margin:44px 0 0; border-radius:22px; padding:26px 28px;
+      background:linear-gradient(150deg,#052E24,#04211A 70%); border:1px solid rgba(16,185,129,.34);
+      box-shadow:0 30px 70px -40px rgba(0,0,0,.8); display:flex; gap:22px; align-items:flex-start; flex-wrap:wrap; }
+    .gate img { width:58px; height:58px; border-radius:50%; object-fit:cover; border:2px solid rgba(52,211,153,.7);
+      box-shadow:0 0 0 6px rgba(16,185,129,.12); flex-shrink:0; }
+    .gate-txt { flex:1; min-width:260px; }
+    .gate-eyebrow { font-size:11px; font-weight:700; letter-spacing:.13em; text-transform:uppercase; color:#6EE7B7; margin-bottom:7px; }
+    .gate h3 { font-size:clamp(19px,2.4vw,24px); font-weight:700; letter-spacing:-.025em; color:#F3FBF8; margin:0 0 9px; }
+    .gate p { font-size:14px; line-height:1.65; color:rgba(255,255,255,.72); margin:0; max-width:620px; }
+    .gate-form { display:flex; flex-direction:column; gap:10px; min-width:290px; flex:0 0 320px; }
+    .gate-form input { padding:14px 15px; border-radius:12px; border:1px solid rgba(255,255,255,.18);
+      background:rgba(255,255,255,.06); color:#F3FBF8; font-size:15px; font-family:inherit; outline:none;
+      transition:border-color .16s, box-shadow .16s, background .16s; }
+    .gate-form input::placeholder { color:rgba(255,255,255,.38); }
+    .gate-form input:focus { border-color:#34D399; background:rgba(16,185,129,.10); box-shadow:0 0 0 3px rgba(16,185,129,.16); }
+    .gate-form input.err { border-color:#F87171; box-shadow:0 0 0 3px rgba(248,113,113,.18); }
+    .gate-btn { display:flex; align-items:center; justify-content:center; gap:9px; border:none; cursor:pointer;
+      font-family:inherit; font-size:15px; font-weight:700; color:#03251B; border-radius:12px; padding:14px 20px;
+      background:linear-gradient(90deg,#34D399,#5EEAD4 55%,#7DD3FC); box-shadow:0 18px 40px -18px rgba(52,211,153,.95);
+      transition:transform .14s, filter .16s; }
+    .gate-btn:hover { transform:translateY(-2px); filter:brightness(1.06); }
+    .gate-btn:disabled { opacity:.5; cursor:wait; transform:none; }
+    .gate-note { font-size:11.5px; color:rgba(255,255,255,.42); line-height:1.5; }
+    .gate-ok { display:none; align-items:center; gap:10px; color:#6EE7B7; font-size:14.5px; font-weight:600; }
+
+    /* Zone verrouillee */
+    #zone-verrouillee { position:relative; }
+    body:not(.debloque) #zone-verrouillee { filter:blur(9px); pointer-events:none; user-select:none;
+      opacity:.55; max-height:520px; overflow:hidden; }
+    body:not(.debloque) #zone-verrouillee::after { content:''; position:absolute; inset:auto 0 0 0; height:200px;
+      background:linear-gradient(to bottom, transparent, var(--bg,#F0FDF8)); }
+    #zone-verrouillee { transition:filter .7s ease, opacity .7s ease, max-height 1.1s ease; }
+    @media(max-width:820px){ .gate { padding:22px 20px; } .gate-form { flex:1 1 100%; min-width:0; } }
+  </style>
+
+  <div class="gate reveal" id="gate">
+    <img src="/assets/img/milo-avatar.jpg" alt="Milo">
+    <div class="gate-txt">
+      <div class="gate-eyebrow">Milo</div>
+      <h3>La suite de votre analyse est prête</h3>
+      <p>Vous venez de voir vos premières opportunités, et elles sont à vous, sans rien donner. En dessous, il reste ce que ça change concrètement dans votre semaine, ce que votre métier vous permettrait de créer, et surtout ce qui se passe aujourd'hui quand un client cherche votre activité dans ChatGPT ou Gemini. Je vous ouvre tout de suite, dites-moi juste où vous envoyer la copie.</p>
+    </div>
+    <form class="gate-form" id="gate-form" novalidate>
+      <input type="text"  id="gate-prenom" placeholder="Votre prénom" autocomplete="given-name">
+      <input type="email" id="gate-email"  placeholder="vous@votre-entreprise.fr" autocomplete="email" inputmode="email">
+      <button class="gate-btn" type="submit" id="gate-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10.5" width="16" height="10.5" rx="2.5"/><path d="M8 10.5V7a4 4 0 0 1 7.5-2"/></svg>
+        <span id="gate-label">Ouvrir la suite de mon audit</span>
+      </button>
+      <div class="gate-ok" id="gate-ok">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9.5 17 4 11.5"/></svg>
+        <span>C'est ouvert. La copie part dans votre boîte mail.</span>
+      </div>
+      <div class="gate-note">Gratuit, sans carte bancaire. Aucun spam, aucun appel commercial, désinscription en un clic.</div>
+    </form>
+  </div>
+
+  <div id="zone-verrouillee">
   <section class="tr-section reveal" id="tr-section" style="display:none">
     <div class="tr-head">
       <img class="tr-milo" src="/assets/img/milo-avatar.jpg" alt="Milo">
@@ -1001,33 +1061,6 @@ include __DIR__ . '/includes/nav.php';
     </div>
   </section>
 
-  <!-- ── Capture email · recevoir les résultats ─────────── -->
-  <div class="email-capture-card reveal" id="email-capture">
-    <div class="ec-left">
-      <div class="ec-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-      </div>
-      <div>
-        <div class="ec-title">Recevez vos résultats par email</div>
-        <div class="ec-sub">Un récapitulatif gratuit de vos opportunités IA, directement dans votre boîte mail.</div>
-      </div>
-    </div>
-    <form class="ec-form" id="ec-form" novalidate>
-      <div class="ec-fields">
-        <input class="ec-input" type="text"  id="ec-prenom" placeholder="Prénom" autocomplete="given-name"  required>
-        <input class="ec-input" type="text"  id="ec-nom"    placeholder="Nom"    autocomplete="family-name" required>
-        <input class="ec-input" type="email" id="ec-email"  placeholder="Email professionnel" autocomplete="email" required>
-      </div>
-      <button class="ec-btn" type="submit" id="ec-submit">
-        <span id="ec-btn-label">Recevoir mes résultats</span>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </button>
-    </form>
-    <div class="ec-success" id="ec-success" style="display:none">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-      <span>Rapport envoyé ! Vérifiez votre boîte mail.</span>
-    </div>
-    <p class="ec-rgpd">Aucun spam · Données protégées · Désinscription en 1 clic</p>
   </div>
 
   <!-- ── Section offres ──────────────────────────────────── -->
@@ -1640,74 +1673,86 @@ include __DIR__ . '/includes/nav.php';
 })();
 </script>
 
-<!-- ── Formulaire email capture ────────────────────────────── -->
+<!-- ── La porte : l'email ouvre la suite de l'analyse ───────── -->
 <script>
 (function () {
-  var form    = document.getElementById('ec-form');
-  var success = document.getElementById('ec-success');
-  var btn     = document.getElementById('ec-submit');
-  var label   = document.getElementById('ec-btn-label');
+  var form  = document.getElementById('gate-form');
   if (!form) return;
+  var btn   = document.getElementById('gate-btn');
+  var label = document.getElementById('gate-label');
+  var ok    = document.getElementById('gate-ok');
+
+  function ouvrir() {
+    document.body.classList.add('debloque');
+  }
+
+  /* Deja identifie sur cette machine : on n'embete personne deux fois */
+  if (ABYS.get('audit_debloque') === '1' || ABYS.get('lead_email')) {
+    ouvrir();
+    var g = document.getElementById('gate');
+    if (g) g.style.display = 'none';
+  }
+
+  /* Rien a verrouiller (audit sans ces sections) : on efface la porte */
+  setTimeout(function () {
+    var z = document.getElementById('zone-verrouillee');
+    if (!z) return;
+    var visible = Array.prototype.filter.call(z.querySelectorAll('section'), function (el) {
+      return el.offsetParent !== null || el.style.display !== 'none';
+    });
+    if (!visible.length) {
+      ouvrir();
+      var g = document.getElementById('gate');
+      if (g) g.style.display = 'none';
+    }
+  }, 1400);
+
+  function erreur(el) { el.classList.add('err'); el.focus(); }
 
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
+    var elP = document.getElementById('gate-prenom');
+    var elE = document.getElementById('gate-email');
+    var prenom = elP.value.trim();
+    var email  = elE.value.trim();
 
-    var prenom = document.getElementById('ec-prenom').value.trim();
-    var nom    = document.getElementById('ec-nom').value.trim();
-    var email  = document.getElementById('ec-email').value.trim();
-
-    /* Validation basique */
-    var ok = true;
-    [['ec-prenom', prenom], ['ec-nom', nom], ['ec-email', email]].forEach(function (pair) {
-      var el = document.getElementById(pair[0]);
-      if (!pair[1] || (pair[0] === 'ec-email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(pair[1]))) {
-        el.classList.add('ec-error'); ok = false;
-      } else {
-        el.classList.remove('ec-error');
-      }
-    });
-    if (!ok) return;
+    elP.classList.remove('err'); elE.classList.remove('err');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { erreur(elE); return; }
+    if (!prenom) { erreur(elP); return; }
 
     btn.disabled = true;
-    label.textContent = 'Envoi en cours…';
+    label.textContent = 'J\'ouvre tout ça';
+
+    /* L'ouverture ne depend pas de l'envoi du mail : on ne punit personne
+       pour une panne SMTP. Le mail part en arriere-plan. */
+    ABYS.store('lead_email', email);
+    ABYS.store('prenom', prenom);
+    ABYS.store('audit_debloque', '1');
+    ouvrir();
+    form.querySelector('.gate-btn').style.display = 'none';
+    ok.style.display = 'flex';
+    setTimeout(function () {
+      var g = document.getElementById('gate');
+      if (g) { g.style.transition = 'opacity .6s ease'; g.style.opacity = '.45'; }
+    }, 2600);
 
     try {
-      var leadId  = ABYS.get('lead_id')   || 0;
-      var auditId = ABYS.get('audit_id')  || 0;
-      var auditUrl = ABYS.get('audit_url') || '';
-
-      var resp = await fetch('/api/send-audit-email.php', {
-        method:  'POST',
+      await fetch('/api/send-audit-email.php', {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ prenom, nom, email, lead_id: leadId, audit_id: auditId, url: auditUrl }),
+        body: JSON.stringify({
+          prenom: prenom, nom: '', email: email,
+          lead_id: ABYS.get('lead_id') || 0,
+          audit_id: ABYS.get('audit_id') || 0,
+          url: ABYS.get('audit_url') || ''
+        })
       });
-      var data = await resp.json();
-
-      if (data.success) {
-        form.style.display    = 'none';
-        success.style.display = 'flex';
-      } else {
-        throw new Error(data.error || 'Erreur serveur');
-      }
-    } catch (err) {
-      label.textContent = 'Réessayer';
-      btn.disabled      = false;
-      /* Affiche l'erreur sous le formulaire */
-      var errEl = document.getElementById('ec-err-msg');
-      if (!errEl) {
-        errEl = document.createElement('p');
-        errEl.id = 'ec-err-msg';
-        errEl.style.cssText = 'color:#EF4444;font-size:13px;margin:4px 0 0';
-        form.appendChild(errEl);
-      }
-      errEl.textContent = 'Une erreur est survenue, réessayez ou contactez-nous.';
-    }
+    } catch (err) { /* le contenu est deja ouvert a l'ecran */ }
   });
 
-  /* Retire la classe erreur à la frappe */
-  ['ec-prenom','ec-nom','ec-email'].forEach(function(id) {
+  ['gate-prenom', 'gate-email'].forEach(function (id) {
     var el = document.getElementById(id);
-    if (el) el.addEventListener('input', function () { el.classList.remove('ec-error'); });
+    if (el) el.addEventListener('input', function () { el.classList.remove('err'); });
   });
 })();
 </script>

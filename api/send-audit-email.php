@@ -24,9 +24,9 @@ if (!$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
     http_response_code(400);
     die(json_encode(['error' => 'Email invalide']));
 }
-if (!$prenom || !$nom) {
+if (!$prenom) {
     http_response_code(400);
-    die(json_encode(['error' => 'Prénom et nom requis']));
+    die(json_encode(['error' => 'Prénom requis']));
 }
 
 /* ── Mise à jour du lead ─────────────────────────────────── */
