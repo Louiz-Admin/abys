@@ -11,6 +11,13 @@
 
 if (!function_exists('milo_avatar')) {
 
+    /** Adresse d'un script ou d'une feuille, avec la date du fichier : jamais de cache perime. */
+    function abys_asset(string $rel): string {
+        $abs = __DIR__ . '/..' . $rel;
+        $v   = is_file($abs) ? filemtime($abs) : time();
+        return $rel . '?v=' . $v;
+    }
+
     /**
      * Portrait de Milo, vivant et cliquable.
      * Les variantes sont des fichiers assets/img/milo-<variante>.jpg. Si le

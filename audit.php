@@ -211,7 +211,7 @@ include __DIR__ . '/includes/head.php';
 </div>
 
 <!-- Plein écran : ni nav ni footer. On charge les scripts explicitement (ce que faisait footer.php). -->
-<script src="/assets/js/app.js"></script>
+<script src="<?= function_exists('abys_asset') ? abys_asset('/assets/js/app.js') : '/assets/js/app.js' ?>"></script>
 <?php if (!empty($extra_js)): foreach ($extra_js as $js): ?>
 <script src="<?= htmlspecialchars($js) ?>"></script>
 <?php endforeach; endif; ?>
@@ -360,7 +360,7 @@ async function runAudit() {
     const lead = await ABYS.api('leads.php', { action: 'create', url: cleanUrl, source: 'url' });
     ABYS.store('lead_id',   lead.lead_id);
     ABYS.store('audit_url', cleanUrl);
-    ABYS.track('audit_lance');
+    window.ABYS && ABYS.track && ABYS.track('audit_lance');
 
     log('Lecture de votre site…');
     let scrapeData = null;

@@ -70,10 +70,10 @@
   </div>
 </footer>
 
-<script src="/assets/js/app.js"></script>
+<script src="<?= function_exists('abys_asset') ? abys_asset('/assets/js/app.js') : '/assets/js/app.js' ?>"></script>
 <?php if (!empty($extra_js)): ?>
   <?php foreach ($extra_js as $js): ?>
-  <script src="<?= htmlspecialchars($js) ?>"></script>
+  <script src="<?= htmlspecialchars(function_exists('abys_asset') ? abys_asset($js) : $js) ?>"></script>
   <?php endforeach; ?>
 <?php endif; ?>
 

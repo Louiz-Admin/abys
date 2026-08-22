@@ -261,8 +261,8 @@ include __DIR__ . '/includes/head.php';
   </div>
 </div>
 
-<script src="/assets/js/app.js"></script>
-<script src="/assets/js/audit.js"></script>
+<script src="<?= function_exists('abys_asset') ? abys_asset('/assets/js/app.js') : '/assets/js/app.js' ?>"></script>
+<script src="<?= function_exists('abys_asset') ? abys_asset('/assets/js/audit.js') : '/assets/js/audit.js' ?>"></script>
 <script>
 /* ════════ Icônes · trait fin, aucune emoji ════════ */
 var S = function (p) {
@@ -533,7 +533,7 @@ function render(idx) {
   var st = seq[cur];
   paintRail(st, cur, seq.length);
   paintSide();
-  ABYS.track(st.type === 'contact' ? 'tunnel_contact' : 'tunnel_q' + Math.min(9, cur + 1));
+  window.ABYS && ABYS.track && ABYS.track(st.type === 'contact' ? 'tunnel_contact' : 'tunnel_q' + Math.min(9, cur + 1));
 
   var old = $steps.querySelector('.qt-step.on');
   if (old) { old.classList.remove('on'); old.classList.add('out'); setTimeout(function () { old.remove(); }, 460); }
@@ -635,7 +635,7 @@ async function submitTunnel() {
     });
     ABYS.store('lead_id', lead.lead_id);
     if (prenom) ABYS.store('prenom', prenom);
-    ABYS.track('tunnel_email');
+    window.ABYS && ABYS.track && ABYS.track('tunnel_email');
     await Audit.runFromQuestionnaire(payload);
   } catch (err) {
     clearInterval(t);
@@ -646,7 +646,7 @@ async function submitTunnel() {
   }
 }
 
-ABYS.track('tunnel_ouvert');
+window.ABYS && ABYS.track && ABYS.track('tunnel_ouvert');
 render(0);
 </script>
 
